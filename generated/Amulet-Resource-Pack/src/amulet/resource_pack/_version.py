@@ -52,7 +52,7 @@ def get_config() -> VersioneerConfig:
     cfg.VCS = "git"
     cfg.style = "pep440"
     cfg.tag_prefix = ""
-    cfg.parentdir_prefix = "amulet-resource_pack-"
+    cfg.parentdir_prefix = "amulet_resource_pack-"
     cfg.versionfile_source = "src/amulet/resource_pack/_version.py"
     cfg.verbose = False
     return cfg

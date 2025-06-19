@@ -14,6 +14,7 @@ from . import (
     make_setup,
     make_pyproject,
     make_pyinstaller,
+    make_versioneer
 )
 
 
@@ -27,6 +28,7 @@ def write(project_path: str, library_data: LibraryData) -> None:
     make_setup.write(project_path, library_data)
     make_pyproject.write(project_path, library_data)
     make_pyinstaller.write(project_path, library_data)
+    make_versioneer.write(project_path, library_data)
 
 
 def main(out_path: str) -> None:
