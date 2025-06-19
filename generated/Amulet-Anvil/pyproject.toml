@@ -52,7 +52,7 @@ include-package-data = false
     "**/*.dll",
     "**/*.so",
     "**/*.dylib",
-    "**/*.lib"
+    "**/*.lib",
 ]
 
 [tool.setuptools.dynamic]
