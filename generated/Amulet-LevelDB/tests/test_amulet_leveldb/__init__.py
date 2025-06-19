@@ -1,6 +1,6 @@
-if __name__ != "test_amulet_utils":
+if __name__ != "test_amulet_leveldb":
     raise RuntimeError(
-        f"Module name is incorrect. Expected: 'test_amulet_utils' got '{__name__}'"
+        f"Module name is incorrect. Expected: 'test_amulet_leveldb' got '{__name__}'"
     )
 
 
@@ -13,11 +13,11 @@ def _init() -> None:
     import sys
 
     # Import dependencies
-    import amulet.utils
+    import amulet.leveldb
 
     # This needs to be an absolute path otherwise it may get called twice
     # on different module objects and crash when the interpreter shuts down.
-    from test_amulet_utils._test_amulet_utils import init
+    from test_amulet_leveldb._test_amulet_leveldb import init
 
     init(sys.modules[__name__])
 

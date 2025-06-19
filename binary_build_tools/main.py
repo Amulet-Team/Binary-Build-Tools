@@ -14,6 +14,7 @@ from . import (
     make_setup,
     make_pyproject,
     make_package,
+    make_tests,
 )
 
 
@@ -30,6 +31,10 @@ def write(project_path: str, library_data: LibraryData) -> None:
     package_path = os.path.join(project_path, "src", *library_data.import_name.split("."))
     os.makedirs(package_path, exist_ok=True)
     make_package.write(package_path, library_data)
+
+    tests_path = os.path.join(project_path, "tests")
+    os.makedirs(tests_path, exist_ok=True)
+    make_tests.write(tests_path, library_data)
 
 
 def main(out_path: str) -> None:

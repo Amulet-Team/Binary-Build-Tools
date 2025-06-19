@@ -7,10 +7,10 @@ namespace pyext = Amulet::pybind11_extensions;
 
 void init_module(py::module m){
     pyext::init_compiler_config(m);
-    pyext::check_compatibility(py::module::import("amulet.utils"), m);
+    pyext::check_compatibility(py::module::import("amulet.leveldb"), m);
 }
 
-PYBIND11_MODULE(_test_amulet_utils, m) {
+PYBIND11_MODULE(_test_amulet_leveldb, m) {
     py::options options;
     options.disable_function_signatures();
     m.def("init", &init_module, py::doc("init(arg0: types.ModuleType) -> None"));
