@@ -14,6 +14,7 @@ class LibraryData:
         short_name_lower: str,  # amulet_nbt
         root_import_name: str,  # amulet
         import_name: str,  # amulet.nbt
+        lib_name: str | None,  # amulet_nbt
         ext_name: str | None,  # _amulet_nbt
         library_type: LibraryType,  # Shared
         private_dependencies: list[str],
@@ -25,6 +26,7 @@ class LibraryData:
         self.short_name_lower = short_name_lower
         self.root_import_name = root_import_name
         self.import_name = import_name
+        self.lib_name = lib_name
         self.ext_name = ext_name
         self.library_type = library_type
         self.private_dependencies = private_dependencies
@@ -39,6 +41,7 @@ PyBind11 = LibraryData(
     "pybind11",
     "pybind11",
     None,
+    None,
     LibraryType.Interface,
     [],
     [],
@@ -49,6 +52,7 @@ PyBind11Extensions = LibraryData(
     "pybind11_extensions",
     "amulet",
     "amulet.pybind11_extensions",
+    None,
     None,
     LibraryType.Interface,
     [],
@@ -61,6 +65,7 @@ AmuletCompilerVersion = LibraryData(
     "amulet",
     "amulet_compiler_version",
     None,
+    None,
     LibraryType.Interface,
     [],
     [],
@@ -71,6 +76,7 @@ AmuletIO = LibraryData(
     "io",
     "amulet",
     "amulet.io",
+    None,
     None,
     LibraryType.Interface,
     [
@@ -84,6 +90,7 @@ AmuletLevelDB = LibraryData(
     "leveldb",
     "amulet",
     "amulet.leveldb",
+    "leveldb_mcpe",
     "_leveldb",
     LibraryType.Shared,
     [
@@ -97,6 +104,7 @@ AmuletUtils = LibraryData(
     "utils",
     "amulet",
     "amulet.utils",
+    "amulet_utils",
     "_amulet_utils",
     LibraryType.Shared,
     [
@@ -110,6 +118,7 @@ AmuletZlib = LibraryData(
     "zlib",
     "amulet",
     "amulet.zlib",
+    "amulet_zlib",
     "_amulet_zlib",
     LibraryType.Shared,
     [
@@ -123,6 +132,7 @@ AmuletNBT = LibraryData(
     "nbt",
     "amulet",
     "amulet.nbt",
+    "amulet_nbt",
     "_amulet_nbt",
     LibraryType.Shared,
     [
@@ -136,6 +146,7 @@ AmuletCore = LibraryData(
     "core",
     "amulet",
     "amulet.core",
+    "amulet_core",
     "_amulet_core",
     LibraryType.Shared,
     [
@@ -149,6 +160,7 @@ AmuletGame = LibraryData(
     "game",
     "amulet",
     "amulet.game",
+    "amulet_game",
     "_amulet_game",
     LibraryType.Shared,
     [
@@ -162,6 +174,7 @@ AmuletAnvil = LibraryData(
     "anvil",
     "amulet",
     "amulet.anvil",
+    "amulet_anvil",
     "_amulet_anvil",
     LibraryType.Shared,
     [
@@ -175,6 +188,7 @@ AmuletLevel = LibraryData(
     "level",
     "amulet",
     "amulet.level",
+    "amulet_level",
     "_amulet_level",
     LibraryType.Shared,
     [
@@ -188,6 +202,7 @@ AmuletResourcePack = LibraryData(
     "resource_pack",
     "amulet",
     "amulet.resource_pack",
+    "amulet_resource_pack",
     "_amulet_resource_pack",
     LibraryType.Shared,
     [

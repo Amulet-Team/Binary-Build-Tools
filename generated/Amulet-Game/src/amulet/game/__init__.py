@@ -1,7 +1,3 @@
-"""
-A module to store data about the game including state enumerations and translations between different game versions.
-"""
-
 import logging
 
 from . import _version

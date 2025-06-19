@@ -1,20 +1,11 @@
-from typing import TYPE_CHECKING
+import logging
 
-from amulet.zlib import _version
+from . import _version
 
 __version__ = _version.get_versions()["version"]
 
-if TYPE_CHECKING:
-
-    class ZipBombException(RuntimeError):
-        pass
-
-    def get_max_decompression_size() -> int: ...
-    def set_max_decompression_size(max_decompression_size: int) -> None: ...
-
-    def decompress_zlib_gzip(src: bytes) -> bytes: ...
-    def compress_zlib(src: bytes) -> bytes: ...
-    def compress_gzip(src: bytes) -> bytes: ...
+# init a default logger
+logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
 
 
 def _init() -> None:

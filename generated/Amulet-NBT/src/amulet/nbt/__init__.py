@@ -1,7 +1,11 @@
-from __future__ import annotations
+import logging
+
 from . import _version
 
 __version__ = _version.get_versions()["version"]
+
+# init a default logger
+logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
 
 
 def _init() -> None:
