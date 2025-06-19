@@ -80,78 +80,15 @@ class CMakeBuild(cmdclass.get("build_ext", build_ext)):
                 "build",
             ]
         ).returncode:
-            raise RuntimeError("Error configuring amulet_game")
+            raise RuntimeError("Error configuring amulet-game")
         if subprocess.run(
             ["cmake", "--build", "build", "--config", "Release"]
         ).returncode:
-            raise RuntimeError("Error installing amulet_game")
+            raise RuntimeError("Error installing amulet-game")
         if subprocess.run(
             ["cmake", "--install", "build", "--config", "Release"]
         ).returncode:
-            raise RuntimeError("Error installing amulet_game")
-
-
-class MinifyJSON(Command):
-    def initialize_options(self):
-        self.editable_mode = False
-        self.build_lib = None
-
-    def finalize_options(self):
-        self.set_undefined_options("build_py", ("build_lib", "build_lib"))
-
-    def run(self):
-        # This is rather janky but it is a stop-gap until the whole library can be ported to C++
-        if self.editable_mode:
-            src_dir = os.path.abspath("src")
-        else:
-            src_dir = self.build_lib
-
-        sys.path.append(src_dir)
-
-        from amulet.game.abc import GameVersion
-        from amulet.game.java import JavaGameVersion
-        from amulet.game.bedrock import BedrockGameVersion
-        from amulet.game.universal import UniversalVersion
-
-        json_path = os.path.join("submodules", "PyMCTranslate", "PyMCTranslate", "json")
-
-        universal_version = UniversalVersion.from_json(
-            os.path.join(json_path, "versions", "universal")
-        )
-        _versions: dict[str, list[GameVersion]] = {
-            "universal": [universal_version],
-        }
-        for init_path in glob.glob(
-            os.path.join(glob.escape(json_path), "versions", "*", "__init__.json")
-        ):
-            version_path = os.path.dirname(init_path)
-
-            with open(os.path.join(version_path, "__init__.json")) as f:
-                init = json.load(f)
-
-            platform = init["platform"]
-            if platform == "bedrock":
-                _versions.setdefault("bedrock", []).append(
-                    BedrockGameVersion.from_json(version_path, universal_version)
-                )
-            elif platform == "java":
-                _versions.setdefault("java", []).append(
-                    JavaGameVersion.from_json(version_path, universal_version)
-                )
-            elif platform == "universal":
-                pass
-            else:
-                raise RuntimeError
-        with open(
-            os.path.join(src_dir, "amulet", "game", "versions.pkl.gz"), "wb"
-        ) as pkl:
-            pkl.write(gzip.compress(pickle.dumps(_versions)))
-
-
-# register a new command class
-cmdclass["minify_json"] = MinifyJSON
-# register our command class as a subcommand of the build command class
-cmdclass.get("build", build).sub_commands.append(("minify_json", None))
+            raise RuntimeError("Error installing amulet-game")
 
 
 cmdclass["build_ext"] = CMakeBuild

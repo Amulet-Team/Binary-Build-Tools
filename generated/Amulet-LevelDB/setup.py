@@ -72,15 +72,15 @@ class CMakeBuild(cmdclass.get("build_ext", build_ext)):
                 "build",
             ]
         ).returncode:
-            raise RuntimeError("Error configuring amulet_leveldb")
+            raise RuntimeError("Error configuring amulet-leveldb")
         if subprocess.run(
             ["cmake", "--build", "build", "--config", "Release"]
         ).returncode:
-            raise RuntimeError("Error building amulet_leveldb")
+            raise RuntimeError("Error installing amulet-leveldb")
         if subprocess.run(
             ["cmake", "--install", "build", "--config", "Release"]
         ).returncode:
-            raise RuntimeError("Error installing amulet_leveldb")
+            raise RuntimeError("Error installing amulet-leveldb")
 
 
 cmdclass["build_ext"] = CMakeBuild

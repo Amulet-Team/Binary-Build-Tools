@@ -69,15 +69,15 @@ class CMakeBuild(cmdclass.get("build_ext", build_ext)):
                 "build",
             ]
         ).returncode:
-            raise RuntimeError("Error configuring amulet_zlib")
+            raise RuntimeError("Error configuring amulet-zlib")
         if subprocess.run(
             ["cmake", "--build", "build", "--config", "Release"]
         ).returncode:
-            raise RuntimeError("Error installing amulet_zlib")
+            raise RuntimeError("Error installing amulet-zlib")
         if subprocess.run(
             ["cmake", "--install", "build", "--config", "Release"]
         ).returncode:
-            raise RuntimeError("Error installing amulet_zlib")
+            raise RuntimeError("Error installing amulet-zlib")
 
 
 cmdclass["build_ext"] = CMakeBuild

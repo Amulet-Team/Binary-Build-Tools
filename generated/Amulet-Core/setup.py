@@ -74,15 +74,15 @@ class CMakeBuild(cmdclass.get("build_ext", build_ext)):
                 "build",
             ]
         ).returncode:
-            raise RuntimeError("Error configuring amulet_core")
+            raise RuntimeError("Error configuring amulet-core")
         if subprocess.run(
             ["cmake", "--build", "build", "--config", "Release"]
         ).returncode:
-            raise RuntimeError("Error installing amulet_core")
+            raise RuntimeError("Error installing amulet-core")
         if subprocess.run(
             ["cmake", "--install", "build", "--config", "Release"]
         ).returncode:
-            raise RuntimeError("Error installing amulet_core")
+            raise RuntimeError("Error installing amulet-core")
 
 
 cmdclass["build_ext"] = CMakeBuild
