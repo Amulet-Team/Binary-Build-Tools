@@ -11,28 +11,29 @@ class LibraryData:
         self,
         pypi_name: str,  # amulet-nbt
         repo_name: str,  # Amulet-NBT
+        short_name_lower: str,  # amulet_nbt
         root_import_name: str,  # amulet
         import_name: str,  # amulet.nbt
         ext_name: str | None,  # _amulet_nbt
         library_type: LibraryType,  # Shared
         private_dependencies: list[str],
         public_dependencies: list[str],
-        # short_name_lower: str,
         # short_name_pretty: str,
     ):
         self.pypi_name = pypi_name.replace("_", "-")
         self.repo_name = repo_name
+        self.short_name_lower = short_name_lower
         self.root_import_name = root_import_name
         self.import_name = import_name
         self.ext_name = ext_name
         self.library_type = library_type
         self.private_dependencies = private_dependencies
         self.public_dependencies = public_dependencies
-        # self.short_name_lower = short_name_lower
         # self.short_name_pretty = short_name_pretty
 
 
 PyBind11 = LibraryData(
+    "pybind11",
     "pybind11",
     "pybind11",
     "pybind11",
@@ -45,6 +46,7 @@ PyBind11 = LibraryData(
 PyBind11Extensions = LibraryData(
     "amulet-pybind11-extensions",
     "Amulet-pybind11-extensions",
+    "pybind11_extensions",
     "amulet",
     "amulet.pybind11_extensions",
     None,
@@ -55,6 +57,7 @@ PyBind11Extensions = LibraryData(
 AmuletCompilerVersion = LibraryData(
     "amulet-compiler-version",
     "Amulet-Compiler-Version",
+    "compiler_version",
     "amulet",
     "amulet_compiler_version",
     None,
@@ -65,6 +68,7 @@ AmuletCompilerVersion = LibraryData(
 AmuletIO = LibraryData(
     "amulet-io",
     "Amulet-IO",
+    "io",
     "amulet",
     "amulet.io",
     None,
@@ -77,6 +81,7 @@ AmuletIO = LibraryData(
 AmuletLevelDB = LibraryData(
     "amulet-leveldb",
     "Amulet-LevelDB",
+    "leveldb",
     "amulet",
     "amulet.leveldb",
     "_amulet_leveldb",
@@ -89,6 +94,7 @@ AmuletLevelDB = LibraryData(
 AmuletUtils = LibraryData(
     "amulet-utils",
     "Amulet-Utils",
+    "utils",
     "amulet",
     "amulet.utils",
     "_amulet_utils",
@@ -101,6 +107,7 @@ AmuletUtils = LibraryData(
 AmuletZlib = LibraryData(
     "amulet-zlib",
     "Amulet-zlib",
+    "zlib",
     "amulet",
     "amulet.zlib",
     "_amulet_zlib",
@@ -113,6 +120,7 @@ AmuletZlib = LibraryData(
 AmuletNBT = LibraryData(
     "amulet-nbt",
     "Amulet-NBT",
+    "nbt",
     "amulet",
     "amulet.nbt",
     "_amulet_nbt",
@@ -125,6 +133,7 @@ AmuletNBT = LibraryData(
 AmuletCore = LibraryData(
     "amulet-core",
     "Amulet-Core",
+    "core",
     "amulet",
     "amulet.core",
     "_amulet_core",
@@ -137,6 +146,7 @@ AmuletCore = LibraryData(
 AmuletGame = LibraryData(
     "amulet-game",
     "Amulet-Game",
+    "game",
     "amulet",
     "amulet.game",
     "_amulet_game",
@@ -149,6 +159,7 @@ AmuletGame = LibraryData(
 AmuletAnvil = LibraryData(
     "amulet-anvil",
     "Amulet-Anvil",
+    "anvil",
     "amulet",
     "amulet.anvil",
     "_amulet_anvil",
@@ -161,6 +172,7 @@ AmuletAnvil = LibraryData(
 AmuletLevel = LibraryData(
     "amulet-level",
     "Amulet-Level",
+    "level",
     "amulet",
     "amulet.level",
     "_amulet_level",
@@ -173,6 +185,7 @@ AmuletLevel = LibraryData(
 AmuletResourcePack = LibraryData(
     "amulet-resource-pack",
     "Amulet-Resource-Pack",
+    "resource_pack",
     "amulet",
     "amulet.resource_pack",
     "_amulet_resource_pack",
