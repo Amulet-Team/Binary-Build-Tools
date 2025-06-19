@@ -9,6 +9,7 @@ from . import (
     make_gitattributes,
     make_gitignore,
     make_manifest,
+    make_mypy_ini,
     make_build_requires,
     make_setup
 )
@@ -19,6 +20,7 @@ def write(project_path: str, library_data: LibraryData) -> None:
     make_gitignore.write(project_path, library_data)
     make_gitattributes.write(project_path, library_data)
     make_manifest.write(project_path, library_data)
+    make_mypy_ini.write(project_path, library_data)
     make_build_requires.write(project_path)
     make_setup.write(project_path, library_data)
 
