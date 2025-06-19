@@ -11,7 +11,7 @@ from . import (
     make_manifest,
     make_mypy_ini,
     make_build_requires,
-    make_setup
+    make_setup,
 )
 
 
