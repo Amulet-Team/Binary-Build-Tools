@@ -12,6 +12,7 @@ from . import (
     make_mypy_ini,
     make_build_requires,
     make_setup,
+    make_pyproject,
 )
 
 
@@ -23,6 +24,7 @@ def write(project_path: str, library_data: LibraryData) -> None:
     make_mypy_ini.write(project_path, library_data)
     make_build_requires.write(project_path)
     make_setup.write(project_path, library_data)
+    make_pyproject.write(project_path, library_data)
 
 
 def main(out_path: str) -> None:
