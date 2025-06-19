@@ -1,11 +1,9 @@
 import os
 
-from .data import LibraryData
+from binary_build_tools.data import LibraryData
 
 
-def write(project_path: str, library_data: LibraryData) -> None:
-    package_path = os.path.join(project_path, "src", *library_data.import_name.split("."))
-    os.makedirs(package_path, exist_ok=True)
+def write(package_path: str, library_data: LibraryData) -> None:
     with open(os.path.join(package_path, "_version.py"), "w", encoding="utf-8") as f:
         f.write(f'''# mypy: ignore-errors
 # This file helps to compute a version number in source trees obtained from

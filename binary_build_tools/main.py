@@ -13,8 +13,7 @@ from . import (
     make_build_requires,
     make_setup,
     make_pyproject,
-    make_pyinstaller,
-    make_versioneer
+    make_package,
 )
 
 
@@ -27,8 +26,10 @@ def write(project_path: str, library_data: LibraryData) -> None:
     make_build_requires.write(project_path)
     make_setup.write(project_path, library_data)
     make_pyproject.write(project_path, library_data)
-    make_pyinstaller.write(project_path, library_data)
-    make_versioneer.write(project_path, library_data)
+
+    package_path = os.path.join(project_path, "src", *library_data.import_name.split("."))
+    os.makedirs(package_path, exist_ok=True)
+    make_package.write(package_path, library_data)
 
 
 def main(out_path: str) -> None:

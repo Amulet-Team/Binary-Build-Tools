@@ -1,10 +1,10 @@
 import os
 
-from .data import LibraryData
+from binary_build_tools.data import LibraryData
 
 
-def write(project_path: str, library_data: LibraryData) -> None:
-    pyinstaller_path = os.path.join(project_path, "src", *library_data.import_name.split("."), "__pyinstaller")
+def write(package_path: str, library_data: LibraryData) -> None:
+    pyinstaller_path = os.path.join(package_path, "__pyinstaller")
     os.makedirs(pyinstaller_path, exist_ok=True)
     with open(os.path.join(pyinstaller_path, "__init__.py"), "w", encoding="utf-8") as f:
         f.write("""def get_hook_dirs() -> list[str]:
