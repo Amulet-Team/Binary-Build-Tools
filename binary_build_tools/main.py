@@ -4,16 +4,19 @@ import shutil
 import subprocess
 
 from .data import LibraryData, shared_libraries
+
+from . import make_gitattributes
+from . import make_gitignore
 from . import make_build_requires
 from . import make_setup
-from . import make_gitignore
 
 
 def write(project_path: str, library_data: LibraryData) -> None:
     os.makedirs(project_path, exist_ok=True)
+    make_gitignore.write(project_path, library_data)
+    make_gitattributes.write(project_path, library_data)
     make_build_requires.write(project_path)
     make_setup.write(project_path, library_data)
-    make_gitignore.write(project_path, library_data)
 
 
 def main(out_path: str) -> None:
