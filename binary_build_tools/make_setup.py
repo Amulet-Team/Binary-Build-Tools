@@ -42,7 +42,7 @@ class CMakeBuild(cmdclass.get("build_ext", build_ext)):
         
     
         ext_dir = (Path.cwd() / self.get_ext_fullpath("")).parent.resolve() / {" / ".join(f"\"{name}\"" for name in library_data.import_name.split("."))}
-        level_src_dir = Path.cwd() / "src" / {" / ".join(f"\"{name}\"" for name in library_data.import_name.split("."))} if self.editable_mode else ext_dir
+        {library_data.short_name_lower}_src_dir = Path.cwd() / "src" / {" / ".join(f"\"{name}\"" for name in library_data.import_name.split("."))} if self.editable_mode else ext_dir
 
         platform_args = []
         if sys.platform == "win32":
@@ -61,18 +61,8 @@ class CMakeBuild(cmdclass.get("build_ext", build_ext)):
                 "cmake",
                 *platform_args,
                 f"-DPYTHON_EXECUTABLE={{sys.executable}}",
-                f"-Dpybind11_DIR={{pybind11.get_cmake_dir().replace(os.sep, '/')}}",
-                f"-Damulet_pybind11_extensions_DIR={{fix_path(amulet.pybind11_extensions.__path__[0])}}",
-                f"-Damulet_io_DIR={{fix_path(amulet.io.__path__[0])}}",
-                f"-Dleveldb_mcpe_DIR={{fix_path(amulet.leveldb.__path__[0])}}",
-                f"-Damulet_utils_DIR={{fix_path(amulet.utils.__path__[0])}}",
-                f"-Damulet_zlib_DIR={{fix_path(amulet.zlib.__path__[0])}}",
-                f"-Damulet_nbt_DIR={{fix_path(amulet.nbt.__path__[0])}}",
-                f"-Damulet_core_DIR={{fix_path(amulet.core.__path__[0])}}",
-                f"-Damulet_game_DIR={{fix_path(amulet.game.__path__[0])}}",
-                f"-Damulet_anvil_DIR={{fix_path(amulet.anvil.__path__[0])}}",
-                f"-Damulet_level_DIR={{fix_path(level_src_dir)}}",
-                f"-DAMULET_LEVEL_EXT_DIR={{fix_path(ext_dir)}}",
+                f"-Dpybind11_DIR={{fix_path(pybind11.get_cmake_dir())}}",
+                f"-D{library_data.import_name.replace(".", "_").upper()}_EXT_DIR={{fix_path(ext_dir)}}",
                 f"-DCMAKE_INSTALL_PREFIX=install",
                 "-B",
                 "build",
