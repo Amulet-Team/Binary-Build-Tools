@@ -93,11 +93,9 @@ def _get_version() -> str:
         try:
             with open("build/timestamp.txt", "r") as f:
                 timestamp = datetime.datetime.strptime(f.read(), date_format)
-            print("using cached timestamp")
         except Exception:
             timestamp = datetime.datetime(1, 1, 1)
         if datetime.timedelta(minutes=10) < datetime.datetime.now() - timestamp:
-            print("get timestamp")
             timestamp = datetime.datetime.now()
             os.makedirs("build", exist_ok=True)
             with open("build/timestamp.txt", "w") as f:
