@@ -13,7 +13,7 @@ name = "amulet-anvil"
 authors = [
     {name = "James Clare"},
 ]
-description = "A C++ library with Python wrapper for the Minecraft Anvil format."
+description = ""
 dynamic = ["version", "readme", "dependencies"]
 requires-python = ">=3.11"
 classifiers = [

@@ -13,7 +13,7 @@ name = "amulet-utils"
 authors = [
     {name = "James Clare"},
 ]
-description = "A C++ utility library with a python wrapper."
+description = ""
 dynamic = ["version", "readme", "dependencies"]
 requires-python = ">=3.11"
 classifiers = [
@@ -36,12 +36,6 @@ dev = [
     "types-pyinstaller",
     "amulet-test-utils~=1.1",
 ]
-numpy = [
-    "numpy~=2.0",
-]
-pillow = [
-    "pillow~=11.0",
-]
 
 [project.urls]
 Homepage = "https://www.amuletmc.com"
@@ -59,7 +53,6 @@ include-package-data = false
     "**/*.so",
     "**/*.dylib",
     "**/*.lib",
-    "**/*.png",
 ]
 
 [tool.setuptools.dynamic]

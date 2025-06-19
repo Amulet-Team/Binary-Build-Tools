@@ -13,7 +13,7 @@ name = "amulet-game"
 authors = [
     {name = "James Clare"},
 ]
-description = "A Minecraft metadata and low level translation library."
+description = ""
 dynamic = ["version", "readme", "dependencies"]
 requires-python = ">=3.11"
 classifiers = [

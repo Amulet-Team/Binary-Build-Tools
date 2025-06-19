@@ -13,7 +13,7 @@ name = "amulet-resource-pack"
 authors = [
     {name = "James Clare"},
 ]
-description = "A Python and C++ library for interacting with Minecraft resource packs."
+description = ""
 dynamic = ["version", "readme", "dependencies"]
 requires-python = ">=3.11"
 classifiers = [
@@ -52,9 +52,6 @@ include-package-data = false
     "**/*.so",
     "**/*.dylib",
     "**/*.lib",
-    "**/*.json",
-    "**/*.mcmeta",
-    "**/*.png",
 ]
 
 [tool.setuptools.dynamic]

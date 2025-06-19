@@ -13,7 +13,7 @@ name = "amulet-level"
 authors = [
     {name = "James Clare"},
 ]
-description = "A Python and C++ library for interacting with Minecraft worlds and structures."
+description = ""
 dynamic = ["version", "readme", "dependencies"]
 requires-python = ">=3.11"
 classifiers = [

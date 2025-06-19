@@ -12,7 +12,7 @@ name = "amulet-leveldb"
 authors = [
     {name = "James Clare"},
 ]
-description = "A pybind11 wrapper for Mojang's custom LevelDB."
+description = ""
 dynamic = ["version", "readme", "dependencies"]
 requires-python = ">=3.11"
 classifiers = [
@@ -21,11 +21,6 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
-docs = [
-    "Sphinx>=1.7.4",
-    "sphinx-autodoc-typehints>=1.3.0",
-    "sphinx_rtd_theme>=0.3.1",
-]
 dev = [
     "setuptools>=42",
     "wheel",
