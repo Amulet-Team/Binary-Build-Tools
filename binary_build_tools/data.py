@@ -84,7 +84,7 @@ AmuletLevelDB = LibraryData(
     "leveldb",
     "amulet",
     "amulet.leveldb",
-    "_amulet_leveldb",
+    "_leveldb",
     LibraryType.Shared,
     [
         PyBind11.pypi_name,
