@@ -21,12 +21,12 @@ if (MSVC)
     add_definitions("/MP")
 endif()
 
-# Add pybind11
+# Find libraries
 find_package(pybind11 CONFIG REQUIRED)
-find_package(amulet_core CONFIG REQUIRED)
-
-# Add Amulet libraries
 find_package(amulet_pybind11_extensions CONFIG REQUIRED)
+find_package(amulet_io CONFIG REQUIRED)
+find_package(amulet_nbt CONFIG REQUIRED)
+find_package(amulet_core CONFIG REQUIRED)
 
 # Find C++ files
 file(REAL_PATH src SOURCE_PATH)
@@ -39,9 +39,11 @@ list(REMOVE_ITEM HEADERS ${EXTENSION_HEADERS})
 
 # Add implementation
 add_library(amulet_game SHARED)
-target_link_libraries( amulet_game PRIVATE pybind11::module )
-target_link_libraries( amulet_game PRIVATE amulet_core )
 target_compile_definitions(amulet_game PRIVATE ExportAmuletGame)
+target_link_libraries(amulet_game PUBLIC pybind11::module)
+target_link_libraries(amulet_game PUBLIC amulet_io)
+target_link_libraries(amulet_game PUBLIC amulet_nbt)
+target_link_libraries(amulet_game PUBLIC amulet_core)
 target_include_directories(amulet_game PUBLIC ${SOURCE_PATH})
 target_sources(amulet_game PRIVATE ${SOURCES} ${HEADERS})
 foreach(FILE ${SOURCES} ${HEADERS})
@@ -53,8 +55,8 @@ endforeach()
 
 # Add python extension
 pybind11_add_module(_amulet_game)
-target_link_libraries( _amulet_game PRIVATE amulet_pybind11_extensions )
-target_link_libraries( _amulet_game PRIVATE amulet_game )
+target_link_libraries(_amulet_game PRIVATE amulet_pybind11_extensions)
+target_link_libraries(_amulet_game PRIVATE amulet_game)
 target_compile_definitions(_amulet_game PRIVATE PYBIND11_DETAILED_ERROR_MESSAGES)
 target_compile_definitions(_amulet_game PRIVATE PYBIND11_VERSION="${pybind11_VERSION}")
 target_compile_definitions(_amulet_game PRIVATE COMPILER_ID="${CMAKE_CXX_COMPILER_ID}")

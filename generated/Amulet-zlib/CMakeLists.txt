@@ -21,40 +21,23 @@ if (MSVC)
     add_definitions("/MP")
 endif()
 
-include(FetchContent)
-
-# Add zlib
-set(ZLIB_BUILD_EXAMPLES OFF)
-FetchContent_Declare(
-  zlib
-  GIT_REPOSITORY https://github.com/madler/zlib.git
-  GIT_TAG        51b7f2abdade71cd9bb0e7a373ef2610ec6f9daf
-)
-FetchContent_MakeAvailable(zlib)
-set(ZLIB_ROOT ${zlib_SOURCE_DIR})
-set(ZLIB_USE_STATIC_LIBS ON)
-set(ZLIB_LIBRARY ${INSTALL_LIB_DIR})
-find_package(ZLIB REQUIRED)
-target_compile_definitions(zlibstatic PUBLIC ZLIB_CONST)
-
-# Add pybind11
+# Find libraries
 find_package(pybind11 CONFIG REQUIRED)
 find_package(amulet_pybind11_extensions CONFIG REQUIRED)
 
 # Find C++ files
 file(REAL_PATH src SOURCE_PATH)
-file(GLOB_RECURSE SOURCES LIST_DIRECTORIES false ${SOURCE_PATH}/amulet/*.cpp)
-file(GLOB_RECURSE HEADERS LIST_DIRECTORIES false ${SOURCE_PATH}/amulet/*.hpp)
 file(GLOB_RECURSE EXTENSION_SOURCES LIST_DIRECTORIES false ${SOURCE_PATH}/amulet/*.py.cpp)
 file(GLOB_RECURSE EXTENSION_HEADERS LIST_DIRECTORIES false ${SOURCE_PATH}/amulet/*.py.hpp)
+file(GLOB_RECURSE SOURCES LIST_DIRECTORIES false ${SOURCE_PATH}/amulet/*.cpp)
+file(GLOB_RECURSE HEADERS LIST_DIRECTORIES false ${SOURCE_PATH}/amulet/*.hpp)
 list(REMOVE_ITEM SOURCES ${EXTENSION_SOURCES})
 list(REMOVE_ITEM HEADERS ${EXTENSION_HEADERS})
 
 # Add implementation
 add_library(amulet_zlib SHARED)
-target_link_libraries( amulet_zlib PRIVATE zlibstatic )
 target_compile_definitions(amulet_zlib PRIVATE ExportAmuletZlib)
-target_include_directories(amulet_zlib PUBLIC "src")
+target_include_directories(amulet_zlib PUBLIC ${SOURCE_PATH})
 target_sources(amulet_zlib PRIVATE ${SOURCES} ${HEADERS})
 foreach(FILE ${SOURCES} ${HEADERS})
     file(RELATIVE_PATH REL_PATH ${SOURCE_PATH} ${FILE})
@@ -65,12 +48,12 @@ endforeach()
 
 # Add python extension
 pybind11_add_module(_amulet_zlib)
+target_link_libraries(_amulet_zlib PRIVATE amulet_pybind11_extensions)
+target_link_libraries(_amulet_zlib PRIVATE amulet_zlib)
 target_compile_definitions(_amulet_zlib PRIVATE PYBIND11_DETAILED_ERROR_MESSAGES)
 target_compile_definitions(_amulet_zlib PRIVATE PYBIND11_VERSION="${pybind11_VERSION}")
 target_compile_definitions(_amulet_zlib PRIVATE COMPILER_ID="${CMAKE_CXX_COMPILER_ID}")
 target_compile_definitions(_amulet_zlib PRIVATE COMPILER_VERSION="${CMAKE_CXX_COMPILER_VERSION}")
-target_link_libraries(_amulet_zlib PRIVATE amulet_pybind11_extensions)
-target_link_libraries(_amulet_zlib PRIVATE amulet_zlib)
 target_sources(_amulet_zlib PRIVATE ${EXTENSION_SOURCES} ${EXTENSION_HEADERS})
 foreach(FILE ${EXTENSION_SOURCES} ${EXTENSION_HEADERS})
     file(RELATIVE_PATH REL_PATH ${SOURCE_PATH} ${FILE})
@@ -87,6 +70,6 @@ endif()
 install(TARGETS amulet_zlib DESTINATION ${amulet_zlib_DIR})
 install(TARGETS _amulet_zlib DESTINATION ${AMULET_ZLIB_EXT_DIR})
 
-if (TEST_AMULET_ZLIB_DIR)
+if (DEFINED BUILD_AMULET_ZLIB_TESTS)
     add_subdirectory(tests)
 endif()

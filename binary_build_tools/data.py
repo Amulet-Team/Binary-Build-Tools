@@ -25,6 +25,7 @@ class LibraryData:
             str | None
         ) = None,  # _amulet_nbt (The name of the python extension module)
         library_type: LibraryType,  # The type of library this library is.
+        export_symbol: str | None = None,
         private_dependencies: tuple[
             str, ...
         ] = (),  # The C++ dependencies that are not exported by the shared library.
@@ -50,6 +51,7 @@ class LibraryData:
         self.cmake_package = cmake_package or self.cmake_lib_name
         self.ext_name = ext_name
         self.library_type = library_type
+        self.export_symbol = export_symbol
         self.private_dependencies = private_dependencies
         self.public_dependencies = public_dependencies
         self.ext_dependencies = ext_dependencies
@@ -139,6 +141,7 @@ AmuletUtils = LibraryData(
         PyBind11Extensions.pypi_name,
         AmuletTestUtils.pypi_name,
     ),
+    export_symbol="ExportAmuletUtils",
 )
 AmuletZlib = LibraryData(
     pypi_name="amulet-zlib",
@@ -159,6 +162,7 @@ AmuletZlib = LibraryData(
         PyBind11Extensions.pypi_name,
         AmuletTestUtils.pypi_name,
     ),
+    export_symbol="ExportAmuletZlib"
 )
 AmuletNBT = LibraryData(
     pypi_name="amulet-nbt",
@@ -168,17 +172,19 @@ AmuletNBT = LibraryData(
     lib_name="amulet_nbt",
     ext_name="_amulet_nbt",
     library_type=LibraryType.Shared,
-    private_dependencies=(AmuletZlib.pypi_name,),
+    private_dependencies=(),
     public_dependencies=(AmuletIO.pypi_name,),
     runtime_dependencies=(),
     ext_dependencies=(
         PyBind11.pypi_name,
         PyBind11Extensions.pypi_name,
+        AmuletZlib.pypi_name,
     ),
     test_dependencies=(
         PyBind11.pypi_name,
         PyBind11Extensions.pypi_name,
     ),
+    export_symbol="ExportAmuletNBT"
 )
 AmuletCore = LibraryData(
     pypi_name="amulet-core",
@@ -203,6 +209,7 @@ AmuletCore = LibraryData(
         PyBind11Extensions.pypi_name,
         AmuletTestUtils.pypi_name,
     ),
+    export_symbol="ExportAmuletCore"
 )
 AmuletGame = LibraryData(
     pypi_name="amulet-game",
@@ -229,6 +236,7 @@ AmuletGame = LibraryData(
         PyBind11Extensions.pypi_name,
         AmuletTestUtils.pypi_name,
     ),
+    export_symbol="ExportAmuletGame"
 )
 AmuletAnvil = LibraryData(
     pypi_name="amulet-anvil",
@@ -255,6 +263,7 @@ AmuletAnvil = LibraryData(
         PyBind11Extensions.pypi_name,
         AmuletTestUtils.pypi_name,
     ),
+    export_symbol="ExportAmuletAnvil"
 )
 AmuletLevel = LibraryData(
     pypi_name="amulet-level",
@@ -284,6 +293,7 @@ AmuletLevel = LibraryData(
         PyBind11Extensions.pypi_name,
         AmuletTestUtils.pypi_name,
     ),
+    export_symbol="ExportAmuletLevel"
 )
 AmuletResourcePack = LibraryData(
     pypi_name="amulet-resource-pack",
@@ -305,6 +315,7 @@ AmuletResourcePack = LibraryData(
         PyBind11Extensions.pypi_name,
         AmuletTestUtils.pypi_name,
     ),
+    export_symbol="ExportAmuletResourcePack"
 )
 
 
