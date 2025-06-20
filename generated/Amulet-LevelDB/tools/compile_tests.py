@@ -3,10 +3,8 @@ import sys
 import shutil
 import os
 
-import pybind11
-import amulet.pybind11_extensions
-import amulet.io
-import amulet.nbt
+
+import amulet.leveldb
 
 
 def fix_path(path: str) -> str:
@@ -37,25 +35,20 @@ def main() -> None:
             "cmake",
             *platform_args,
             f"-DPYTHON_EXECUTABLE={sys.executable}",
-            f"-Dpybind11_DIR={fix_path(pybind11.get_cmake_dir())}",
-            f"-Damulet_pybind11_extensions_DIR={fix_path(amulet.pybind11_extensions.__path__[0])}",
-            f"-Damulet_io_DIR={fix_path(amulet.io.__path__[0])}",
-            f"-Damulet_nbt_DIR={fix_path(amulet.nbt.__path__[0])}",
-            f"-DCMAKE_INSTALL_PREFIX=install",
-            f"-DTEST_AMULET_NBT_DIR={fix_path(os.path.join(TestsDir, 'test_amulet_nbt'))}",
+            f"-Dleveldb_mcpe_DIR={fix_path(amulet.leveldb.__path__[0])}",
             "-B",
             "build",
         ]
     ).returncode:
-        raise RuntimeError("Error configuring test-amulet-nbt")
+        raise RuntimeError("Error configuring test-amulet-leveldb")
     if subprocess.run(
         ["cmake", "--build", "build", "--config", "RelWithDebInfo"]
     ).returncode:
-        raise RuntimeError("Error installing test-amulet-nbt")
+        raise RuntimeError("Error installing test-amulet-leveldb")
     if subprocess.run(
         ["cmake", "--install", "build", "--config", "RelWithDebInfo"]
     ).returncode:
-        raise RuntimeError("Error installing test-amulet-nbt")
+        raise RuntimeError("Error installing test-amulet-leveldb")
 
 
 if __name__ == "__main__":

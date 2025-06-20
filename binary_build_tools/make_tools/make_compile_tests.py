@@ -8,33 +8,33 @@ def write(tools_path: str, library_data: LibraryData) -> None:
         libraries[pypi_name]
         for pypi_name in sorted(
             set(
-                library_data.private_dependencies
-                + library_data.public_dependencies
-                + library_data.ext_dependencies
+                library_data.public_dependencies
                 + library_data.test_dependencies
             ),
             key=library_order.__getitem__,
         )
     ]
 
-    with open(os.path.join(tools_path, "cmake_generate.py"), "w", encoding="utf-8") as f:
+    with open(os.path.join(tools_path, "compile_tests.py"), "w", encoding="utf-8") as f:
         f.write(
-            f"""import sys
-import subprocess
-import os
+            f"""import subprocess
+import sys
 import shutil
+import os
 
 {"\n".join(f"import {lib.import_name}" for lib in dependencies)}
+import {library_data.import_name}
 
 
 def fix_path(path: str) -> str:
     return os.path.realpath(path).replace(os.sep, "/")
 
 
-RootDir = fix_path(os.path.dirname(os.path.dirname(__file__)))
+RootDir = os.path.dirname(os.path.dirname(__file__))
+TestsDir = os.path.join(RootDir, "tests")
 
 
-def main():
+def main() -> None:
     platform_args = []
     if sys.platform == "win32":
         platform_args.extend(["-G", "Visual Studio 17 2022"])
@@ -44,8 +44,8 @@ def main():
             platform_args.extend(["-A", "Win32"])
         platform_args.extend(["-T", "v143"])
 
-    os.chdir(RootDir)
-    shutil.rmtree(os.path.join(RootDir, "build", "CMakeFiles"), ignore_errors=True)
+    os.chdir(TestsDir)
+    shutil.rmtree(os.path.join(TestsDir, "build", "CMakeFiles"), ignore_errors=True)
 
     if subprocess.run(["cmake", "--version"]).returncode:
         raise RuntimeError("Could not find cmake")
@@ -59,14 +59,20 @@ def main():
                     if lib.pypi_name == "pybind11" else
                     f'\n                f"-D{lib.cmake_package}_DIR={{fix_path({lib.import_name}.__path__[0])}}",' for lib in dependencies
                 )}
-            f"-D{library_data.cmake_package}_DIR={{fix_path(os.path.join(RootDir, 'src', {", ".join(f"'{name}'" for name in library_data.import_name.split("."))}))}}",
-            f"-DCMAKE_INSTALL_PREFIX=install",
-            f"-DBUILD_{library_data.var_name.upper()}_TESTS=",
+            f"-D{library_data.cmake_package}_DIR={{fix_path({library_data.import_name}.__path__[0])}}",
             "-B",
             "build",
         ]
     ).returncode:
-        raise RuntimeError("Error configuring {library_data.pypi_name}")
+        raise RuntimeError("Error configuring test-{library_data.pypi_name}")
+    if subprocess.run(
+        ["cmake", "--build", "build", "--config", "RelWithDebInfo"]
+    ).returncode:
+        raise RuntimeError("Error installing test-{library_data.pypi_name}")
+    if subprocess.run(
+        ["cmake", "--install", "build", "--config", "RelWithDebInfo"]
+    ).returncode:
+        raise RuntimeError("Error installing test-{library_data.pypi_name}")
 
 
 if __name__ == "__main__":

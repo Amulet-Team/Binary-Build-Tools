@@ -4,10 +4,9 @@ import shutil
 import os
 
 import pybind11
-
 import amulet.pybind11_extensions
-import amulet.zlib
 import amulet.test_utils
+import amulet.zlib
 
 
 def fix_path(path: str) -> str:
@@ -18,7 +17,7 @@ RootDir = os.path.dirname(os.path.dirname(__file__))
 TestsDir = os.path.join(RootDir, "tests")
 
 
-def main():
+def main() -> None:
     platform_args = []
     if sys.platform == "win32":
         platform_args.extend(["-G", "Visual Studio 17 2022"])
@@ -31,15 +30,17 @@ def main():
     os.chdir(TestsDir)
     shutil.rmtree(os.path.join(TestsDir, "build", "CMakeFiles"), ignore_errors=True)
 
+    if subprocess.run(["cmake", "--version"]).returncode:
+        raise RuntimeError("Could not find cmake")
     if subprocess.run(
         [
             "cmake",
             *platform_args,
             f"-DPYTHON_EXECUTABLE={sys.executable}",
             f"-Dpybind11_DIR={fix_path(pybind11.get_cmake_dir())}",
-            f"-Damulet_pybind11_extensions_DIR={(amulet.pybind11_extensions.__path__[0])}",
-            f"-Damulet_zlib_DIR={fix_path(amulet.zlib.__path__[0])}",
+            f"-Damulet_pybind11_extensions_DIR={fix_path(amulet.pybind11_extensions.__path__[0])}",
             f"-Damulet_test_utils_DIR={fix_path(amulet.test_utils.__path__[0])}",
+            f"-Damulet_zlib_DIR={fix_path(amulet.zlib.__path__[0])}",
             f"-DCMAKE_INSTALL_PREFIX=install",
             f"-DTEST_AMULET_ZLIB_DIR={fix_path(os.path.join(TestsDir, 'test_amulet_zlib'))}",
             "-B",
