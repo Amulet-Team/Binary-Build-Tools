@@ -133,6 +133,9 @@ AmuletUtils = LibraryData(
         PyBind11.pypi_name,
         PyBind11Extensions.pypi_name,
     ),
+    test_dependencies=(
+        AmuletTestUtils.pypi_name,
+    ),
 )
 AmuletZlib = LibraryData(
     pypi_name="amulet-zlib",
@@ -183,6 +186,9 @@ AmuletCore = LibraryData(
         PyBind11.pypi_name,
         PyBind11Extensions.pypi_name,
     ),
+    test_dependencies=(
+        AmuletTestUtils.pypi_name,
+    ),
 )
 AmuletGame = LibraryData(
     pypi_name="amulet-game",
@@ -204,6 +210,9 @@ AmuletGame = LibraryData(
         PyBind11.pypi_name,
         PyBind11Extensions.pypi_name,
     ),
+    test_dependencies=(
+        AmuletTestUtils.pypi_name,
+    ),
 )
 AmuletAnvil = LibraryData(
     pypi_name="amulet-anvil",
@@ -224,6 +233,9 @@ AmuletAnvil = LibraryData(
     ext_dependencies=(
         PyBind11.pypi_name,
         PyBind11Extensions.pypi_name,
+    ),
+    test_dependencies=(
+        AmuletTestUtils.pypi_name,
     ),
 )
 AmuletLevel = LibraryData(
@@ -249,6 +261,9 @@ AmuletLevel = LibraryData(
         PyBind11.pypi_name,
         PyBind11Extensions.pypi_name,
     ),
+    test_dependencies=(
+        AmuletTestUtils.pypi_name,
+    ),
 )
 AmuletResourcePack = LibraryData(
     pypi_name="amulet-resource-pack",
@@ -264,6 +279,9 @@ AmuletResourcePack = LibraryData(
     ext_dependencies=(
         PyBind11.pypi_name,
         PyBind11Extensions.pypi_name,
+    ),
+    test_dependencies=(
+        AmuletTestUtils.pypi_name,
     ),
 )
 

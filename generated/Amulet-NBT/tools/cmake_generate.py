@@ -6,8 +6,7 @@ import shutil
 import pybind11
 import amulet.pybind11_extensions
 import amulet.io
-import amulet.test_utils
-import amulet.nbt
+import amulet.zlib
 
 
 def fix_path(path: str) -> str:
@@ -40,16 +39,15 @@ def main():
             f"-Dpybind11_DIR={fix_path(pybind11.get_cmake_dir())}",
             f"-Damulet_pybind11_extensions_DIR={fix_path(amulet.pybind11_extensions.__path__[0])}",
             f"-Damulet_io_DIR={fix_path(amulet.io.__path__[0])}",
-            f"-Damulet_test_utils_DIR={fix_path(amulet.test_utils.__path__[0])}",
-            f"-Damulet_nbt_DIR={fix_path(amulet.nbt.__path__[0])}",
-            f"-Damulet_core_DIR={fix_path(os.path.join(RootDir, 'src', 'amulet', 'core'))}",
+            f"-Damulet_zlib_DIR={fix_path(amulet.zlib.__path__[0])}",
+            f"-Damulet_nbt_DIR={fix_path(os.path.join(RootDir, 'src', 'amulet', 'nbt'))}",
             f"-DCMAKE_INSTALL_PREFIX=install",
-            f"-DBUILD_AMULET_CORE_TESTS=",
+            f"-DBUILD_AMULET_NBT_TESTS=",
             "-B",
             "build",
         ]
     ).returncode:
-        raise RuntimeError("Error configuring amulet-core")
+        raise RuntimeError("Error configuring amulet-nbt")
 
 
 if __name__ == "__main__":
