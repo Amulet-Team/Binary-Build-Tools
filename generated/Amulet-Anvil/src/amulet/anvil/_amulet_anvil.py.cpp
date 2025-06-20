@@ -8,10 +8,10 @@ namespace pyext = Amulet::pybind11_extensions;
 void init_module(py::module m)
 {
     pyext::init_compiler_config(m);
+    pyext::check_compatibility(py::module::import("amulet.utils"), m);
     pyext::check_compatibility(py::module::import("amulet.zlib"), m);
     pyext::check_compatibility(py::module::import("amulet.nbt"), m);
     pyext::check_compatibility(py::module::import("amulet.core"), m);
-    pyext::check_compatibility(py::module::import("amulet.utils"), m);
 }
 
 PYBIND11_MODULE(_amulet_anvil, m)

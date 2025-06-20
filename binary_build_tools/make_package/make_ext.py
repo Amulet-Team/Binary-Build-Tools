@@ -1,9 +1,22 @@
 import os
 
-from binary_build_tools.data import LibraryData
+from binary_build_tools.data import LibraryData, libraries, library_order, LibraryType
 
 
 def write(package_path: str, library_data: LibraryData) -> None:
+    dependencies: list[LibraryData] = [
+        libraries[pypi_name]
+        for pypi_name in sorted(
+            set(
+                library_data.private_dependencies
+                + library_data.public_dependencies
+                + library_data.ext_dependencies
+            ),
+            key=library_order.__getitem__,
+        )
+        if libraries[pypi_name].library_type == LibraryType.Shared
+    ]
+
     with open(
         os.path.join(package_path, f"{library_data.ext_name}.py.cpp"),
         "w",
@@ -19,7 +32,8 @@ namespace pyext = Amulet::pybind11_extensions;
 
 void init_module(py::module m)
 {{
-    pyext::init_compiler_config(m);
+    pyext::init_compiler_config(m);{
+    "".join(f'\n    pyext::check_compatibility(py::module::import("{lib.import_name}"), m);' for lib in dependencies) if dependencies else ""}
 }}
 
 PYBIND11_MODULE({library_data.ext_name}, m)
