@@ -162,7 +162,7 @@ AmuletZlib = LibraryData(
         PyBind11Extensions.pypi_name,
         AmuletTestUtils.pypi_name,
     ),
-    export_symbol="ExportAmuletZlib"
+    export_symbol="ExportAmuletZlib",
 )
 AmuletNBT = LibraryData(
     pypi_name="amulet-nbt",
@@ -184,7 +184,7 @@ AmuletNBT = LibraryData(
         PyBind11.pypi_name,
         PyBind11Extensions.pypi_name,
     ),
-    export_symbol="ExportAmuletNBT"
+    export_symbol="ExportAmuletNBT",
 )
 AmuletCore = LibraryData(
     pypi_name="amulet-core",
@@ -209,7 +209,7 @@ AmuletCore = LibraryData(
         PyBind11Extensions.pypi_name,
         AmuletTestUtils.pypi_name,
     ),
-    export_symbol="ExportAmuletCore"
+    export_symbol="ExportAmuletCore",
 )
 AmuletGame = LibraryData(
     pypi_name="amulet-game",
@@ -236,7 +236,7 @@ AmuletGame = LibraryData(
         PyBind11Extensions.pypi_name,
         AmuletTestUtils.pypi_name,
     ),
-    export_symbol="ExportAmuletGame"
+    export_symbol="ExportAmuletGame",
 )
 AmuletAnvil = LibraryData(
     pypi_name="amulet-anvil",
@@ -263,7 +263,7 @@ AmuletAnvil = LibraryData(
         PyBind11Extensions.pypi_name,
         AmuletTestUtils.pypi_name,
     ),
-    export_symbol="ExportAmuletAnvil"
+    export_symbol="ExportAmuletAnvil",
 )
 AmuletLevel = LibraryData(
     pypi_name="amulet-level",
@@ -293,7 +293,7 @@ AmuletLevel = LibraryData(
         PyBind11Extensions.pypi_name,
         AmuletTestUtils.pypi_name,
     ),
-    export_symbol="ExportAmuletLevel"
+    export_symbol="ExportAmuletLevel",
 )
 AmuletResourcePack = LibraryData(
     pypi_name="amulet-resource-pack",
@@ -315,7 +315,7 @@ AmuletResourcePack = LibraryData(
         PyBind11Extensions.pypi_name,
         AmuletTestUtils.pypi_name,
     ),
-    export_symbol="ExportAmuletResourcePack"
+    export_symbol="ExportAmuletResourcePack",
 )
 
 

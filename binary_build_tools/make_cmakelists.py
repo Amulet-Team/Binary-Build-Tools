@@ -14,7 +14,9 @@ def write(project_path: str, library_data: LibraryData) -> None:
         if pypi_name in found_dependencies:
             continue
         lib_dependencies.append((libraries[pypi_name], False))
-    lib_dependencies = sorted(lib_dependencies, key=lambda l: library_order[l[0].pypi_name])
+    lib_dependencies = sorted(
+        lib_dependencies, key=lambda l: library_order[l[0].pypi_name]
+    )
 
     all_dependencies: list[LibraryData] = [
         libraries[pypi_name]
