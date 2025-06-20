@@ -42,7 +42,7 @@ class CMakeBuild(cmdclass.get("build_ext", build_ext)):
         
     
         ext_dir = (Path.cwd() / self.get_ext_fullpath("")).parent.resolve() / {" / ".join(f"\"{name}\"" for name in library_data.import_name.split("."))}
-        {library_data.short_name_lower}_src_dir = Path.cwd() / "src" / {" / ".join(f"\"{name}\"" for name in library_data.import_name.split("."))} if self.editable_mode else ext_dir
+        {library_data.short_lower_name}_src_dir = Path.cwd() / "src" / {" / ".join(f"\"{name}\"" for name in library_data.import_name.split("."))} if self.editable_mode else ext_dir
 
         platform_args = []
         if sys.platform == "win32":
