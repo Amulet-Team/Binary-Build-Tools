@@ -158,7 +158,7 @@ AmuletZlib = LibraryData(
         PyBind11.pypi_name,
         PyBind11Extensions.pypi_name,
         AmuletTestUtils.pypi_name,
-    )
+    ),
 )
 AmuletNBT = LibraryData(
     pypi_name="amulet-nbt",
@@ -254,7 +254,7 @@ AmuletAnvil = LibraryData(
         PyBind11.pypi_name,
         PyBind11Extensions.pypi_name,
         AmuletTestUtils.pypi_name,
-    )
+    ),
 )
 AmuletLevel = LibraryData(
     pypi_name="amulet-level",
@@ -283,7 +283,7 @@ AmuletLevel = LibraryData(
         PyBind11.pypi_name,
         PyBind11Extensions.pypi_name,
         AmuletTestUtils.pypi_name,
-    )
+    ),
 )
 AmuletResourcePack = LibraryData(
     pypi_name="amulet-resource-pack",
@@ -304,7 +304,7 @@ AmuletResourcePack = LibraryData(
         PyBind11.pypi_name,
         PyBind11Extensions.pypi_name,
         AmuletTestUtils.pypi_name,
-    )
+    ),
 )
 
 

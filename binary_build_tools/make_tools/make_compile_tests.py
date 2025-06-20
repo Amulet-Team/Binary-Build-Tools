@@ -7,10 +7,7 @@ def write(tools_path: str, library_data: LibraryData) -> None:
     dependencies: list[LibraryData] = [
         libraries[pypi_name]
         for pypi_name in sorted(
-            set(
-                library_data.public_dependencies
-                + library_data.test_dependencies
-            ),
+            set(library_data.public_dependencies + library_data.test_dependencies),
             key=library_order.__getitem__,
         )
     ]
