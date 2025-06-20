@@ -166,17 +166,17 @@ def patch_stubgen():
 def main() -> None:
     root_path = os.path.dirname(os.path.dirname(__file__))
     src_path = os.path.join(root_path, "src")
-    amulet_leveldb_path = get_package_dir("amulet.leveldb")
+    amulet_nbt_path = get_package_dir("amulet.nbt")
     tests_path = os.path.join(root_path, "tests")
-    test_amulet_leveldb_path = os.path.join(tests_path, "test_amulet_leveldb")
+    test_amulet_nbt_path = os.path.join(tests_path, "test_amulet_nbt")
 
     # make tests importable
     sys.path.append(tests_path)
 
     # out_dir, module_dir, module_name
     modules: list[tuple[str, str, str]] = [
-        (src_path, amulet_leveldb_path, "amulet.leveldb"),
-        (tests_path, test_amulet_leveldb_path, "test_amulet_leveldb"),
+        (src_path, amulet_nbt_path, "amulet.nbt"),
+        (tests_path, test_amulet_nbt_path, "test_amulet_nbt"),
     ]
 
     # Remove all existing stub files

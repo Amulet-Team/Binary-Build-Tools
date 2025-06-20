@@ -15,6 +15,7 @@ from . import (
     make_pyproject,
     make_package,
     make_tests,
+    make_tools,
 )
 
 
@@ -35,6 +36,10 @@ def write(project_path: str, library_data: LibraryData) -> None:
     tests_path = os.path.join(project_path, "tests")
     os.makedirs(tests_path, exist_ok=True)
     make_tests.write(tests_path, library_data)
+
+    tools_path = os.path.join(project_path, "tools")
+    os.makedirs(tools_path, exist_ok=True)
+    make_tools.write(tools_path, library_data)
 
 
 def main(out_path: str) -> None:
