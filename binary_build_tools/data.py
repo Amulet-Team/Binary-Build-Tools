@@ -25,15 +25,18 @@ class LibraryData:
             str | None
         ) = None,  # _amulet_nbt (The name of the python extension module)
         library_type: LibraryType,  # The type of library this library is.
-        private_dependencies: list[
-            str
-        ],  # The dependencies that are not exported by the shared library.
-        public_dependencies: list[
-            str
-        ],  # The dependencies that are exported by the shared library.
-        runtime_dependencies: list[
-            str
-        ],  # The dependencies that are only needed at runtime.
+        private_dependencies: tuple[
+            str, ...
+        ] = (),  # The C++ dependencies that are not exported by the shared library.
+        public_dependencies: tuple[
+            str, ...
+        ] = (),  # The C++ dependencies that are exported by the shared library.
+        ext_dependencies: tuple[
+            str, ...
+        ] = (),  # The C++ dependencies needed by the Python extension.
+        runtime_dependencies: tuple[
+            str, ...
+        ] = (),  # The dependencies that are only needed at runtime.
     ):
         self.pypi_name = pypi_name.replace("_", "-")
         self.repo_name = repo_name
@@ -47,6 +50,7 @@ class LibraryData:
         self.library_type = library_type
         self.private_dependencies = private_dependencies
         self.public_dependencies = public_dependencies
+        self.ext_dependencies = ext_dependencies
         self.runtime_dependencies = runtime_dependencies
 
 
@@ -58,9 +62,6 @@ PyBind11 = LibraryData(
     cmake_lib_name="pybind11::module",
     cmake_package="pybind11",
     library_type=LibraryType.Interface,
-    private_dependencies=[],
-    public_dependencies=[],
-    runtime_dependencies=[],
 )
 PyBind11Extensions = LibraryData(
     pypi_name="amulet-pybind11-extensions",
@@ -69,9 +70,6 @@ PyBind11Extensions = LibraryData(
     import_name="amulet.pybind11_extensions",
     cmake_lib_name="amulet_pybind11_extensions",
     library_type=LibraryType.Interface,
-    private_dependencies=[],
-    public_dependencies=[],
-    runtime_dependencies=[],
 )
 AmuletCompilerVersion = LibraryData(
     pypi_name="amulet-compiler-version",
@@ -80,9 +78,6 @@ AmuletCompilerVersion = LibraryData(
     import_name="amulet_compiler_version",
     cmake_lib_name="amulet_compiler_version",
     library_type=LibraryType.Interface,
-    private_dependencies=[],
-    public_dependencies=[],
-    runtime_dependencies=[],
 )
 AmuletIO = LibraryData(
     pypi_name="amulet-io",
@@ -91,11 +86,10 @@ AmuletIO = LibraryData(
     import_name="amulet.io",
     cmake_lib_name="amulet_io",
     library_type=LibraryType.Interface,
-    private_dependencies=[
-        PyBind11.pypi_name,
-    ],
-    public_dependencies=[],
-    runtime_dependencies=[],
+    private_dependencies=(),
+    public_dependencies=(),
+    ext_dependencies=(PyBind11.pypi_name,),
+    runtime_dependencies=(),
 )
 AmuletLevelDB = LibraryData(
     pypi_name="amulet-leveldb",
@@ -105,11 +99,12 @@ AmuletLevelDB = LibraryData(
     lib_name="leveldb_mcpe",
     ext_name="_leveldb",
     library_type=LibraryType.Shared,
-    private_dependencies=[
+    private_dependencies=(),
+    public_dependencies=(),
+    ext_dependencies=(
         PyBind11.pypi_name,
-    ],
-    public_dependencies=[],
-    runtime_dependencies=[],
+        PyBind11Extensions.pypi_name,
+    ),
 )
 AmuletUtils = LibraryData(
     pypi_name="amulet-utils",
@@ -119,13 +114,12 @@ AmuletUtils = LibraryData(
     lib_name="amulet_utils",
     ext_name="_amulet_utils",
     library_type=LibraryType.Shared,
-    private_dependencies=[
+    private_dependencies=(),
+    public_dependencies=(),
+    ext_dependencies=(
         PyBind11.pypi_name,
-    ],
-    public_dependencies=[
-        PyBind11.pypi_name,
-    ],
-    runtime_dependencies=[],
+        PyBind11Extensions.pypi_name,
+    ),
 )
 AmuletZlib = LibraryData(
     pypi_name="amulet-zlib",
@@ -135,11 +129,12 @@ AmuletZlib = LibraryData(
     lib_name="amulet_zlib",
     ext_name="_amulet_zlib",
     library_type=LibraryType.Shared,
-    private_dependencies=[
+    private_dependencies=(),
+    public_dependencies=(),
+    ext_dependencies=(
         PyBind11.pypi_name,
-    ],
-    public_dependencies=[],
-    runtime_dependencies=[],
+        PyBind11Extensions.pypi_name,
+    ),
 )
 AmuletNBT = LibraryData(
     pypi_name="amulet-nbt",
@@ -149,13 +144,13 @@ AmuletNBT = LibraryData(
     lib_name="amulet_nbt",
     ext_name="_amulet_nbt",
     library_type=LibraryType.Shared,
-    private_dependencies=[
+    private_dependencies=(AmuletZlib.pypi_name,),
+    public_dependencies=(AmuletIO.pypi_name,),
+    runtime_dependencies=(),
+    ext_dependencies=(
         PyBind11.pypi_name,
-    ],
-    public_dependencies=[
-        AmuletIO.pypi_name,
-    ],
-    runtime_dependencies=[],
+        PyBind11Extensions.pypi_name,
+    ),
 )
 AmuletCore = LibraryData(
     pypi_name="amulet-core",
@@ -165,14 +160,16 @@ AmuletCore = LibraryData(
     lib_name="amulet_core",
     ext_name="_amulet_core",
     library_type=LibraryType.Shared,
-    private_dependencies=[
-        PyBind11.pypi_name,
-    ],
-    public_dependencies=[
+    private_dependencies=(),
+    public_dependencies=(
         AmuletIO.pypi_name,
         AmuletNBT.pypi_name,
-    ],
-    runtime_dependencies=[],
+    ),
+    runtime_dependencies=(),
+    ext_dependencies=(
+        PyBind11.pypi_name,
+        PyBind11Extensions.pypi_name,
+    ),
 )
 AmuletGame = LibraryData(
     pypi_name="amulet-game",
@@ -182,14 +179,17 @@ AmuletGame = LibraryData(
     lib_name="amulet_game",
     ext_name="_amulet_game",
     library_type=LibraryType.Shared,
-    private_dependencies=[
-        PyBind11.pypi_name,
-    ],
-    public_dependencies=[
-        PyBind11.pypi_name,
+    private_dependencies=(),
+    public_dependencies=(
+        AmuletIO.pypi_name,
+        AmuletNBT.pypi_name,
         AmuletCore.pypi_name,
-    ],
-    runtime_dependencies=[],
+    ),
+    runtime_dependencies=(),
+    ext_dependencies=(
+        PyBind11.pypi_name,
+        PyBind11Extensions.pypi_name,
+    ),
 )
 AmuletAnvil = LibraryData(
     pypi_name="amulet-anvil",
@@ -199,15 +199,18 @@ AmuletAnvil = LibraryData(
     lib_name="amulet_anvil",
     ext_name="_amulet_anvil",
     library_type=LibraryType.Shared,
-    private_dependencies=[
-        PyBind11.pypi_name,
-    ],
-    public_dependencies=[
+    private_dependencies=(AmuletZlib.pypi_name,),
+    public_dependencies=(
+        AmuletIO.pypi_name,
         AmuletNBT.pypi_name,
         AmuletCore.pypi_name,
         AmuletUtils.pypi_name,
-    ],
-    runtime_dependencies=[],
+    ),
+    runtime_dependencies=(),
+    ext_dependencies=(
+        PyBind11.pypi_name,
+        PyBind11Extensions.pypi_name,
+    ),
 )
 AmuletLevel = LibraryData(
     pypi_name="amulet-level",
@@ -217,18 +220,21 @@ AmuletLevel = LibraryData(
     lib_name="amulet_level",
     ext_name="_amulet_level",
     library_type=LibraryType.Shared,
-    private_dependencies=[
-        PyBind11.pypi_name,
-    ],
-    public_dependencies=[
+    private_dependencies=(AmuletZlib.pypi_name,),
+    public_dependencies=(
+        AmuletIO.pypi_name,
         AmuletLevelDB.pypi_name,
         AmuletUtils.pypi_name,
         AmuletNBT.pypi_name,
         AmuletCore.pypi_name,
         AmuletGame.pypi_name,
         AmuletAnvil.pypi_name,
-    ],
-    runtime_dependencies=[],
+    ),
+    runtime_dependencies=(),
+    ext_dependencies=(
+        PyBind11.pypi_name,
+        PyBind11Extensions.pypi_name,
+    ),
 )
 AmuletResourcePack = LibraryData(
     pypi_name="amulet-resource-pack",
@@ -238,13 +244,13 @@ AmuletResourcePack = LibraryData(
     lib_name="amulet_resource_pack",
     ext_name="_amulet_resource_pack",
     library_type=LibraryType.Shared,
-    private_dependencies=[
+    private_dependencies=(),
+    public_dependencies=(AmuletUtils.pypi_name,),
+    runtime_dependencies=(),
+    ext_dependencies=(
         PyBind11.pypi_name,
-    ],
-    public_dependencies=[
-        AmuletUtils.pypi_name,
-    ],
-    runtime_dependencies=[],
+        PyBind11Extensions.pypi_name,
+    ),
 )
 
 
@@ -269,4 +275,8 @@ shared_libraries: list[LibraryData] = [
 
 libraries: dict[str, LibraryData] = {
     lib.pypi_name: lib for lib in interface_libraries + shared_libraries
+}
+
+library_order: dict[str, int] = {
+    lib.pypi_name: i for i, lib in enumerate(libraries.values())
 }

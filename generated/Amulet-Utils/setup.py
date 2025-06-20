@@ -55,6 +55,8 @@ class CMakeBuild(cmdclass.get("build_ext", build_ext)):
             if platform.machine() == "arm64":
                 platform_args.append("-DCMAKE_OSX_ARCHITECTURES=x86_64;arm64")
 
+        if subprocess.run(["cmake", "--version"]).returncode:
+            raise RuntimeError("Could not find cmake")
         if subprocess.run(
             [
                 "cmake",

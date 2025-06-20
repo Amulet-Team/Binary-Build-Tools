@@ -34,13 +34,13 @@ class CMakeBuild(cmdclass.get("build_ext", build_ext)):
         import pybind11
         import amulet.pybind11_extensions
         import amulet.io
+        import amulet.leveldb
+        import amulet.utils
+        import amulet.zlib
         import amulet.nbt
         import amulet.core
         import amulet.game
-        import amulet.utils
         import amulet.anvil
-        import amulet.zlib
-        import amulet.leveldb
 
         ext_dir = (
             (Path.cwd() / self.get_ext_fullpath("")).parent.resolve()
@@ -63,11 +63,14 @@ class CMakeBuild(cmdclass.get("build_ext", build_ext)):
             if platform.machine() == "arm64":
                 platform_args.append("-DCMAKE_OSX_ARCHITECTURES=x86_64;arm64")
 
+        if subprocess.run(["cmake", "--version"]).returncode:
+            raise RuntimeError("Could not find cmake")
         if subprocess.run(
             [
                 "cmake",
                 *platform_args,
                 f"-DPYTHON_EXECUTABLE={sys.executable}",
+                f"-Dpybind11_DIR={fix_path(pybind11.get_cmake_dir())}",
                 f"-Damulet_pybind11_extensions_DIR={fix_path(amulet.pybind11_extensions.__path__[0])}",
                 f"-Damulet_io_DIR={fix_path(amulet.io.__path__[0])}",
                 f"-Dleveldb_mcpe_DIR={fix_path(amulet.leveldb.__path__[0])}",
@@ -78,7 +81,6 @@ class CMakeBuild(cmdclass.get("build_ext", build_ext)):
                 f"-Damulet_game_DIR={fix_path(amulet.game.__path__[0])}",
                 f"-Damulet_anvil_DIR={fix_path(amulet.anvil.__path__[0])}",
                 f"-Damulet_level_DIR={fix_path(level_src_dir)}",
-                f"-Dpybind11_DIR={fix_path(pybind11.get_cmake_dir())}",
                 f"-DAMULET_LEVEL_EXT_DIR={fix_path(ext_dir)}",
                 f"-DCMAKE_INSTALL_PREFIX=install",
                 "-B",

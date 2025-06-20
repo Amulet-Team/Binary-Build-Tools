@@ -9,10 +9,10 @@ from setuptools import setup, Extension, Command
 from setuptools.command.build_ext import build_ext
 
 from packaging.version import Version
+
 import versioneer
 
 import requirements
-
 
 if (
     os.environ.get("AMULET_FREEZE_COMPILER", None)
@@ -55,13 +55,15 @@ class CMakeBuild(cmdclass.get("build_ext", build_ext)):
             if platform.machine() == "arm64":
                 platform_args.append("-DCMAKE_OSX_ARCHITECTURES=x86_64;arm64")
 
+        if subprocess.run(["cmake", "--version"]).returncode:
+            raise RuntimeError("Could not find cmake")
         if subprocess.run(
             [
                 "cmake",
                 *platform_args,
                 f"-DPYTHON_EXECUTABLE={sys.executable}",
                 f"-Dpybind11_DIR={fix_path(pybind11.get_cmake_dir())}",
-                f"-Damulet_pybind11_extensions_DIR={(amulet.pybind11_extensions.__path__[0])}",
+                f"-Damulet_pybind11_extensions_DIR={fix_path(amulet.pybind11_extensions.__path__[0])}",
                 f"-Damulet_zlib_DIR={fix_path(zlib_src_dir)}",
                 f"-DAMULET_ZLIB_EXT_DIR={fix_path(ext_dir)}",
                 f"-DCMAKE_INSTALL_PREFIX=install",

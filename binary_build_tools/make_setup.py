@@ -1,9 +1,21 @@
 import os
 
-from .data import LibraryData
+from .data import LibraryData, libraries, library_order
 
 
 def write(project_path: str, library_data: LibraryData) -> None:
+    dependencies: list[LibraryData] = [
+        libraries[pypi_name]
+        for pypi_name in sorted(
+            set(
+                library_data.private_dependencies
+                + library_data.public_dependencies
+                + library_data.ext_dependencies
+            ),
+            key=library_order.__getitem__,
+        )
+    ]
+
     with open(os.path.join(project_path, "setup.py"), "w", encoding="utf-8") as f:
         f.write(
             f"""import os
@@ -39,7 +51,7 @@ cmdclass: dict[str, type[Command]] = versioneer.get_cmdclass()
 
 class CMakeBuild(cmdclass.get("build_ext", build_ext)):
     def build_extension(self, ext):
-        
+        {"\n        ".join(f"import {lib.import_name}" for lib in dependencies)}
     
         ext_dir = (Path.cwd() / self.get_ext_fullpath("")).parent.resolve() / {" / ".join(f"\"{name}\"" for name in library_data.import_name.split("."))}
         {library_data.short_lower_name}_src_dir = Path.cwd() / "src" / {" / ".join(f"\"{name}\"" for name in library_data.import_name.split("."))} if self.editable_mode else ext_dir
@@ -56,12 +68,19 @@ class CMakeBuild(cmdclass.get("build_ext", build_ext)):
             if platform.machine() == "arm64":
                 platform_args.append("-DCMAKE_OSX_ARCHITECTURES=x86_64;arm64")
 
+        if subprocess.run(["cmake", "--version"]).returncode:
+            raise RuntimeError("Could not find cmake")
         if subprocess.run(
             [
                 "cmake",
                 *platform_args,
                 f"-DPYTHON_EXECUTABLE={{sys.executable}}",
-                f"-Dpybind11_DIR={{fix_path(pybind11.get_cmake_dir())}}",
+                {"\n                ".join(
+                    'f"-Dpybind11_DIR={fix_path(pybind11.get_cmake_dir())}",'
+                    if lib.pypi_name == "pybind11" else
+                    f'f"-D{lib.cmake_package}_DIR={{fix_path({lib.import_name}.__path__[0])}}",' for lib in dependencies
+                )}
+                f"-D{library_data.cmake_package}_DIR={{fix_path({library_data.short_lower_name}_src_dir)}}",
                 f"-D{library_data.import_name.replace(".", "_").upper()}_EXT_DIR={{fix_path(ext_dir)}}",
                 f"-DCMAKE_INSTALL_PREFIX=install",
                 "-B",
