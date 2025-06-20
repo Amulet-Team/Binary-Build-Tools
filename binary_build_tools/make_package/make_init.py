@@ -5,7 +5,8 @@ from binary_build_tools.data import LibraryData
 
 def write(package_path: str, library_data: LibraryData) -> None:
     with open(os.path.join(package_path, "__init__.py"), "w", encoding="utf-8") as f:
-        f.write(f"""import logging
+        f.write(
+            f"""import logging
 
 from . import _version
 
@@ -40,4 +41,5 @@ def _init() -> None:
 
 
 _init()
-""")
+"""
+        )

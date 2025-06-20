@@ -29,7 +29,9 @@ def write(project_path: str, library_data: LibraryData) -> None:
     make_setup.write(project_path, library_data)
     make_pyproject.write(project_path, library_data)
 
-    package_path = os.path.join(project_path, "src", *library_data.import_name.split("."))
+    package_path = os.path.join(
+        project_path, "src", *library_data.import_name.split(".")
+    )
     os.makedirs(package_path, exist_ok=True)
     make_package.write(package_path, library_data)
 

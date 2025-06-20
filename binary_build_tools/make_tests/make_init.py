@@ -4,8 +4,11 @@ from binary_build_tools.data import LibraryData
 
 
 def write(test_package_path: str, library_data: LibraryData) -> None:
-    with open(os.path.join(test_package_path, "__init__.py"), "w", encoding="utf-8") as f:
-        f.write(f"""if __name__ != "test_{library_data.import_name.replace('.', '_')}":
+    with open(
+        os.path.join(test_package_path, "__init__.py"), "w", encoding="utf-8"
+    ) as f:
+        f.write(
+            f"""if __name__ != "test_{library_data.import_name.replace('.', '_')}":
     raise RuntimeError(
         f"Module name is incorrect. Expected: 'test_{library_data.import_name.replace('.', '_')}' got '{{__name__}}'"
     )
@@ -30,4 +33,5 @@ def _init() -> None:
 
 
 _init()
-""")
+"""
+        )

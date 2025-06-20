@@ -4,8 +4,11 @@ from binary_build_tools.data import LibraryData
 
 
 def write(tools_path: str, library_data: LibraryData) -> None:
-    with open(os.path.join(tools_path, "generate_pybind_stubs.py"), "w", encoding="utf-8") as f:
-        f.write(f'''import os
+    with open(
+        os.path.join(tools_path, "generate_pybind_stubs.py"), "w", encoding="utf-8"
+    ) as f:
+        f.write(
+            f'''import os
 import glob
 import importlib.util
 import sys
@@ -284,4 +287,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()''')
+    main()'''
+        )

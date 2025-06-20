@@ -2,9 +2,7 @@ import os
 
 from binary_build_tools.data import LibraryData
 
-from . import (
-    make_stubgen
-)
+from . import make_stubgen
 
 
 def write(tools_path: str, library_data: LibraryData) -> None:
