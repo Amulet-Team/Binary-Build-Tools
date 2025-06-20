@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.13)
 
-project(amulet_core_tests LANGUAGES CXX)
+project(amulet_leveldb_tests LANGUAGES CXX)
 
 # Set C++20
 set(CMAKE_CXX_STANDARD 20)
@@ -20,21 +20,21 @@ endif()
 # Find dependencies
 find_package(pybind11 CONFIG REQUIRED)
 find_package(amulet_pybind11_extensions CONFIG REQUIRED)
-find_package(amulet_core CONFIG REQUIRED)
+find_package(leveldb_mcpe CONFIG REQUIRED)
 find_package(amulet_test_utils CONFIG REQUIRED)
 
 # Find sources
 file(GLOB_RECURSE SOURCES LIST_DIRECTORIES false "${CMAKE_CURRENT_LIST_DIR}/*.py.cpp")
 
-pybind11_add_module(_test_amulet_core)
-target_compile_definitions(_test_amulet_core PRIVATE PYBIND11_DETAILED_ERROR_MESSAGES)
-target_compile_definitions(_test_amulet_core PRIVATE PYBIND11_VERSION="${pybind11_VERSION}")
-target_compile_definitions(_test_amulet_core PRIVATE COMPILER_ID="${CMAKE_CXX_COMPILER_ID}")
-target_compile_definitions(_test_amulet_core PRIVATE COMPILER_VERSION="${CMAKE_CXX_COMPILER_VERSION}")
-target_link_libraries(_test_amulet_core PRIVATE amulet_pybind11_extensions)
-target_link_libraries(_test_amulet_core PRIVATE amulet_core)
-target_link_libraries(_test_amulet_core PRIVATE amulet_test_utils)
-target_sources(_test_amulet_core PRIVATE ${SOURCES})
+pybind11_add_module(_test_amulet_leveldb)
+target_compile_definitions(_test_amulet_leveldb PRIVATE PYBIND11_DETAILED_ERROR_MESSAGES)
+target_compile_definitions(_test_amulet_leveldb PRIVATE PYBIND11_VERSION="${pybind11_VERSION}")
+target_compile_definitions(_test_amulet_leveldb PRIVATE COMPILER_ID="${CMAKE_CXX_COMPILER_ID}")
+target_compile_definitions(_test_amulet_leveldb PRIVATE COMPILER_VERSION="${CMAKE_CXX_COMPILER_VERSION}")
+target_link_libraries(_test_amulet_leveldb PRIVATE amulet_pybind11_extensions)
+target_link_libraries(_test_amulet_leveldb PRIVATE leveldb_mcpe)
+target_link_libraries(_test_amulet_leveldb PRIVATE amulet_test_utils)
+target_sources(_test_amulet_leveldb PRIVATE ${SOURCES})
 foreach(FILE ${SOURCES})
     file(RELATIVE_PATH REL_PATH ${CMAKE_CURRENT_LIST_DIR} ${FILE})
     get_filename_component(GROUP ${REL_PATH} DIRECTORY)
@@ -43,4 +43,4 @@ foreach(FILE ${SOURCES})
 endforeach()
 
 # Install
-install(TARGETS _test_amulet_core DESTINATION "${CMAKE_CURRENT_LIST_DIR}/test_amulet_core")
+install(TARGETS _test_amulet_leveldb DESTINATION "${CMAKE_CURRENT_LIST_DIR}/test_amulet_leveldb")

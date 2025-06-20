@@ -12,7 +12,7 @@ class LibraryData:
         *,
         pypi_name: str,  # The PyPi hyphenated library name (amulet-nbt)
         repo_name: str,  # The name of the github repository (Amulet-NBT)
-        short_lower_name: str,  # A string for use in Python variables (amulet_nbt)
+        short_var_name: str,  # A string for use in Python variables (amulet_nbt)
         import_name: str,  # The import name to the package (amulet.nbt)
         lib_name: str | None = None,  # The name of the shared library (leveldb_mcpe)
         cmake_lib_name: (
@@ -37,12 +37,14 @@ class LibraryData:
         runtime_dependencies: tuple[
             str, ...
         ] = (),  # The dependencies that are only needed at runtime.
+        test_dependencies: tuple[str, ...] = ()
     ):
         self.pypi_name = pypi_name.replace("_", "-")
         self.repo_name = repo_name
-        self.short_lower_name = short_lower_name
         self.import_name = import_name
         self.root_import_name = import_name.split(".", 1)[0]
+        self.var_name = import_name.replace(".", "_")
+        self.short_var_name = short_var_name
         self.lib_name = lib_name
         self.cmake_lib_name = cmake_lib_name or lib_name
         self.cmake_package = cmake_package or self.cmake_lib_name
@@ -52,12 +54,13 @@ class LibraryData:
         self.public_dependencies = public_dependencies
         self.ext_dependencies = ext_dependencies
         self.runtime_dependencies = runtime_dependencies
+        self.test_dependencies = test_dependencies
 
 
 PyBind11 = LibraryData(
     pypi_name="pybind11",
     repo_name="pybind11",
-    short_lower_name="pybind11",
+    short_var_name="pybind11",
     import_name="pybind11",
     cmake_lib_name="pybind11::module",
     cmake_package="pybind11",
@@ -66,7 +69,7 @@ PyBind11 = LibraryData(
 PyBind11Extensions = LibraryData(
     pypi_name="amulet-pybind11-extensions",
     repo_name="Amulet-pybind11-extensions",
-    short_lower_name="pybind11_extensions",
+    short_var_name="pybind11_extensions",
     import_name="amulet.pybind11_extensions",
     cmake_lib_name="amulet_pybind11_extensions",
     library_type=LibraryType.Interface,
@@ -74,15 +77,23 @@ PyBind11Extensions = LibraryData(
 AmuletCompilerVersion = LibraryData(
     pypi_name="amulet-compiler-version",
     repo_name="Amulet-Compiler-Version",
-    short_lower_name="compiler_version",
+    short_var_name="compiler_version",
     import_name="amulet_compiler_version",
     cmake_lib_name="amulet_compiler_version",
+    library_type=LibraryType.Interface,
+)
+AmuletTestUtils = LibraryData(
+    pypi_name="amulet-test-utils",
+    repo_name="Amulet-Test-Utils",
+    short_var_name="test_utils",
+    import_name="amulet.test_utils",
+    cmake_lib_name="amulet_test_utils",
     library_type=LibraryType.Interface,
 )
 AmuletIO = LibraryData(
     pypi_name="amulet-io",
     repo_name="Amulet-IO",
-    short_lower_name="io",
+    short_var_name="io",
     import_name="amulet.io",
     cmake_lib_name="amulet_io",
     library_type=LibraryType.Interface,
@@ -94,7 +105,7 @@ AmuletIO = LibraryData(
 AmuletLevelDB = LibraryData(
     pypi_name="amulet-leveldb",
     repo_name="Amulet-LevelDB",
-    short_lower_name="leveldb",
+    short_var_name="leveldb",
     import_name="amulet.leveldb",
     lib_name="leveldb_mcpe",
     ext_name="_leveldb",
@@ -109,7 +120,7 @@ AmuletLevelDB = LibraryData(
 AmuletUtils = LibraryData(
     pypi_name="amulet-utils",
     repo_name="Amulet-Utils",
-    short_lower_name="utils",
+    short_var_name="utils",
     import_name="amulet.utils",
     lib_name="amulet_utils",
     ext_name="_amulet_utils",
@@ -126,7 +137,7 @@ AmuletUtils = LibraryData(
 AmuletZlib = LibraryData(
     pypi_name="amulet-zlib",
     repo_name="Amulet-zlib",
-    short_lower_name="zlib",
+    short_var_name="zlib",
     import_name="amulet.zlib",
     lib_name="amulet_zlib",
     ext_name="_amulet_zlib",
@@ -141,7 +152,7 @@ AmuletZlib = LibraryData(
 AmuletNBT = LibraryData(
     pypi_name="amulet-nbt",
     repo_name="Amulet-NBT",
-    short_lower_name="nbt",
+    short_var_name="nbt",
     import_name="amulet.nbt",
     lib_name="amulet_nbt",
     ext_name="_amulet_nbt",
@@ -157,7 +168,7 @@ AmuletNBT = LibraryData(
 AmuletCore = LibraryData(
     pypi_name="amulet-core",
     repo_name="Amulet-Core",
-    short_lower_name="core",
+    short_var_name="core",
     import_name="amulet.core",
     lib_name="amulet_core",
     ext_name="_amulet_core",
@@ -176,7 +187,7 @@ AmuletCore = LibraryData(
 AmuletGame = LibraryData(
     pypi_name="amulet-game",
     repo_name="Amulet-Game",
-    short_lower_name="game",
+    short_var_name="game",
     import_name="amulet.game",
     lib_name="amulet_game",
     ext_name="_amulet_game",
@@ -197,7 +208,7 @@ AmuletGame = LibraryData(
 AmuletAnvil = LibraryData(
     pypi_name="amulet-anvil",
     repo_name="Amulet-Anvil",
-    short_lower_name="anvil",
+    short_var_name="anvil",
     import_name="amulet.anvil",
     lib_name="amulet_anvil",
     ext_name="_amulet_anvil",
@@ -218,7 +229,7 @@ AmuletAnvil = LibraryData(
 AmuletLevel = LibraryData(
     pypi_name="amulet-level",
     repo_name="Amulet-Level",
-    short_lower_name="level",
+    short_var_name="level",
     import_name="amulet.level",
     lib_name="amulet_level",
     ext_name="_amulet_level",
@@ -242,7 +253,7 @@ AmuletLevel = LibraryData(
 AmuletResourcePack = LibraryData(
     pypi_name="amulet-resource-pack",
     repo_name="Amulet-Resource-Pack",
-    short_lower_name="resource_pack",
+    short_var_name="resource_pack",
     import_name="amulet.resource_pack",
     lib_name="amulet_resource_pack",
     ext_name="_amulet_resource_pack",
@@ -262,6 +273,7 @@ interface_libraries: list[LibraryData] = [
     PyBind11Extensions,
     AmuletCompilerVersion,
     AmuletIO,
+    AmuletTestUtils,
 ]
 
 shared_libraries: list[LibraryData] = [

@@ -54,7 +54,7 @@ class CMakeBuild(cmdclass.get("build_ext", build_ext)):
         {"\n        ".join(f"import {lib.import_name}" for lib in dependencies)}
     
         ext_dir = (Path.cwd() / self.get_ext_fullpath("")).parent.resolve() / {" / ".join(f"\"{name}\"" for name in library_data.import_name.split("."))}
-        {library_data.short_lower_name}_src_dir = Path.cwd() / "src" / {" / ".join(f"\"{name}\"" for name in library_data.import_name.split("."))} if self.editable_mode else ext_dir
+        {library_data.short_var_name}_src_dir = Path.cwd() / "src" / {" / ".join(f"\"{name}\"" for name in library_data.import_name.split("."))} if self.editable_mode else ext_dir
 
         platform_args = []
         if sys.platform == "win32":
@@ -80,7 +80,7 @@ class CMakeBuild(cmdclass.get("build_ext", build_ext)):
                     if lib.pypi_name == "pybind11" else
                     f'f"-D{lib.cmake_package}_DIR={{fix_path({lib.import_name}.__path__[0])}}",' for lib in dependencies
                 )}
-                f"-D{library_data.cmake_package}_DIR={{fix_path({library_data.short_lower_name}_src_dir)}}",
+                f"-D{library_data.cmake_package}_DIR={{fix_path({library_data.short_var_name}_src_dir)}}",
                 f"-D{library_data.import_name.replace(".", "_").upper()}_EXT_DIR={{fix_path(ext_dir)}}",
                 f"-DCMAKE_INSTALL_PREFIX=install",
                 "-B",

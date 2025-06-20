@@ -2,12 +2,15 @@ import os
 
 from binary_build_tools.data import LibraryData
 from . import (
+    make_cmakelists,
     make_init,
     make_ext,
 )
 
 
 def write(tests_path: str, library_data: LibraryData) -> None:
+    make_cmakelists.write(tests_path, library_data)
+
     test_package_path = os.path.join(
         tests_path, f"test_{library_data.import_name.replace('.', '_')}"
     )
