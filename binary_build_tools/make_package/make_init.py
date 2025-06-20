@@ -1,9 +1,22 @@
 import os
 
-from binary_build_tools.data import LibraryData
+from binary_build_tools.data import LibraryData, libraries, library_order, LibraryType
 
 
 def write(package_path: str, library_data: LibraryData) -> None:
+    dependencies: list[LibraryData] = [
+        libraries[pypi_name]
+        for pypi_name in sorted(
+            set(
+                library_data.private_dependencies
+                + library_data.public_dependencies
+                + library_data.ext_dependencies
+            ),
+            key=library_order.__getitem__,
+        )
+        if libraries[pypi_name].library_type == LibraryType.Shared
+    ]
+
     with open(os.path.join(package_path, "__init__.py"), "w", encoding="utf-8") as f:
         f.write(
             f"""import logging
@@ -29,8 +42,7 @@ def _init() -> None:
         lib_path = os.path.join(os.path.dirname(__file__), "lib{library_data.lib_name}.so")
     else:
         raise RuntimeError(f"Unsupported platform {{sys.platform}}")
-
-    # Import dependencies
+    {"\n    # Import dependencies\n    " + "\n    ".join(f"import {lib.import_name}" for lib in dependencies) if dependencies else ""}
 
     # Load the shared library
     ctypes.cdll.LoadLibrary(lib_path)
