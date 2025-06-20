@@ -45,15 +45,15 @@ def main() -> None:
             "build",
         ]
     ).returncode:
-        raise RuntimeError("Error configuring test_amulet_utils")
+        raise RuntimeError("Error configuring test-amulet-utils")
     if subprocess.run(
         ["cmake", "--build", "build", "--config", "RelWithDebInfo"]
     ).returncode:
-        raise RuntimeError("Error installing test_amulet_utils")
+        raise RuntimeError("Error installing test-amulet-utils")
     if subprocess.run(
         ["cmake", "--install", "build", "--config", "RelWithDebInfo"]
     ).returncode:
-        raise RuntimeError("Error installing test_amulet_utils")
+        raise RuntimeError("Error installing test-amulet-utils")
 
 
 if __name__ == "__main__":

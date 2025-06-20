@@ -50,15 +50,15 @@ def main() -> None:
             "build",
         ]
     ).returncode:
-        raise RuntimeError("Error configuring test_amulet_game")
+        raise RuntimeError("Error configuring test-amulet-game")
     if subprocess.run(
         ["cmake", "--build", "build", "--config", "RelWithDebInfo"]
     ).returncode:
-        raise RuntimeError("Error installing test_amulet_game")
+        raise RuntimeError("Error installing test-amulet-game")
     if subprocess.run(
         ["cmake", "--install", "build", "--config", "RelWithDebInfo"]
     ).returncode:
-        raise RuntimeError("Error installing test_amulet_game")
+        raise RuntimeError("Error installing test-amulet-game")
 
 
 if __name__ == "__main__":

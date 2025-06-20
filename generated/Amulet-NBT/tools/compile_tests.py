@@ -46,15 +46,15 @@ def main():
             "build",
         ]
     ).returncode:
-        raise RuntimeError("Error configuring test_amulet_nbt")
+        raise RuntimeError("Error configuring test-amulet-nbt")
     if subprocess.run(
         ["cmake", "--build", "build", "--config", "RelWithDebInfo"]
     ).returncode:
-        raise RuntimeError("Error installing test_amulet_nbt")
+        raise RuntimeError("Error installing test-amulet-nbt")
     if subprocess.run(
         ["cmake", "--install", "build", "--config", "RelWithDebInfo"]
     ).returncode:
-        raise RuntimeError("Error installing test_amulet_nbt")
+        raise RuntimeError("Error installing test-amulet-nbt")
 
 
 if __name__ == "__main__":

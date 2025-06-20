@@ -46,15 +46,15 @@ def main():
             "build",
         ]
     ).returncode:
-        raise RuntimeError("Error configuring test_amulet_zlib")
+        raise RuntimeError("Error configuring test-amulet-zlib")
     if subprocess.run(
         ["cmake", "--build", "build", "--config", "RelWithDebInfo"]
     ).returncode:
-        raise RuntimeError("Error installing test_amulet_zlib")
+        raise RuntimeError("Error installing test-amulet-zlib")
     if subprocess.run(
         ["cmake", "--install", "build", "--config", "RelWithDebInfo"]
     ).returncode:
-        raise RuntimeError("Error installing test_amulet_zlib")
+        raise RuntimeError("Error installing test-amulet-zlib")
 
 
 if __name__ == "__main__":

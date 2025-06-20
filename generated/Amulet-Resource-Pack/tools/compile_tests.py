@@ -46,15 +46,15 @@ def main() -> None:
             "build",
         ]
     ).returncode:
-        raise RuntimeError("Error configuring test_amulet_resource_pack")
+        raise RuntimeError("Error configuring test-amulet-resource-pack")
     if subprocess.run(
         ["cmake", "--build", "build", "--config", "RelWithDebInfo"]
     ).returncode:
-        raise RuntimeError("Error installing test_amulet_resource_pack")
+        raise RuntimeError("Error installing test-amulet-resource-pack")
     if subprocess.run(
         ["cmake", "--install", "build", "--config", "RelWithDebInfo"]
     ).returncode:
-        raise RuntimeError("Error installing test_amulet_resource_pack")
+        raise RuntimeError("Error installing test-amulet-resource-pack")
 
 
 if __name__ == "__main__":
