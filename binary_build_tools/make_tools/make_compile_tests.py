@@ -57,6 +57,7 @@ def main() -> None:
                     f'\n                f"-D{lib.cmake_package}_DIR={{fix_path({lib.import_name}.__path__[0])}}",' for lib in dependencies
                 )}
             f"-D{library_data.cmake_package}_DIR={{fix_path({library_data.import_name}.__path__[0])}}",
+            f"-DCMAKE_INSTALL_PREFIX=install",
             "-B",
             "build",
         ]

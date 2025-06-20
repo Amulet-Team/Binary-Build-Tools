@@ -55,6 +55,7 @@ def main() -> None:
             f"-Damulet_game_DIR={fix_path(amulet.game.__path__[0])}",
             f"-Damulet_anvil_DIR={fix_path(amulet.anvil.__path__[0])}",
             f"-Damulet_level_DIR={fix_path(amulet.level.__path__[0])}",
+            f"-DCMAKE_INSTALL_PREFIX=install",
             "-B",
             "build",
         ]

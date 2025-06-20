@@ -36,6 +36,7 @@ def main() -> None:
             *platform_args,
             f"-DPYTHON_EXECUTABLE={sys.executable}",
             f"-Dleveldb_mcpe_DIR={fix_path(amulet.leveldb.__path__[0])}",
+            f"-DCMAKE_INSTALL_PREFIX=install",
             "-B",
             "build",
         ]

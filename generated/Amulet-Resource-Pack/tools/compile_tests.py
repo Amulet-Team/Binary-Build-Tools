@@ -43,6 +43,7 @@ def main() -> None:
             f"-Damulet_test_utils_DIR={fix_path(amulet.test_utils.__path__[0])}",
             f"-Damulet_utils_DIR={fix_path(amulet.utils.__path__[0])}",
             f"-Damulet_resource_pack_DIR={fix_path(amulet.resource_pack.__path__[0])}",
+            f"-DCMAKE_INSTALL_PREFIX=install",
             "-B",
             "build",
         ]
