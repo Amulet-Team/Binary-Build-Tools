@@ -16,7 +16,8 @@ from . import (
     make_package,
     make_tests,
     make_tools,
-    make_cmakelists
+    make_cmakelists,
+    make_github,
 )
 
 
@@ -44,6 +45,10 @@ def write(project_path: str, library_data: LibraryData) -> None:
     tools_path = os.path.join(project_path, "tools")
     os.makedirs(tools_path, exist_ok=True)
     make_tools.write(tools_path, library_data)
+
+    github_path = os.path.join(project_path, ".github")
+    os.makedirs(github_path, exist_ok=True)
+    make_github.write(github_path, library_data)
 
 
 def main(out_path: str) -> None:
