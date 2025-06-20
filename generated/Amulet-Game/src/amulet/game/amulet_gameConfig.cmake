@@ -2,6 +2,8 @@ if (NOT TARGET amulet_game)
     message(STATUS "Finding amulet_game")
 
     find_package(pybind11 CONFIG REQUIRED)
+    find_package(amulet_io CONFIG REQUIRED)
+    find_package(amulet_nbt CONFIG REQUIRED)
     find_package(amulet_core CONFIG REQUIRED)
 
     set(amulet_game_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/../..")
@@ -15,6 +17,8 @@ if (NOT TARGET amulet_game)
 
     add_library(amulet_game INTERFACE)
     target_link_libraries(amulet_game INTERFACE pybind11::module)
+    target_link_libraries(amulet_game INTERFACE amulet_io)
+    target_link_libraries(amulet_game INTERFACE amulet_nbt)
     target_link_libraries(amulet_game INTERFACE amulet_core)
     target_link_libraries(amulet_game INTERFACE amulet_game_bin)
     target_include_directories(amulet_game INTERFACE ${amulet_game_INCLUDE_DIR})
