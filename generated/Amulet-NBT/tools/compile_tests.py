@@ -42,7 +42,6 @@ def main() -> None:
             f"-Damulet_io_DIR={fix_path(amulet.io.__path__[0])}",
             f"-Damulet_nbt_DIR={fix_path(amulet.nbt.__path__[0])}",
             f"-DCMAKE_INSTALL_PREFIX=install",
-            f"-DTEST_AMULET_NBT_DIR={fix_path(os.path.join(TestsDir, 'test_amulet_nbt'))}",
             "-B",
             "build",
         ]
