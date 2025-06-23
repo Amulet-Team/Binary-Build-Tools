@@ -7,6 +7,7 @@ from . import (
     make_install,
     make_install_dependencies,
     make_stylecheck,
+    make_unittests,
     make_unittests_src,
 )
 
@@ -22,3 +23,4 @@ def write(github_path: str, library_data: LibraryData) -> None:
     os.makedirs(workflows_path, exist_ok=True)
     make_build.write(workflows_path, library_data)
     make_stylecheck.write(workflows_path)
+    make_unittests.write(workflows_path, library_data)

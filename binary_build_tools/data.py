@@ -39,7 +39,8 @@ class LibraryData:
         runtime_dependencies: tuple[
             str, ...
         ] = (),  # The dependencies that are only needed at runtime.
-        test_dependencies: tuple[str, ...] = ()
+        test_dependencies: tuple[str, ...] = (),
+        has_submodules: bool = False,
     ):
         self.pypi_name = pypi_name.replace("_", "-")
         self.org_name = org_name
@@ -59,6 +60,7 @@ class LibraryData:
         self.ext_dependencies = ext_dependencies
         self.runtime_dependencies = runtime_dependencies
         self.test_dependencies = test_dependencies
+        self.has_submodules = has_submodules
 
 
 PyBind11 = LibraryData(
@@ -250,6 +252,7 @@ AmuletGame = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletGame",
+    has_submodules=True,
 )
 AmuletAnvil = LibraryData(
     pypi_name="amulet-anvil",

@@ -3,9 +3,6 @@ import os
 from binary_build_tools.data import LibraryData, libraries, library_order, LibraryType
 
 def write(actions_path: str, library_data: LibraryData) -> None:
-    action_dir = os.path.join(actions_path, "unittests-src")
-    os.makedirs(action_dir, exist_ok=True)
-
     # find all shared dependencies recursively
     lib_names: set[str] = set()
     lib_names_todo: set[str] = set(
@@ -35,6 +32,9 @@ def write(actions_path: str, library_data: LibraryData) -> None:
 
     if not shared_libs:
         return
+
+    action_dir = os.path.join(actions_path, "unittests-src")
+    os.makedirs(action_dir, exist_ok=True)
 
     with open(
         os.path.join(action_dir, "action.yml"), "w", encoding="utf-8"
