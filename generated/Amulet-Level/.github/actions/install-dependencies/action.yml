@@ -54,12 +54,12 @@ runs:
           echo "compiler-version-password is empty"
           exit 1
         fi
-        
+
         if [ -z "${{ inputs.leveldb-password }}" ]; then
           echo "leveldb-password is empty"
           exit 1
         fi
-        
+
         if [ -z "${{ inputs.utils-password }}" ]; then
           echo "utils-password is empty"
           exit 1
@@ -74,17 +74,17 @@ runs:
           echo "nbt-password is empty"
           exit 1
         fi
-        
+
         if [ -z "${{ inputs.core-password }}" ]; then
           echo "core-password is empty"
           exit 1
         fi
-        
+
         if [ -z "${{ inputs.game-password }}" ]; then
           echo "game-password is empty"
           exit 1
         fi
-        
+
         if [ -z "${{ inputs.anvil-password }}" ]; then
           echo "anvil-password is empty"
           exit 1
@@ -125,9 +125,11 @@ runs:
       env:
         REST_TOKEN: ${{ inputs.rest-token }}
       run: |
-        python -c "import sys; sys.path.append(r'${{ github.action_path }}'); import dependency_resolver; import requirements; dependency_resolver.find_and_save_compatible_libraries([('amulet-anvil', 'Amulet-Team/Amulet-Anvil'), ('amulet-game', 'Amulet-Team/Amulet-Game'), ('amulet-core', 'Amulet-Team/Amulet-Core'), ('amulet-nbt', 'Amulet-Team/Amulet-NBT'), ('amulet-zlib', 'Amulet-Team/Amulet-zlib'), ('amulet-utils', 'Amulet-Team/Amulet-Utils'), ('amulet-leveldb', 'Amulet-Team/Amulet-LevelDB')], requirements.get_runtime_dependencies())"
-        pyext=$(python -c "import os; f = open(os.path.join(r'${{ github.action_path }}', 'libraries.json'), encoding='utf-8'); import json; print(json.load(f)['amulet-pybind11-extensions'])")
-        echo "pyext=$pyext" >> "$GITHUB_OUTPUT"
+        python -c "import sys; sys.path.append(r'${{ github.action_path }}'); import dependency_resolver; import requirements; dependency_resolver.find_and_save_compatible_libraries([('amulet-leveldb', 'Amulet-Team/Amulet-LevelDB'), ('amulet-utils', 'Amulet-Team/Amulet-Utils'), ('amulet-zlib', 'Amulet-Team/Amulet-zlib'), ('amulet-nbt', 'Amulet-Team/Amulet-NBT'), ('amulet-core', 'Amulet-Team/Amulet-Core'), ('amulet-game', 'Amulet-Team/Amulet-Game'), ('amulet-anvil', 'Amulet-Team/Amulet-Anvil')], requirements.get_runtime_dependencies())"
+        pybind11=$(python -c "import os; f = open(os.path.join(r'${{ github.action_path }}', 'libraries.json'), encoding='utf-8'); import json; print(json.load(f)['pybind11'])")
+        echo "pybind11=$pybind11" >> "$GITHUB_OUTPUT"
+        pybind11-extensions=$(python -c "import os; f = open(os.path.join(r'${{ github.action_path }}', 'libraries.json'), encoding='utf-8'); import json; print(json.load(f)['amulet-pybind11-extensions'])")
+        echo "pybind11-extensions=$pybind11-extensions" >> "$GITHUB_OUTPUT"
         io=$(python -c "import os; f = open(os.path.join(r'${{ github.action_path }}', 'libraries.json'), encoding='utf-8'); import json; print(json.load(f)['amulet-io'])")
         echo "io=$io" >> "$GITHUB_OUTPUT"
         leveldb=$(python -c "import os; f = open(os.path.join(r'${{ github.action_path }}', 'libraries.json'), encoding='utf-8'); import json; print(json.load(f)['amulet-leveldb'])")
@@ -149,8 +151,10 @@ runs:
       id: dep2
       shell: bash
       run: |
-        pyext=$(python -c "import requirements; print(requirements.get_specifier_set('${{ steps.dep.outputs.pyext }}'))")
-        echo "pyext=$pyext" >> "$GITHUB_OUTPUT"
+        pybind11=$(python -c "import requirements; print(requirements.get_specifier_set('${{ steps.dep.outputs.pybind11 }}'))")
+        echo "pybind11=$pybind11" >> "$GITHUB_OUTPUT"
+        pybind11-extensions=$(python -c "import requirements; print(requirements.get_specifier_set('${{ steps.dep.outputs.pybind11-extensions }}'))")
+        echo "pybind11-extensions=$pybind11-extensions" >> "$GITHUB_OUTPUT"
         io=$(python -c "import requirements; print(requirements.get_specifier_set('${{ steps.dep.outputs.io }}'))")
         echo "io=$io" >> "$GITHUB_OUTPUT"
         leveldb=$(python -c "import requirements; print(requirements.get_specifier_set('${{ steps.dep.outputs.leveldb }}'))")
@@ -168,11 +172,12 @@ runs:
         anvil=$(python -c "import requirements; print(requirements.get_specifier_set('${{ steps.dep.outputs.anvil }}'))")
         echo "anvil=$anvil" >> "$GITHUB_OUTPUT"
 
+
     - name: Clone Amulet-LevelDB
       uses: Amulet-Team/checkout-pep440@v1
       with:
         repository: 'Amulet-Team/Amulet-LevelDB'
-        specifier: '==${{ steps.dep.outputs.levelDB }}'
+        specifier: '==${{ steps.dep.outputs.leveldb }}'
         path: 'build/pylib/Amulet-LevelDB'
         rest-token: ${{ inputs.rest-token }}
 
@@ -182,7 +187,9 @@ runs:
         twine-username: ${{ inputs.username }}
         twine-password: ${{ inputs.leveldb-password }}
         compiler-specifier: '==${{ steps.compiler.outputs.version }}'
-        levelDB-specifier: ${{ steps.dep2.outputs.levelDB }}
+        pybind11-specifier: ${{ steps.dep2.outputs.pybind11 }}
+        pybind11-extensions-specifier: ${{ steps.dep2.outputs.pybind11-extensions }}
+        leveldb-specifier: ${{ steps.dep2.outputs.leveldb }}
 
     - name: Clone Amulet-Utils
       uses: Amulet-Team/checkout-pep440@v1
@@ -198,6 +205,8 @@ runs:
         twine-username: ${{ inputs.username }}
         twine-password: ${{ inputs.utils-password }}
         compiler-specifier: '==${{ steps.compiler.outputs.version }}'
+        pybind11-specifier: ${{ steps.dep2.outputs.pybind11 }}
+        pybind11-extensions-specifier: ${{ steps.dep2.outputs.pybind11-extensions }}
         utils-specifier: ${{ steps.dep2.outputs.utils }}
 
     - name: Clone Amulet-zlib
@@ -214,6 +223,8 @@ runs:
         twine-username: ${{ inputs.username }}
         twine-password: ${{ inputs.zlib-password }}
         compiler-specifier: '==${{ steps.compiler.outputs.version }}'
+        pybind11-specifier: ${{ steps.dep2.outputs.pybind11 }}
+        pybind11-extensions-specifier: ${{ steps.dep2.outputs.pybind11-extensions }}
         zlib-specifier: ${{ steps.dep2.outputs.zlib }}
 
     - name: Clone Amulet-NBT
@@ -230,6 +241,8 @@ runs:
         twine-username: ${{ inputs.username }}
         twine-password: ${{ inputs.nbt-password }}
         compiler-specifier: '==${{ steps.compiler.outputs.version }}'
+        pybind11-specifier: ${{ steps.dep2.outputs.pybind11 }}
+        pybind11-extensions-specifier: ${{ steps.dep2.outputs.pybind11-extensions }}
         io-specifier: ${{ steps.dep2.outputs.io }}
         zlib-specifier: ${{ steps.dep2.outputs.zlib }}
         nbt-specifier: ${{ steps.dep2.outputs.nbt }}
@@ -248,7 +261,10 @@ runs:
         twine-username: ${{ inputs.username }}
         twine-password: ${{ inputs.core-password }}
         compiler-specifier: '==${{ steps.compiler.outputs.version }}'
+        pybind11-specifier: ${{ steps.dep2.outputs.pybind11 }}
+        pybind11-extensions-specifier: ${{ steps.dep2.outputs.pybind11-extensions }}
         io-specifier: ${{ steps.dep2.outputs.io }}
+        zlib-specifier: ${{ steps.dep2.outputs.zlib }}
         nbt-specifier: ${{ steps.dep2.outputs.nbt }}
         core-specifier: ${{ steps.dep2.outputs.core }}
 
@@ -266,7 +282,10 @@ runs:
         twine-username: ${{ inputs.username }}
         twine-password: ${{ inputs.game-password }}
         compiler-specifier: '==${{ steps.compiler.outputs.version }}'
+        pybind11-specifier: ${{ steps.dep2.outputs.pybind11 }}
+        pybind11-extensions-specifier: ${{ steps.dep2.outputs.pybind11-extensions }}
         io-specifier: ${{ steps.dep2.outputs.io }}
+        zlib-specifier: ${{ steps.dep2.outputs.zlib }}
         nbt-specifier: ${{ steps.dep2.outputs.nbt }}
         core-specifier: ${{ steps.dep2.outputs.core }}
         game-specifier: ${{ steps.dep2.outputs.game }}
@@ -285,9 +304,12 @@ runs:
         twine-username: ${{ inputs.username }}
         twine-password: ${{ inputs.anvil-password }}
         compiler-specifier: '==${{ steps.compiler.outputs.version }}'
+        pybind11-specifier: ${{ steps.dep2.outputs.pybind11 }}
+        pybind11-extensions-specifier: ${{ steps.dep2.outputs.pybind11-extensions }}
         io-specifier: ${{ steps.dep2.outputs.io }}
+        utils-specifier: ${{ steps.dep2.outputs.utils }}
         zlib-specifier: ${{ steps.dep2.outputs.zlib }}
         nbt-specifier: ${{ steps.dep2.outputs.nbt }}
         core-specifier: ${{ steps.dep2.outputs.core }}
-        utils-specifier: ${{ steps.dep2.outputs.utils }}
         anvil-specifier: ${{ steps.dep2.outputs.anvil }}
+

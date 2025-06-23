@@ -11,6 +11,7 @@ class LibraryData:
         self,
         *,
         pypi_name: str,  # The PyPi hyphenated library name (amulet-nbt)
+        org_name: str,  # The github organisation/user name (Amulet-Team)
         repo_name: str,  # The name of the github repository (Amulet-NBT)
         short_var_name: str,  # A string for use in Python variables (amulet_nbt)
         import_name: str,  # The import name to the package (amulet.nbt)
@@ -41,6 +42,7 @@ class LibraryData:
         test_dependencies: tuple[str, ...] = ()
     ):
         self.pypi_name = pypi_name.replace("_", "-")
+        self.org_name = org_name
         self.repo_name = repo_name
         self.import_name = import_name
         self.root_import_name = import_name.split(".", 1)[0]
@@ -61,6 +63,7 @@ class LibraryData:
 
 PyBind11 = LibraryData(
     pypi_name="pybind11",
+    org_name="pybind",
     repo_name="pybind11",
     short_var_name="pybind11",
     import_name="pybind11",
@@ -70,6 +73,7 @@ PyBind11 = LibraryData(
 )
 PyBind11Extensions = LibraryData(
     pypi_name="amulet-pybind11-extensions",
+    org_name="Amulet-Team",
     repo_name="Amulet-pybind11-extensions",
     short_var_name="pybind11_extensions",
     import_name="amulet.pybind11_extensions",
@@ -78,6 +82,7 @@ PyBind11Extensions = LibraryData(
 )
 AmuletCompilerVersion = LibraryData(
     pypi_name="amulet-compiler-version",
+    org_name="Amulet-Team",
     repo_name="Amulet-Compiler-Version",
     short_var_name="compiler_version",
     import_name="amulet_compiler_version",
@@ -86,6 +91,7 @@ AmuletCompilerVersion = LibraryData(
 )
 AmuletTestUtils = LibraryData(
     pypi_name="amulet-test-utils",
+    org_name="Amulet-Team",
     repo_name="Amulet-Test-Utils",
     short_var_name="test_utils",
     import_name="amulet.test_utils",
@@ -94,6 +100,7 @@ AmuletTestUtils = LibraryData(
 )
 AmuletIO = LibraryData(
     pypi_name="amulet-io",
+    org_name="Amulet-Team",
     repo_name="Amulet-IO",
     short_var_name="io",
     import_name="amulet.io",
@@ -106,6 +113,7 @@ AmuletIO = LibraryData(
 )
 AmuletLevelDB = LibraryData(
     pypi_name="amulet-leveldb",
+    org_name="Amulet-Team",
     repo_name="Amulet-LevelDB",
     short_var_name="leveldb",
     import_name="amulet.leveldb",
@@ -121,6 +129,7 @@ AmuletLevelDB = LibraryData(
 )
 AmuletUtils = LibraryData(
     pypi_name="amulet-utils",
+    org_name="Amulet-Team",
     repo_name="Amulet-Utils",
     short_var_name="utils",
     import_name="amulet.utils",
@@ -145,6 +154,7 @@ AmuletUtils = LibraryData(
 )
 AmuletZlib = LibraryData(
     pypi_name="amulet-zlib",
+    org_name="Amulet-Team",
     repo_name="Amulet-zlib",
     short_var_name="zlib",
     import_name="amulet.zlib",
@@ -166,6 +176,7 @@ AmuletZlib = LibraryData(
 )
 AmuletNBT = LibraryData(
     pypi_name="amulet-nbt",
+    org_name="Amulet-Team",
     repo_name="Amulet-NBT",
     short_var_name="nbt",
     import_name="amulet.nbt",
@@ -188,6 +199,7 @@ AmuletNBT = LibraryData(
 )
 AmuletCore = LibraryData(
     pypi_name="amulet-core",
+    org_name="Amulet-Team",
     repo_name="Amulet-Core",
     short_var_name="core",
     import_name="amulet.core",
@@ -213,6 +225,7 @@ AmuletCore = LibraryData(
 )
 AmuletGame = LibraryData(
     pypi_name="amulet-game",
+    org_name="Amulet-Team",
     repo_name="Amulet-Game",
     short_var_name="game",
     import_name="amulet.game",
@@ -240,6 +253,7 @@ AmuletGame = LibraryData(
 )
 AmuletAnvil = LibraryData(
     pypi_name="amulet-anvil",
+    org_name="Amulet-Team",
     repo_name="Amulet-Anvil",
     short_var_name="anvil",
     import_name="amulet.anvil",
@@ -267,6 +281,7 @@ AmuletAnvil = LibraryData(
 )
 AmuletLevel = LibraryData(
     pypi_name="amulet-level",
+    org_name="Amulet-Team",
     repo_name="Amulet-Level",
     short_var_name="level",
     import_name="amulet.level",
@@ -297,6 +312,7 @@ AmuletLevel = LibraryData(
 )
 AmuletResourcePack = LibraryData(
     pypi_name="amulet-resource-pack",
+    org_name="Amulet-Team",
     repo_name="Amulet-Resource-Pack",
     short_var_name="resource_pack",
     import_name="amulet.resource_pack",
