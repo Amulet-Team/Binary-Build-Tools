@@ -104,7 +104,7 @@ runs:
         fi""" * bool(shared_libs)
 }
 
-    - name: Set up Python ${{{{ inputs.python-version }}}}
+    - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: ${{{{ inputs.python-version }}}}
