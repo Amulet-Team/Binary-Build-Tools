@@ -28,7 +28,9 @@ def write(actions_path: str, library_data: LibraryData) -> None:
                 lib_names.add(lib_name)
                 lib = libraries[lib_name]
                 lib_names_todo.update(
-                    lib.private_dependencies + lib.public_dependencies + lib.ext_dependencies
+                    lib.private_dependencies
+                    + lib.public_dependencies
+                    + lib.ext_dependencies
                 )
 
             library_dependencies[pypi_name] = tuple(
@@ -38,11 +40,11 @@ def write(actions_path: str, library_data: LibraryData) -> None:
 
         return library_dependencies[pypi_name]
 
-    dependencies: tuple[LibraryData, ...] = get_library_dependencies(library_data.pypi_name)
+    dependencies: tuple[LibraryData, ...] = get_library_dependencies(
+        library_data.pypi_name
+    )
 
-    with open(
-        os.path.join(action_dir, "action.yml"), "w", encoding="utf-8"
-    ) as f:
+    with open(os.path.join(action_dir, "action.yml"), "w", encoding="utf-8") as f:
         f.write(
             f"""name: 'Install Specialised {library_data.repo_name}'
 description: 'Build, publish and install this library specialised for the installed compiler. Requires Python, build and twine.'

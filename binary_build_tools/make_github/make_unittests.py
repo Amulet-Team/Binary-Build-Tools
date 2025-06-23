@@ -2,9 +2,10 @@ import os
 
 from binary_build_tools.data import LibraryData, libraries, library_order, LibraryType
 
+
 def write_from_source(workflows_path: str) -> None:
     with open(
-            os.path.join(workflows_path, "python-unittests.yml"), "w", encoding="utf-8"
+        os.path.join(workflows_path, "python-unittests.yml"), "w", encoding="utf-8"
     ) as f:
         f.write(
             """# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
@@ -55,9 +56,11 @@ jobs:
         )
 
 
-def write_compiled(workflows_path: str, library_data: LibraryData, shared_libs: tuple[LibraryData, ...]) -> None:
+def write_compiled(
+    workflows_path: str, library_data: LibraryData, shared_libs: tuple[LibraryData, ...]
+) -> None:
     with open(
-            os.path.join(workflows_path, "python-unittests.yml"), "w", encoding="utf-8"
+        os.path.join(workflows_path, "python-unittests.yml"), "w", encoding="utf-8"
     ) as f:
         f.write(
             f"""# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
@@ -202,7 +205,9 @@ def write(workflows_path: str, library_data: LibraryData) -> None:
                 lib_names.add(lib_name)
                 lib = libraries[lib_name]
                 lib_names_todo.update(
-                    lib.private_dependencies + lib.public_dependencies + lib.ext_dependencies
+                    lib.private_dependencies
+                    + lib.public_dependencies
+                    + lib.ext_dependencies
                 )
 
             library_dependencies[pypi_name] = tuple(
@@ -212,7 +217,9 @@ def write(workflows_path: str, library_data: LibraryData) -> None:
 
         return library_dependencies[pypi_name]
 
-    dependencies: tuple[LibraryData, ...] = get_library_dependencies(library_data.pypi_name)
+    dependencies: tuple[LibraryData, ...] = get_library_dependencies(
+        library_data.pypi_name
+    )
 
     shared_libs: tuple[LibraryData, ...] = tuple(
         lib for lib in dependencies if lib.library_type == LibraryType.Shared
