@@ -2,7 +2,8 @@
 requires = [
     "setuptools>=42",
     "versioneer",
-    "amulet-compiler-version@git+https://github.com/Amulet-Team/Amulet-Compiler-Version.git@3.0",
+    "packaging",
+    "amulet-compiler-version@git+https://github.com/Amulet-Team/Amulet-Compiler-Version.git@3.0"
 ]
 build-backend = "build_requires"
 backend-path = [""]
@@ -23,17 +24,16 @@ classifiers = [
 [project.optional-dependencies]
 dev = [
     "setuptools>=42",
-    "wheel",
-    "pybind11==2.13.6",
-    "Amulet-pybind11-extensions~=1.0",
     "versioneer",
+    "packaging",
+    "wheel",
+    "amulet_pybind11_extensions~=1.0",
+    "pybind11_stubgen>=2.5.4",
     "black>=22.3",
-    "pre_commit>=1.11.1",
     "isort",
     "autoflake",
     "mypy",
     "types-pyinstaller",
-    "pybind11_stubgen"
 ]
 
 [project.urls]
@@ -56,6 +56,9 @@ include-package-data = false
 
 [tool.setuptools.dynamic]
 readme = {file = ["README.md"], content-type = "text/markdown"}
+
+[project.entry-points.pyinstaller40]
+hook-dirs = "amulet.leveldb.__pyinstaller:get_hook_dirs"
 
 [tool.versioneer]
 VCS = "git"

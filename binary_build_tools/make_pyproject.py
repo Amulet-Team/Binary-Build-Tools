@@ -41,8 +41,9 @@ dev = [
     "isort",
     "autoflake",
     "mypy",
-    "types-pyinstaller",
-    "amulet-test-utils~=1.1",
+    "types-pyinstaller",{
+'\n    "amulet-test-utils~=1.1",' * ("amulet-test-utils" in library_data.test_dependencies)
+    }
 ]
 
 [project.urls]
