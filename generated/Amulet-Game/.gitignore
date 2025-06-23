@@ -117,4 +117,4 @@ venv*
 *.ilk
 
 /amulet_game-*
-/src/amulet/game/versions.pkl.gz
+/.github/actions/install-dependencies/*.json
