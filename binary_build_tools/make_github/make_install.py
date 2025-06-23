@@ -40,10 +40,6 @@ def write(actions_path: str, library_data: LibraryData) -> None:
 
     dependencies: tuple[LibraryData, ...] = get_library_dependencies(library_data.pypi_name)
 
-    shared_libs: tuple[LibraryData, ...] = tuple(
-        lib for lib in dependencies if lib.library_type == LibraryType.Shared
-    )
-
     with open(
         os.path.join(action_dir, "action.yml"), "w", encoding="utf-8"
     ) as f:
