@@ -97,7 +97,7 @@ def get_build_dependencies() -> list:
         f"amulet-zlib{AMULET_ZLIB_REQUIREMENT}",
         f"amulet-nbt{AMULET_NBT_REQUIREMENT}",
         f"amulet-core{AMULET_CORE_REQUIREMENT}",
-    ]
+    ] * (not os.environ.get("AMULET_SKIP_COMPILE", None))
 
 
 def get_runtime_dependencies() -> list[str]:

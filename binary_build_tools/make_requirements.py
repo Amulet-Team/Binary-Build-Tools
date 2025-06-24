@@ -99,7 +99,7 @@ def get_build_dependencies() -> list:
     for lib in dependencies
 )    
 }
-    ]
+    ] * (not os.environ.get("AMULET_SKIP_COMPILE", None))
 
 
 def get_runtime_dependencies() -> list[str]:

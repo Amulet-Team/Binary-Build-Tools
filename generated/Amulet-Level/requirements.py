@@ -155,7 +155,7 @@ def get_build_dependencies() -> list:
         f"amulet-core{AMULET_CORE_REQUIREMENT}",
         f"amulet-game{AMULET_GAME_REQUIREMENT}",
         f"amulet-anvil{AMULET_ANVIL_REQUIREMENT}",
-    ]
+    ] * (not os.environ.get("AMULET_SKIP_COMPILE", None))
 
 
 def get_runtime_dependencies() -> list[str]:
