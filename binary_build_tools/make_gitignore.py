@@ -146,6 +146,8 @@ venv*
 /install
 .vs
 *.dll
+*.so
+*.dylib
 *.lib
 *.exp
 *.pdb
