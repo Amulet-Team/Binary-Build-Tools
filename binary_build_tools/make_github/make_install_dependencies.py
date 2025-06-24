@@ -146,8 +146,8 @@ runs:
         python -c "import sys; sys.path.append(r'${{{{ github.action_path }}}}'); import dependency_resolver; import requirements; dependency_resolver.find_and_save_compatible_libraries([{", ".join(f"('{lib.pypi_name}', '{lib.org_name}/{lib.repo_name}')" for lib in shared_libs)}], requirements.get_runtime_dependencies())"{
 "".join(
     f"""
-        {lib.short_var_name.replace("_", "-")}=$(python -c "import os; f = open(os.path.join(r'${{{{ github.action_path }}}}', 'libraries.json'), encoding='utf-8'); import json; print(json.load(f)['{lib.pypi_name}'])")
-        echo "{lib.short_var_name.replace("_", "-")}=${lib.short_var_name.replace("_", "-")}" >> "$GITHUB_OUTPUT"\
+        {lib.short_var_name}=$(python -c "import os; f = open(os.path.join(r'${{{{ github.action_path }}}}', 'libraries.json'), encoding='utf-8'); import json; print(json.load(f)['{lib.pypi_name}'])")
+        echo "{lib.short_var_name}=${lib.short_var_name}" >> "$GITHUB_OUTPUT"\
 """
     for lib in dependencies
 )
@@ -159,8 +159,8 @@ runs:
       run: |{
 "".join(
     f"""
-        {lib.short_var_name.replace("_", "-")}=$(python -c "import requirements; print(requirements.get_specifier_set('${{{{ steps.dep.outputs.{lib.short_var_name.replace("_", "-")} }}}}'))")
-        echo "{lib.short_var_name.replace("_", "-")}=${lib.short_var_name.replace("_", "-")}" >> "$GITHUB_OUTPUT"\
+        {lib.short_var_name}=$(python -c "import requirements; print(requirements.get_specifier_set('${{{{ steps.dep.outputs.{lib.short_var_name} }}}}'))")
+        echo "{lib.short_var_name}=${lib.short_var_name}" >> "$GITHUB_OUTPUT"\
 """
     for lib in dependencies
 )
@@ -173,7 +173,7 @@ runs:
       uses: Amulet-Team/checkout-pep440@v1
       with:
         repository: '{lib.org_name}/{lib.repo_name}'
-        specifier: '==${{{{ steps.dep.outputs.{lib.short_var_name.replace("_", "-")} }}}}'
+        specifier: '==${{{{ steps.dep.outputs.{lib.short_var_name} }}}}'
         path: 'build/pylib/{lib.repo_name}'
         rest-token: ${{{{ inputs.rest-token }}}}
 
@@ -185,11 +185,11 @@ runs:
         compiler-specifier: '==${{{{ steps.compiler.outputs.version }}}}'{
 "".join(
     f"""
-        {lib2.short_var_name.replace("_", "-")}-specifier: ${{{{ steps.dep2.outputs.{lib2.short_var_name.replace("_", "-")} }}}}\
+        {lib2.short_var_name.replace("_", "-")}-specifier: ${{{{ steps.dep2.outputs.{lib2.short_var_name} }}}}\
 """ for lib2 in get_library_dependencies(lib.pypi_name)
 )
         }
-        {lib.short_var_name.replace("_", "-")}-specifier: ${{{{ steps.dep2.outputs.{lib.short_var_name.replace("_", "-")} }}}}
+        {lib.short_var_name.replace("_", "-")}-specifier: ${{{{ steps.dep2.outputs.{lib.short_var_name} }}}}
 """
     for lib in shared_libs
 )
