@@ -18,6 +18,7 @@ from . import (
     make_tools,
     make_cmakelists,
     make_github,
+    make_requirements,
 )
 
 
@@ -31,6 +32,7 @@ def write(project_path: str, library_data: LibraryData) -> None:
     make_setup.write(project_path, library_data)
     make_pyproject.write(project_path, library_data)
     make_cmakelists.write(project_path, library_data)
+    make_requirements.write(project_path, library_data)
 
     package_path = os.path.join(
         project_path, "src", *library_data.import_name.split(".")
