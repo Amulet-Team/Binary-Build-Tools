@@ -142,8 +142,7 @@ venv*
 .mypy_cache/
 
 # Visual Studio
-/src/sln
-/install
+/install/
 .vs
 *.dll
 *.so
