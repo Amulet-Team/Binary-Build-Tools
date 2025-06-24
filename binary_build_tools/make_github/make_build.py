@@ -73,7 +73,11 @@ jobs:
 
     steps:
     - name: Clone
-      uses: actions/checkout@v4
+      uses: actions/checkout@v4{
+"""
+      with:
+        submodules: 'true'""" * library_data.has_submodules
+}
 
     - name: Install dependencies
       uses: ./.github/actions/install-dependencies
