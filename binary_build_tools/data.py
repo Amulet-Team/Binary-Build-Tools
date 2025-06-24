@@ -185,6 +185,7 @@ AmuletUtils = LibraryData(
         PyBind11.pypi_name,
         PyBind11Extensions.pypi_name,
     ),
+    runtime_dependencies=(Platformdirs.pypi_name,),
     test_dependencies=(
         PyBind11.pypi_name,
         PyBind11Extensions.pypi_name,
@@ -413,7 +414,7 @@ shared_libraries: list[LibraryData] = [
     AmuletResourcePack,
 ]
 
-python_libraries: list[LibraryData] = [Numpy, Pillow]
+python_libraries: list[LibraryData] = [Numpy, Pillow, Platformdirs]
 
 libraries: dict[str, LibraryData] = {
     lib.pypi_name: lib
