@@ -20,8 +20,8 @@ endif()
 # Find dependencies
 find_package(pybind11 CONFIG REQUIRED)
 find_package(amulet_pybind11_extensions CONFIG REQUIRED)
-find_package(amulet_core CONFIG REQUIRED)
 find_package(amulet_test_utils CONFIG REQUIRED)
+find_package(amulet_core CONFIG REQUIRED)
 
 # Find sources
 file(GLOB_RECURSE SOURCES LIST_DIRECTORIES false "${CMAKE_CURRENT_LIST_DIR}/*.py.cpp")

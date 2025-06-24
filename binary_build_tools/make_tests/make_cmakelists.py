@@ -1,6 +1,6 @@
 import os
 
-from binary_build_tools.data import LibraryData
+from binary_build_tools.data import LibraryData, libraries, library_order
 
 
 def write(tests_path: str, library_data: LibraryData) -> None:
@@ -25,11 +25,13 @@ else()
     set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 endif()
 
-# Find dependencies
-find_package(pybind11 CONFIG REQUIRED)
-find_package(amulet_pybind11_extensions CONFIG REQUIRED)
-find_package({library_data.lib_name} CONFIG REQUIRED)
-find_package(amulet_test_utils CONFIG REQUIRED)
+# Find dependencies{
+"".join(
+    f"""
+find_package({libraries[lib_name].cmake_package} CONFIG REQUIRED)"""
+    for lib_name in sorted(library_data.test_dependencies + (library_data.pypi_name,), key=library_order.__getitem__)
+)
+}
 
 # Find sources
 file(GLOB_RECURSE SOURCES LIST_DIRECTORIES false "${{CMAKE_CURRENT_LIST_DIR}}/*.py.cpp")
