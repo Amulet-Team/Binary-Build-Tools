@@ -40,10 +40,14 @@ pybind11_add_module(_test_{library_data.var_name})
 target_compile_definitions(_test_{library_data.var_name} PRIVATE PYBIND11_DETAILED_ERROR_MESSAGES)
 target_compile_definitions(_test_{library_data.var_name} PRIVATE PYBIND11_VERSION="${{pybind11_VERSION}}")
 target_compile_definitions(_test_{library_data.var_name} PRIVATE COMPILER_ID="${{CMAKE_CXX_COMPILER_ID}}")
-target_compile_definitions(_test_{library_data.var_name} PRIVATE COMPILER_VERSION="${{CMAKE_CXX_COMPILER_VERSION}}")
-target_link_libraries(_test_{library_data.var_name} PRIVATE amulet_pybind11_extensions)
-target_link_libraries(_test_{library_data.var_name} PRIVATE {library_data.lib_name})
-target_link_libraries(_test_{library_data.var_name} PRIVATE amulet_test_utils)
+target_compile_definitions(_test_{library_data.var_name} PRIVATE COMPILER_VERSION="${{CMAKE_CXX_COMPILER_VERSION}}"){
+"".join(
+    f"""
+target_link_libraries(_test_{library_data.var_name} PRIVATE {libraries[lib_name].cmake_lib_name})"""
+    for lib_name in sorted(library_data.test_dependencies + (library_data.pypi_name,), key=library_order.__getitem__)
+    if lib_name != "pybind11"
+)
+}
 target_sources(_test_{library_data.var_name} PRIVATE ${{SOURCES}})
 foreach(FILE ${{SOURCES}})
     file(RELATIVE_PATH REL_PATH ${{CMAKE_CURRENT_LIST_DIR}} ${{FILE}})
