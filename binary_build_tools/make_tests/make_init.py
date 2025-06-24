@@ -14,9 +14,9 @@ def write(test_package_path: str, library_data: LibraryData) -> None:
     )
 
 
-import faulthandler
+import faulthandler as _faulthandler
 
-faulthandler.enable()
+_faulthandler.enable()
 
 
 def _init() -> None:

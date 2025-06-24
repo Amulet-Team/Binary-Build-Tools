@@ -19,14 +19,14 @@ def write(package_path: str, library_data: LibraryData) -> None:
 
     with open(os.path.join(package_path, "__init__.py"), "w", encoding="utf-8") as f:
         f.write(
-            f"""import logging
+            f"""import logging as _logging
 
 from . import _version
 
 __version__ = _version.get_versions()["version"]
 
 # init a default logger
-logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
+_logging.basicConfig(level=_logging.INFO, format="%(levelname)s - %(message)s")
 
 
 def _init() -> None:

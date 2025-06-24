@@ -4,9 +4,9 @@ if __name__ != "test_amulet_level":
     )
 
 
-import faulthandler
+import faulthandler as _faulthandler
 
-faulthandler.enable()
+_faulthandler.enable()
 
 
 def _init() -> None:
