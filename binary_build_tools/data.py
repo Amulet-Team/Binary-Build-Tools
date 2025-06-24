@@ -323,7 +323,10 @@ AmuletResourcePack = LibraryData(
     ext_name="_amulet_resource_pack",
     library_type=LibraryType.Shared,
     private_dependencies=(),
-    public_dependencies=(AmuletUtils.pypi_name,),
+    public_dependencies=(
+        AmuletUtils.pypi_name,
+        AmuletCore.pypi_name,
+    ),
     runtime_dependencies=(),
     ext_dependencies=(
         PyBind11.pypi_name,

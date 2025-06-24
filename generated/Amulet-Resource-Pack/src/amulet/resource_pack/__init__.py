@@ -26,6 +26,7 @@ def _init() -> None:
 
     # Import dependencies
     import amulet.utils
+    import amulet.core
 
     # Load the shared library
     ctypes.cdll.LoadLibrary(lib_path)

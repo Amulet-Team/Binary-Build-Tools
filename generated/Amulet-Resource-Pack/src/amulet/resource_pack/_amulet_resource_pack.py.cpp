@@ -9,6 +9,7 @@ void init_module(py::module m)
 {
     pyext::init_compiler_config(m);
     pyext::check_compatibility(py::module::import("amulet.utils"), m);
+    pyext::check_compatibility(py::module::import("amulet.core"), m);
 }
 
 PYBIND11_MODULE(_amulet_resource_pack, m)

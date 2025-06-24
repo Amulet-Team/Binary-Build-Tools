@@ -7,6 +7,7 @@ import pybind11
 import amulet.pybind11_extensions
 import amulet.test_utils
 import amulet.utils
+import amulet.core
 
 
 def fix_path(path: str) -> str:
@@ -40,6 +41,7 @@ def main():
             f"-Damulet_pybind11_extensions_DIR={fix_path(amulet.pybind11_extensions.__path__[0])}",
             f"-Damulet_test_utils_DIR={fix_path(amulet.test_utils.__path__[0])}",
             f"-Damulet_utils_DIR={fix_path(amulet.utils.__path__[0])}",
+            f"-Damulet_core_DIR={fix_path(amulet.core.__path__[0])}",
             f"-Damulet_resource_pack_DIR={fix_path(os.path.join(RootDir, 'src', 'amulet', 'resource_pack'))}",
             f"-DCMAKE_INSTALL_PREFIX=install",
             f"-DBUILD_AMULET_RESOURCE_PACK_TESTS=",
