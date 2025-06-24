@@ -215,7 +215,7 @@ AmuletZlib = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletZlib",
-    specifier=SpecifierSet("~=1.0.0.0a3"),
+    specifier=SpecifierSet("~=1.0.0.0a4"),
 )
 AmuletNBT = LibraryData(
     pypi_name="amulet-nbt",
