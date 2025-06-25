@@ -270,7 +270,7 @@ AmuletCore = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletCore",
-    specifier=SpecifierSet("~=2.0.3.0a0"),
+    specifier=SpecifierSet("~=2.0.3.0a1"),
 )
 AmuletGame = LibraryData(
     pypi_name="amulet-game",
