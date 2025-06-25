@@ -9,6 +9,9 @@ def write(project_path: str, library_data: LibraryData) -> None:
             f"""include build_requires.py
 include requirements.py
 
+include get_compiler/CMakeLists.txt
+include get_compiler/__init__.py
+
 recursive-include src/{library_data.root_import_name} *.cpp *.hpp *Config.cmake
 
 include CMakeLists.txt

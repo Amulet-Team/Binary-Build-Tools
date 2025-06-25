@@ -38,8 +38,8 @@ def write(project_path: str, library_data: LibraryData) -> None:
         os.path.join(project_path, "requirements.py"), "w", encoding="utf-8"
     ) as f:
         f.write(
-            f'''import os
-import amulet_compiler_version
+            f'''\
+import os
 from packaging.version import Version
 
 AMULET_COMPILER_TARGET_REQUIREMENT = "==2.0"
@@ -75,7 +75,9 @@ def get_specifier_set(version_str: str) -> str:
 
 
 if os.environ.get("AMULET_FREEZE_COMPILER", None):
-    AMULET_COMPILER_VERSION_REQUIREMENT = f"=={{amulet_compiler_version.__version__}}"{
+    import get_compiler
+
+    AMULET_COMPILER_VERSION_REQUIREMENT = get_compiler.main(){
 "".join(
     f"""
 
