@@ -4,6 +4,7 @@ import sys
 from pathlib import Path
 import platform
 import datetime
+from tempfile import TemporaryDirectory
 
 from setuptools import setup, Extension, Command
 from setuptools.command.build_ext import build_ext
@@ -62,34 +63,35 @@ class CMakeBuild(cmdclass.get("build_ext", build_ext)):
 
         if subprocess.run(["cmake", "--version"]).returncode:
             raise RuntimeError("Could not find cmake")
-        if subprocess.run(
-            [
-                "cmake",
-                *platform_args,
-                f"-DPYTHON_EXECUTABLE={sys.executable}",
-                f"-Dpybind11_DIR={fix_path(pybind11.get_cmake_dir())}",
-                f"-Damulet_pybind11_extensions_DIR={fix_path(amulet.pybind11_extensions.__path__[0])}",
-                f"-Damulet_io_DIR={fix_path(amulet.io.__path__[0])}",
-                f"-Damulet_utils_DIR={fix_path(amulet.utils.__path__[0])}",
-                f"-Damulet_zlib_DIR={fix_path(amulet.zlib.__path__[0])}",
-                f"-Damulet_nbt_DIR={fix_path(amulet.nbt.__path__[0])}",
-                f"-Damulet_core_DIR={fix_path(amulet.core.__path__[0])}",
-                f"-Damulet_anvil_DIR={fix_path(anvil_src_dir)}",
-                f"-DAMULET_ANVIL_EXT_DIR={fix_path(ext_dir)}",
-                f"-DCMAKE_INSTALL_PREFIX=install",
-                "-B",
-                "build",
-            ]
-        ).returncode:
-            raise RuntimeError("Error configuring amulet-anvil")
-        if subprocess.run(
-            ["cmake", "--build", "build", "--config", "Release"]
-        ).returncode:
-            raise RuntimeError("Error building amulet-anvil")
-        if subprocess.run(
-            ["cmake", "--install", "build", "--config", "Release"]
-        ).returncode:
-            raise RuntimeError("Error installing amulet-anvil")
+        with TemporaryDirectory() as tempdir:
+            if subprocess.run(
+                [
+                    "cmake",
+                    *platform_args,
+                    f"-DPYTHON_EXECUTABLE={sys.executable}",
+                    f"-Dpybind11_DIR={fix_path(pybind11.get_cmake_dir())}",
+                    f"-Damulet_pybind11_extensions_DIR={fix_path(amulet.pybind11_extensions.__path__[0])}",
+                    f"-Damulet_io_DIR={fix_path(amulet.io.__path__[0])}",
+                    f"-Damulet_utils_DIR={fix_path(amulet.utils.__path__[0])}",
+                    f"-Damulet_zlib_DIR={fix_path(amulet.zlib.__path__[0])}",
+                    f"-Damulet_nbt_DIR={fix_path(amulet.nbt.__path__[0])}",
+                    f"-Damulet_core_DIR={fix_path(amulet.core.__path__[0])}",
+                    f"-Damulet_anvil_DIR={fix_path(anvil_src_dir)}",
+                    f"-DAMULET_ANVIL_EXT_DIR={fix_path(ext_dir)}",
+                    f"-DCMAKE_INSTALL_PREFIX=install",
+                    "-B",
+                    tempdir,
+                ]
+            ).returncode:
+                raise RuntimeError("Error configuring amulet-anvil")
+            if subprocess.run(
+                ["cmake", "--build", tempdir, "--config", "Release"]
+            ).returncode:
+                raise RuntimeError("Error building amulet-anvil")
+            if subprocess.run(
+                ["cmake", "--install", tempdir, "--config", "Release"]
+            ).returncode:
+                raise RuntimeError("Error installing amulet-anvil")
 
 
 cmdclass["build_ext"] = CMakeBuild

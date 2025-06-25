@@ -24,6 +24,7 @@ import sys
 from pathlib import Path
 import platform
 import datetime
+from tempfile import TemporaryDirectory
 
 from setuptools import setup, Extension, Command
 from setuptools.command.build_ext import build_ext
@@ -70,32 +71,35 @@ class CMakeBuild(cmdclass.get("build_ext", build_ext)):
 
         if subprocess.run(["cmake", "--version"]).returncode:
             raise RuntimeError("Could not find cmake")
-        if subprocess.run(
-            [
-                "cmake",
-                *platform_args,
-                f"-DPYTHON_EXECUTABLE={{sys.executable}}",
-                {"\n                ".join(
-                    'f"-Dpybind11_DIR={fix_path(pybind11.get_cmake_dir())}",'
-                    if lib.pypi_name == "pybind11" else
-                    f'f"-D{lib.cmake_package}_DIR={{fix_path({lib.import_name}.__path__[0])}}",' for lib in dependencies
-                )}
-                f"-D{library_data.cmake_package}_DIR={{fix_path({library_data.short_var_name}_src_dir)}}",
-                f"-D{library_data.import_name.replace(".", "_").upper()}_EXT_DIR={{fix_path(ext_dir)}}",
-                f"-DCMAKE_INSTALL_PREFIX=install",
-                "-B",
-                "build",
-            ]
-        ).returncode:
-            raise RuntimeError("Error configuring {library_data.pypi_name}")
-        if subprocess.run(
-            ["cmake", "--build", "build", "--config", "Release"]
-        ).returncode:
-            raise RuntimeError("Error building {library_data.pypi_name}")
-        if subprocess.run(
-            ["cmake", "--install", "build", "--config", "Release"]
-        ).returncode:
-            raise RuntimeError("Error installing {library_data.pypi_name}")
+        with TemporaryDirectory() as tempdir:
+            if subprocess.run(
+                [
+                    "cmake",
+                    *platform_args,
+                    f"-DPYTHON_EXECUTABLE={{sys.executable}}",
+                    {"".join(
+                        """
+                    f"-Dpybind11_DIR={fix_path(pybind11.get_cmake_dir())}","""
+                        if lib.pypi_name == "pybind11" else
+                        f"""
+                    f"-D{lib.cmake_package}_DIR={{fix_path({lib.import_name}.__path__[0])}}",""" for lib in dependencies
+                    )}
+                    f"-D{library_data.cmake_package}_DIR={{fix_path({library_data.short_var_name}_src_dir)}}",
+                    f"-D{library_data.import_name.replace(".", "_").upper()}_EXT_DIR={{fix_path(ext_dir)}}",
+                    f"-DCMAKE_INSTALL_PREFIX=install",
+                    "-B",
+                    tempdir,
+                ]
+            ).returncode:
+                raise RuntimeError("Error configuring {library_data.pypi_name}")
+            if subprocess.run(
+                ["cmake", "--build", tempdir, "--config", "Release"]
+            ).returncode:
+                raise RuntimeError("Error building {library_data.pypi_name}")
+            if subprocess.run(
+                ["cmake", "--install", tempdir, "--config", "Release"]
+            ).returncode:
+                raise RuntimeError("Error installing {library_data.pypi_name}")
 
 
 cmdclass["build_ext"] = CMakeBuild
