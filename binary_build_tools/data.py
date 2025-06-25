@@ -243,7 +243,7 @@ AmuletNBT = LibraryData(
         PyBind11Extensions.pypi_name,
     ),
     export_symbol="ExportAmuletNBT",
-    specifier=SpecifierSet("~=5.0.0.0a4"),
+    specifier=SpecifierSet("~=5.0.0.0a6"),
 )
 AmuletCore = LibraryData(
     pypi_name="amulet-core",
