@@ -143,7 +143,7 @@ runs:
       env:
         REST_TOKEN: ${{{{ inputs.rest-token }}}}
       run: |
-        python -c "import sys; sys.path.append(r'${{{{ github.action_path }}}}'); import dependency_resolver; import requirements; dependency_resolver.find_and_save_compatible_libraries([{", ".join(f"('{lib.pypi_name}', '{lib.org_name}/{lib.repo_name}')" for lib in shared_libs)}], requirements.get_runtime_dependencies())"{
+        python -c "import sys; sys.path.append(r'${{{{ github.action_path }}}}'); import dependency_resolver; import requirements; dependency_resolver.find_and_save_compatible_libraries([{", ".join(f"('{lib.pypi_name}', '{lib.org_name}/{lib.repo_name}')" for lib in reversed(shared_libs))}], requirements.get_runtime_dependencies())"{
 "".join(
     f"""
         {lib.short_var_name}=$(python -c "import os; f = open(os.path.join(r'${{{{ github.action_path }}}}', 'libraries.json'), encoding='utf-8'); import json; print(json.load(f)['{lib.pypi_name}'])")
