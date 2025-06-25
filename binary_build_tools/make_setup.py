@@ -91,7 +91,7 @@ class CMakeBuild(cmdclass.get("build_ext", build_ext)):
         if subprocess.run(
             ["cmake", "--build", "build", "--config", "Release"]
         ).returncode:
-            raise RuntimeError("Error installing {library_data.pypi_name}")
+            raise RuntimeError("Error building {library_data.pypi_name}")
         if subprocess.run(
             ["cmake", "--install", "build", "--config", "Release"]
         ).returncode:

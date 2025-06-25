@@ -75,7 +75,7 @@ class CMakeBuild(cmdclass.get("build_ext", build_ext)):
         if subprocess.run(
             ["cmake", "--build", "build", "--config", "Release"]
         ).returncode:
-            raise RuntimeError("Error installing amulet-zlib")
+            raise RuntimeError("Error building amulet-zlib")
         if subprocess.run(
             ["cmake", "--install", "build", "--config", "Release"]
         ).returncode:

@@ -66,7 +66,7 @@ def main() -> None:
     if subprocess.run(
         ["cmake", "--build", "build", "--config", "RelWithDebInfo"]
     ).returncode:
-        raise RuntimeError("Error installing test-{library_data.pypi_name}")
+        raise RuntimeError("Error building test-{library_data.pypi_name}")
     if subprocess.run(
         ["cmake", "--install", "build", "--config", "RelWithDebInfo"]
     ).returncode:

@@ -58,7 +58,7 @@ def main() -> None:
     if subprocess.run(
         ["cmake", "--build", "build", "--config", "RelWithDebInfo"]
     ).returncode:
-        raise RuntimeError("Error installing test-amulet-anvil")
+        raise RuntimeError("Error building test-amulet-anvil")
     if subprocess.run(
         ["cmake", "--install", "build", "--config", "RelWithDebInfo"]
     ).returncode:
