@@ -1,36 +1,9 @@
 import os
 
-from .data import LibraryData, libraries, library_order, LibraryType
+from .data import LibraryData, LibraryType, find_dependencies
 
 
 def write(project_path: str, library_data: LibraryData) -> None:
-    # find all shared dependencies recursively
-    lib_names: set[str] = set()
-    lib_names_todo: set[str] = set(
-        library_data.private_dependencies
-        + library_data.public_dependencies
-        + library_data.ext_dependencies
-    )
-
-    while lib_names_todo:
-        lib_name = lib_names_todo.pop()
-        if lib_name in lib_names:
-            continue
-        lib_names.add(lib_name)
-        lib = libraries[lib_name]
-        lib_names_todo.update(
-            lib.private_dependencies + lib.public_dependencies + lib.ext_dependencies
-        )
-
-    dependencies: tuple[LibraryData, ...] = tuple(
-        libraries[pypi_name]
-        for pypi_name in sorted(lib_names, key=library_order.__getitem__)
-    )
-
-    shared_libs: tuple[LibraryData, ...] = tuple(
-        lib for lib in dependencies if lib.library_type == LibraryType.Shared
-    )
-
     with open(os.path.join(project_path, ".gitignore"), "w", encoding="utf-8") as f:
         f.write(
             f"""# Byte-compiled / optimized / DLL files
@@ -155,5 +128,18 @@ venv*
 /{library_data.import_name.replace(".", "_")}-*
 """
         )
-        if shared_libs:
+        if any(
+            lib.library_type == LibraryType.Shared
+            for lib in find_dependencies(
+                library_data.pypi_name,
+                True,
+                True,
+                True,
+                False,
+                True,
+                True,
+                True,
+                False,
+            )
+        ):
             f.write("/.github/actions/install-dependencies/*.json\n")

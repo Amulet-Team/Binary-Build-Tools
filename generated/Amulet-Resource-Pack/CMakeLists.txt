@@ -24,7 +24,9 @@ endif()
 # Find libraries
 find_package(pybind11 CONFIG REQUIRED)
 find_package(amulet_pybind11_extensions CONFIG REQUIRED)
+find_package(amulet_io CONFIG REQUIRED)
 find_package(amulet_utils CONFIG REQUIRED)
+find_package(amulet_nbt CONFIG REQUIRED)
 find_package(amulet_core CONFIG REQUIRED)
 
 # Find C++ files
@@ -39,7 +41,11 @@ list(REMOVE_ITEM HEADERS ${EXTENSION_HEADERS})
 # Add implementation
 add_library(amulet_resource_pack SHARED)
 target_compile_definitions(amulet_resource_pack PRIVATE ExportAmuletResourcePack)
+target_link_libraries(amulet_resource_pack PUBLIC pybind11::module)
+target_link_libraries(amulet_resource_pack PUBLIC amulet_pybind11_extensions)
+target_link_libraries(amulet_resource_pack PUBLIC amulet_io)
 target_link_libraries(amulet_resource_pack PUBLIC amulet_utils)
+target_link_libraries(amulet_resource_pack PUBLIC amulet_nbt)
 target_link_libraries(amulet_resource_pack PUBLIC amulet_core)
 target_include_directories(amulet_resource_pack PUBLIC ${SOURCE_PATH})
 target_sources(amulet_resource_pack PRIVATE ${SOURCES} ${HEADERS})

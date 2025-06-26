@@ -45,6 +45,8 @@ list(REMOVE_ITEM HEADERS ${EXTENSION_HEADERS})
 # Add implementation
 add_library(amulet_level SHARED)
 target_compile_definitions(amulet_level PRIVATE ExportAmuletLevel)
+target_link_libraries(amulet_level PUBLIC pybind11::module)
+target_link_libraries(amulet_level PUBLIC amulet_pybind11_extensions)
 target_link_libraries(amulet_level PUBLIC amulet_io)
 target_link_libraries(amulet_level PUBLIC leveldb_mcpe)
 target_link_libraries(amulet_level PUBLIC amulet_utils)

@@ -4,7 +4,9 @@ import os
 def write(project_path: str) -> None:
     get_compiler_path = os.path.join(project_path, "get_compiler")
     os.makedirs(get_compiler_path, exist_ok=True)
-    with open(os.path.join(get_compiler_path, "__init__.py"), "w", encoding="utf-8") as f:
+    with open(
+        os.path.join(get_compiler_path, "__init__.py"), "w", encoding="utf-8"
+    ) as f:
         f.write(
             f"""\
 import os
@@ -42,7 +44,9 @@ def main() -> str:
 """
         )
 
-    with open(os.path.join(get_compiler_path, "CMakeLists.txt"), "w", encoding="utf-8") as f:
+    with open(
+        os.path.join(get_compiler_path, "CMakeLists.txt"), "w", encoding="utf-8"
+    ) as f:
         f.write(
             f"""\
 cmake_minimum_required(VERSION 3.13)

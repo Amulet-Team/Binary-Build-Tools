@@ -1,44 +1,19 @@
 import os
 
-from binary_build_tools.data import LibraryData, libraries, library_order, LibraryType
+from binary_build_tools.data import LibraryData, LibraryType, find_dependencies
 
 
 def write(workflows_path: str, library_data: LibraryData) -> None:
-    library_dependencies: dict[str, tuple[LibraryData, ...]] = {}
-
-    def get_library_dependencies(pypi_name: str) -> tuple[LibraryData, ...]:
-        if pypi_name not in library_dependencies:
-            root_lib = libraries[pypi_name]
-
-            # find all shared dependencies recursively
-            lib_names: set[str] = set()
-            lib_names_todo: set[str] = set(
-                root_lib.private_dependencies
-                + root_lib.public_dependencies
-                + root_lib.ext_dependencies
-            )
-
-            while lib_names_todo:
-                lib_name = lib_names_todo.pop()
-                if lib_name in lib_names:
-                    continue
-                lib_names.add(lib_name)
-                lib = libraries[lib_name]
-                lib_names_todo.update(
-                    lib.private_dependencies
-                    + lib.public_dependencies
-                    + lib.ext_dependencies
-                )
-
-            library_dependencies[pypi_name] = tuple(
-                libraries[pypi_name]
-                for pypi_name in sorted(lib_names, key=library_order.__getitem__)
-            )
-
-        return library_dependencies[pypi_name]
-
-    dependencies: tuple[LibraryData, ...] = get_library_dependencies(
-        library_data.pypi_name
+    dependencies = find_dependencies(
+        library_data.pypi_name,
+        True,
+        True,
+        True,
+        False,
+        True,
+        True,
+        True,
+        False,
     )
 
     shared_libs: tuple[LibraryData, ...] = tuple(

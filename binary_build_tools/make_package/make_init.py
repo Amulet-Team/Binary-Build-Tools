@@ -1,21 +1,24 @@
 import os
 
-from binary_build_tools.data import LibraryData, libraries, library_order, LibraryType
+from binary_build_tools.data import LibraryData, LibraryType, find_dependencies
 
 
 def write(package_path: str, library_data: LibraryData) -> None:
-    dependencies: list[LibraryData] = [
-        libraries[pypi_name]
-        for pypi_name in sorted(
-            set(
-                library_data.private_dependencies
-                + library_data.public_dependencies
-                + library_data.ext_dependencies
-            ),
-            key=library_order.__getitem__,
+    dependencies = tuple(
+        lib
+        for lib in find_dependencies(
+            library_data.pypi_name,
+            True,
+            True,
+            True,
+            False,
+            True,
+            True,
+            True,
+            False,
         )
-        if libraries[pypi_name].library_type == LibraryType.Shared
-    ]
+        if lib.library_type == LibraryType.Shared
+    )
 
     with open(os.path.join(package_path, "__init__.py"), "w", encoding="utf-8") as f:
         f.write(

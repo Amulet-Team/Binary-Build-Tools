@@ -26,6 +26,8 @@ def _init() -> None:
 
     # Import dependencies
     import amulet.utils
+    import amulet.zlib
+    import amulet.nbt
     import amulet.core
 
     # Load the shared library

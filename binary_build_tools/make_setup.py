@@ -1,20 +1,20 @@
 import os
 
-from .data import LibraryData, libraries, library_order
+from .data import LibraryData, find_dependencies
 
 
 def write(project_path: str, library_data: LibraryData) -> None:
-    dependencies: list[LibraryData] = [
-        libraries[pypi_name]
-        for pypi_name in sorted(
-            set(
-                library_data.private_dependencies
-                + library_data.public_dependencies
-                + library_data.ext_dependencies
-            ),
-            key=library_order.__getitem__,
-        )
-    ]
+    dependencies = find_dependencies(
+        library_data.pypi_name,
+        True,
+        True,
+        True,
+        False,
+        False,
+        True,
+        False,
+        False,
+    )
 
     with open(os.path.join(project_path, "setup.py"), "w", encoding="utf-8") as f:
         f.write(

@@ -1,30 +1,19 @@
 import os
 
-from .data import LibraryData, libraries, library_order
+from .data import LibraryData, libraries, library_order, find_dependencies
 
 
 def write(project_path: str, library_data: LibraryData) -> None:
-    # find all shared dependencies recursively
-    lib_names: set[str] = set()
-    lib_names_todo: set[str] = set(
-        library_data.private_dependencies
-        + library_data.public_dependencies
-        + library_data.ext_dependencies
-    )
-
-    while lib_names_todo:
-        lib_name = lib_names_todo.pop()
-        if lib_name in lib_names:
-            continue
-        lib_names.add(lib_name)
-        lib = libraries[lib_name]
-        lib_names_todo.update(
-            lib.private_dependencies + lib.public_dependencies + lib.ext_dependencies
-        )
-
-    dependencies: tuple[LibraryData, ...] = tuple(
-        libraries[pypi_name]
-        for pypi_name in sorted(lib_names, key=library_order.__getitem__)
+    dependencies = find_dependencies(
+        library_data.pypi_name,
+        True,
+        True,
+        True,
+        False,
+        True,
+        True,
+        True,
+        False,
     )
 
     py_dependencies: tuple[LibraryData, ...] = tuple(

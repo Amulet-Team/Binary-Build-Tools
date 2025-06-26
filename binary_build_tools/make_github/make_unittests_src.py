@@ -1,37 +1,23 @@
 import os
 
-from binary_build_tools.data import LibraryData, libraries, library_order, LibraryType
+from binary_build_tools.data import LibraryData, LibraryType, find_dependencies
 
 
 def write(actions_path: str, library_data: LibraryData) -> None:
-    # find all shared dependencies recursively
-    lib_names: set[str] = set()
-    lib_names_todo: set[str] = set(
-        library_data.private_dependencies
-        + library_data.public_dependencies
-        + library_data.ext_dependencies
-    )
-
-    while lib_names_todo:
-        lib_name = lib_names_todo.pop()
-        if lib_name in lib_names:
-            continue
-        lib_names.add(lib_name)
-        lib = libraries[lib_name]
-        lib_names_todo.update(
-            lib.private_dependencies + lib.public_dependencies + lib.ext_dependencies
+    if not any(
+        lib.library_type == LibraryType.Shared
+        for lib in find_dependencies(
+            library_data.pypi_name,
+            True,
+            True,
+            True,
+            False,
+            True,
+            True,
+            True,
+            False,
         )
-
-    dependencies: tuple[LibraryData, ...] = tuple(
-        libraries[pypi_name]
-        for pypi_name in sorted(lib_names, key=library_order.__getitem__)
-    )
-
-    shared_libs: tuple[LibraryData, ...] = tuple(
-        lib for lib in dependencies if lib.library_type == LibraryType.Shared
-    )
-
-    if not shared_libs:
+    ):
         return
 
     action_dir = os.path.join(actions_path, "unittests-src")

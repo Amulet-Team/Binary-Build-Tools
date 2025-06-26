@@ -1,38 +1,51 @@
 import os
 
-from .data import LibraryData, libraries, library_order
+from .data import LibraryData, libraries, library_order, find_dependencies
 
 
 def write(project_path: str, library_data: LibraryData) -> None:
-    found_dependencies: set[str] = set()
-    lib_dependencies: list[tuple[LibraryData, bool]] = []
-    for pypi_name in library_data.public_dependencies:
-        if pypi_name in found_dependencies:
-            continue
-        lib_dependencies.append((libraries[pypi_name], True))
-    for pypi_name in library_data.private_dependencies:
-        if pypi_name in found_dependencies:
-            continue
-        lib_dependencies.append((libraries[pypi_name], False))
-    lib_dependencies = sorted(
-        lib_dependencies, key=lambda l: library_order[l[0].pypi_name]
+    all_dependencies = find_dependencies(
+        library_data.pypi_name,
+        True,
+        True,
+        True,
+        False,
+        False,
+        True,
+        False,
+        False,
     )
 
-    all_dependencies: list[LibraryData] = [
-        libraries[pypi_name]
-        for pypi_name in sorted(
-            set(
-                library_data.private_dependencies
-                + library_data.public_dependencies
-                + library_data.ext_dependencies
-            ),
-            key=library_order.__getitem__,
+    lib_dependencies = find_dependencies(
+        library_data.pypi_name,
+        True,
+        True,
+        False,
+        False,
+        False,
+        True,
+        False,
+        False,
+    )
+
+    lib_public_dependencies = set(
+        find_dependencies(
+            library_data.pypi_name,
+            False,
+            True,
+            False,
+            False,
+            False,
+            True,
+            False,
+            False,
         )
-    ]
+    )
 
     with open(os.path.join(project_path, "CMakeLists.txt"), "w", encoding="utf-8") as f:
         f.write(
-            f"""cmake_minimum_required(VERSION 3.13)
+            f"""\
+cmake_minimum_required(VERSION 3.13)
 
 project({library_data.cmake_package} LANGUAGES CXX)
 
@@ -72,8 +85,8 @@ list(REMOVE_ITEM HEADERS ${{EXTENSION_HEADERS}})
 add_library({library_data.lib_name} SHARED)
 target_compile_definitions({library_data.lib_name} PRIVATE {library_data.export_symbol}){
     "".join(
-        f"\ntarget_link_libraries({library_data.lib_name} {"PUBLIC" if public else "PRIVATE"} {lib.cmake_lib_name})"
-        for lib, public in lib_dependencies
+        f"\ntarget_link_libraries({library_data.lib_name} {"PUBLIC" if lib in lib_public_dependencies else "PRIVATE"} {lib.cmake_lib_name})"
+        for lib in lib_dependencies
     )
 }
 target_include_directories({library_data.lib_name} PUBLIC ${{SOURCE_PATH}})

@@ -1,16 +1,25 @@
 import os
 
-from binary_build_tools.data import LibraryData, libraries, library_order
+from binary_build_tools.data import (
+    LibraryData,
+    libraries,
+    library_order,
+    find_dependencies,
+)
 
 
 def write(tools_path: str, library_data: LibraryData) -> None:
-    dependencies: list[LibraryData] = [
-        libraries[pypi_name]
-        for pypi_name in sorted(
-            set(library_data.public_dependencies + library_data.test_dependencies),
-            key=library_order.__getitem__,
-        )
-    ]
+    dependencies = find_dependencies(
+        library_data.pypi_name,
+        False,
+        True,
+        False,
+        True,
+        False,
+        True,
+        False,
+        False,
+    )
 
     with open(os.path.join(tools_path, "compile_tests.py"), "w", encoding="utf-8") as f:
         f.write(

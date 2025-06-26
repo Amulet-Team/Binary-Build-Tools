@@ -1,21 +1,25 @@
 import os
 
-from binary_build_tools.data import LibraryData, libraries, library_order
+from binary_build_tools.data import (
+    LibraryData,
+    libraries,
+    library_order,
+    find_dependencies,
+)
 
 
 def write(tools_path: str, library_data: LibraryData) -> None:
-    dependencies: list[LibraryData] = [
-        libraries[pypi_name]
-        for pypi_name in sorted(
-            set(
-                library_data.private_dependencies
-                + library_data.public_dependencies
-                + library_data.ext_dependencies
-                + library_data.test_dependencies
-            ),
-            key=library_order.__getitem__,
-        )
-    ]
+    dependencies = find_dependencies(
+        library_data.pypi_name,
+        True,
+        True,
+        True,
+        True,
+        False,
+        True,
+        False,
+        False,
+    )
 
     with open(
         os.path.join(tools_path, "cmake_generate.py"), "w", encoding="utf-8"

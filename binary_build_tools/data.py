@@ -1,4 +1,5 @@
 from enum import Enum
+from functools import lru_cache
 from packaging.specifiers import SpecifierSet
 
 
@@ -428,3 +429,51 @@ libraries: dict[str, LibraryData] = {
 library_order: dict[str, int] = {
     lib.pypi_name: i for i, lib in enumerate(libraries.values())
 }
+
+
+@lru_cache(maxsize=None)
+def find_dependencies(
+    pypi_name: str,
+    include_private: bool,
+    include_public: bool,
+    include_ext: bool,
+    include_test: bool,
+    include_private_recursive: bool,
+    include_public_recursive: bool,
+    include_ext_recursive: bool,
+    include_test_recursive: bool,
+) -> tuple[LibraryData, ...]:
+    lib = libraries[pypi_name]
+    lib_names: set[str] = set()
+    lib_names_todo: set[str] = set()
+    if include_private:
+        lib_names_todo.update(lib.private_dependencies)
+    if include_public:
+        lib_names_todo.update(lib.public_dependencies)
+    if include_ext:
+        lib_names_todo.update(lib.ext_dependencies)
+    if include_test:
+        lib_names_todo.update(lib.test_dependencies)
+
+    while lib_names_todo:
+        lib_name = lib_names_todo.pop()
+        if lib_name in lib_names:
+            continue
+        lib_names.add(lib_name)
+        lib2 = libraries[lib_name]
+        if include_private_recursive:
+            lib_names_todo.update(lib2.private_dependencies)
+        if include_public_recursive:
+            lib_names_todo.update(lib2.public_dependencies)
+        if include_ext_recursive:
+            lib_names_todo.update(lib2.ext_dependencies)
+        if include_test_recursive:
+            lib_names_todo.update(lib2.test_dependencies)
+
+    return tuple(
+        libraries[pypi_name]
+        for pypi_name in sorted(
+            lib_names,
+            key=library_order.__getitem__,
+        )
+    )
