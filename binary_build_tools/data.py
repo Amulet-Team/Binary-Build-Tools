@@ -171,7 +171,7 @@ AmuletLevelDB = LibraryData(
         PyBind11.pypi_name,
         PyBind11Extensions.pypi_name,
     ),
-    specifier=SpecifierSet("~=2.0.1.0a0"),
+    specifier=SpecifierSet("~=2.0.1.0a2"),
 )
 AmuletUtils = LibraryData(
     pypi_name="amulet-utils",
