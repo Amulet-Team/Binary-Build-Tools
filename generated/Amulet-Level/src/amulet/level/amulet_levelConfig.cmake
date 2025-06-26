@@ -2,7 +2,7 @@ if (NOT TARGET amulet_level)
     message(STATUS "Finding amulet_level")
 
     find_package(amulet_io CONFIG REQUIRED)
-    find_package(leveldb_mcpe CONFIG REQUIRED)
+    find_package(amulet_leveldb CONFIG REQUIRED)
     find_package(amulet_utils CONFIG REQUIRED)
     find_package(amulet_nbt CONFIG REQUIRED)
     find_package(amulet_core CONFIG REQUIRED)

@@ -75,7 +75,7 @@ class CMakeBuild(cmdclass.get("build_ext", build_ext)):
                     f"-Dpybind11_DIR={fix_path(pybind11.get_cmake_dir())}",
                     f"-Damulet_pybind11_extensions_DIR={fix_path(amulet.pybind11_extensions.__path__[0])}",
                     f"-Damulet_io_DIR={fix_path(amulet.io.__path__[0])}",
-                    f"-Dleveldb_mcpe_DIR={fix_path(amulet.leveldb.__path__[0])}",
+                    f"-Damulet_leveldb_DIR={fix_path(amulet.leveldb.__path__[0])}",
                     f"-Damulet_utils_DIR={fix_path(amulet.utils.__path__[0])}",
                     f"-Damulet_zlib_DIR={fix_path(amulet.zlib.__path__[0])}",
                     f"-Damulet_nbt_DIR={fix_path(amulet.nbt.__path__[0])}",

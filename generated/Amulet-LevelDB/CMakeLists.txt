@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.13)
 
-project(leveldb_mcpe LANGUAGES CXX)
+project(amulet_leveldb LANGUAGES CXX)
 
 # Set C++20
 set(CMAKE_CXX_STANDARD 20)
@@ -63,11 +63,11 @@ foreach(FILE ${EXTENSION_SOURCES} ${EXTENSION_HEADERS})
 endforeach()
 
 if(NOT DEFINED AMULET_LEVELDB_EXT_DIR)
-    set(AMULET_LEVELDB_EXT_DIR ${leveldb_mcpe_DIR})
+    set(AMULET_LEVELDB_EXT_DIR ${amulet_leveldb_DIR})
 endif()
 
 # Install
-install(TARGETS leveldb_mcpe DESTINATION ${leveldb_mcpe_DIR})
+install(TARGETS leveldb_mcpe DESTINATION ${amulet_leveldb_DIR})
 install(TARGETS _leveldb DESTINATION ${AMULET_LEVELDB_EXT_DIR})
 
 if (DEFINED BUILD_AMULET_LEVELDB_TESTS)

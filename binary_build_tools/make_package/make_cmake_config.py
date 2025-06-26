@@ -5,7 +5,7 @@ from binary_build_tools.data import LibraryData, libraries
 
 def write(package_path: str, library_data: LibraryData) -> None:
     with open(
-        os.path.join(package_path, f"{library_data.lib_name}Config.cmake"),
+        os.path.join(package_path, f"{library_data.cmake_package}Config.cmake"),
         "w",
         encoding="utf-8",
     ) as f:

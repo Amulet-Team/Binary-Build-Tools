@@ -158,6 +158,7 @@ AmuletLevelDB = LibraryData(
     short_var_name="leveldb",
     import_name="amulet.leveldb",
     lib_name="leveldb_mcpe",
+    cmake_package="amulet_leveldb",
     ext_name="_leveldb",
     library_type=LibraryType.Shared,
     private_dependencies=(),
