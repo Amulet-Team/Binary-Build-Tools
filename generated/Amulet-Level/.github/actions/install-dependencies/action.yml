@@ -174,7 +174,7 @@ runs:
 
 
     - name: Clone Amulet-LevelDB
-      uses: Amulet-Team/checkout-pep440@v1
+      uses: Amulet-Team/checkout-pep440@v2
       with:
         repository: 'Amulet-Team/Amulet-LevelDB'
         specifier: '==${{ steps.dep.outputs.leveldb }}'
@@ -192,7 +192,7 @@ runs:
         leveldb-specifier: ${{ steps.dep2.outputs.leveldb }}
 
     - name: Clone Amulet-Utils
-      uses: Amulet-Team/checkout-pep440@v1
+      uses: Amulet-Team/checkout-pep440@v2
       with:
         repository: 'Amulet-Team/Amulet-Utils'
         specifier: '==${{ steps.dep.outputs.utils }}'
@@ -210,7 +210,7 @@ runs:
         utils-specifier: ${{ steps.dep2.outputs.utils }}
 
     - name: Clone Amulet-zlib
-      uses: Amulet-Team/checkout-pep440@v1
+      uses: Amulet-Team/checkout-pep440@v2
       with:
         repository: 'Amulet-Team/Amulet-zlib'
         specifier: '==${{ steps.dep.outputs.zlib }}'
@@ -228,7 +228,7 @@ runs:
         zlib-specifier: ${{ steps.dep2.outputs.zlib }}
 
     - name: Clone Amulet-NBT
-      uses: Amulet-Team/checkout-pep440@v1
+      uses: Amulet-Team/checkout-pep440@v2
       with:
         repository: 'Amulet-Team/Amulet-NBT'
         specifier: '==${{ steps.dep.outputs.nbt }}'
@@ -248,7 +248,7 @@ runs:
         nbt-specifier: ${{ steps.dep2.outputs.nbt }}
 
     - name: Clone Amulet-Core
-      uses: Amulet-Team/checkout-pep440@v1
+      uses: Amulet-Team/checkout-pep440@v2
       with:
         repository: 'Amulet-Team/Amulet-Core'
         specifier: '==${{ steps.dep.outputs.core }}'
@@ -269,12 +269,13 @@ runs:
         core-specifier: ${{ steps.dep2.outputs.core }}
 
     - name: Clone Amulet-Game
-      uses: Amulet-Team/checkout-pep440@v1
+      uses: Amulet-Team/checkout-pep440@v2
       with:
         repository: 'Amulet-Team/Amulet-Game'
         specifier: '==${{ steps.dep.outputs.game }}'
         path: 'build/pylib/Amulet-Game'
         rest-token: ${{ inputs.rest-token }}
+        submodules: 'recursive'
 
     - name: Install Amulet-Game
       uses: ./build/pylib/Amulet-Game/.github/actions/install
@@ -291,7 +292,7 @@ runs:
         game-specifier: ${{ steps.dep2.outputs.game }}
 
     - name: Clone Amulet-Anvil
-      uses: Amulet-Team/checkout-pep440@v1
+      uses: Amulet-Team/checkout-pep440@v2
       with:
         repository: 'Amulet-Team/Amulet-Anvil'
         specifier: '==${{ steps.dep.outputs.anvil }}'

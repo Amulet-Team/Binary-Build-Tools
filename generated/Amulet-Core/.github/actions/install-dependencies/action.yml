@@ -114,7 +114,7 @@ runs:
 
 
     - name: Clone Amulet-zlib
-      uses: Amulet-Team/checkout-pep440@v1
+      uses: Amulet-Team/checkout-pep440@v2
       with:
         repository: 'Amulet-Team/Amulet-zlib'
         specifier: '==${{ steps.dep.outputs.zlib }}'
@@ -132,7 +132,7 @@ runs:
         zlib-specifier: ${{ steps.dep2.outputs.zlib }}
 
     - name: Clone Amulet-NBT
-      uses: Amulet-Team/checkout-pep440@v1
+      uses: Amulet-Team/checkout-pep440@v2
       with:
         repository: 'Amulet-Team/Amulet-NBT'
         specifier: '==${{ steps.dep.outputs.nbt }}'

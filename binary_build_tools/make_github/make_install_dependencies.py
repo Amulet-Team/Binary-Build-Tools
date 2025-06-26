@@ -145,12 +145,15 @@ runs:
 "".join(
     f"""
     - name: Clone {lib.repo_name}
-      uses: Amulet-Team/checkout-pep440@v1
+      uses: Amulet-Team/checkout-pep440@v2
       with:
         repository: '{lib.org_name}/{lib.repo_name}'
         specifier: '==${{{{ steps.dep.outputs.{lib.short_var_name} }}}}'
         path: 'build/pylib/{lib.repo_name}'
-        rest-token: ${{{{ inputs.rest-token }}}}
+        rest-token: ${{{{ inputs.rest-token }}}}{
+            f"""
+        submodules: 'recursive'""" * lib.has_submodules
+        }
 
     - name: Install {lib.repo_name}
       uses: ./build/pylib/{lib.repo_name}/.github/actions/install
