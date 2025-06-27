@@ -128,7 +128,7 @@ runs:
       shell: bash
       continue-on-error: true
       run: |
-        python -m pip install --only-binary amulet-level amulet-compiler-version${{ inputs.compiler-specifier }} pybind11${{ inputs.pybind11-specifier }} amulet-pybind11-extensions${{ inputs.pybind11-extensions-specifier }} amulet-io${{ inputs.io-specifier }} amulet-leveldb${{ inputs.leveldb-specifier }} amulet-utils${{ inputs.utils-specifier }} amulet-zlib${{ inputs.zlib-specifier }} amulet-nbt${{ inputs.nbt-specifier }} amulet-core${{ inputs.core-specifier }} amulet-game${{ inputs.game-specifier }} amulet-anvil${{ inputs.anvil-specifier }} amulet-level${{ inputs.level-specifier }}
+        python -m pip install --only-binary amulet-level,amulet-leveldb,amulet-utils,amulet-zlib,amulet-nbt,amulet-core,amulet-game,amulet-anvil amulet-compiler-version${{ inputs.compiler-specifier }} pybind11${{ inputs.pybind11-specifier }} amulet-pybind11-extensions${{ inputs.pybind11-extensions-specifier }} amulet-io${{ inputs.io-specifier }} amulet-leveldb${{ inputs.leveldb-specifier }} amulet-utils${{ inputs.utils-specifier }} amulet-zlib${{ inputs.zlib-specifier }} amulet-nbt${{ inputs.nbt-specifier }} amulet-core${{ inputs.core-specifier }} amulet-game${{ inputs.game-specifier }} amulet-anvil${{ inputs.anvil-specifier }} amulet-level${{ inputs.level-specifier }}
 
     - name: Build
       if: steps.install.outcome == 'failure'

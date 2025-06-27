@@ -1,6 +1,6 @@
 import os
 
-from binary_build_tools.data import LibraryData, find_dependencies
+from binary_build_tools.data import LibraryData, find_dependencies, LibraryType
 
 
 def write(actions_path: str, library_data: LibraryData) -> None:
@@ -18,6 +18,8 @@ def write(actions_path: str, library_data: LibraryData) -> None:
         True,
         False,
     )
+
+    shared_dependencies = tuple(lib for lib in dependencies if lib.library_type == LibraryType.Shared)
 
     with open(os.path.join(action_dir, "action.yml"), "w", encoding="utf-8") as f:
         f.write(
@@ -87,7 +89,7 @@ runs:
       shell: bash
       continue-on-error: true
       run: |
-        python -m pip install --only-binary {library_data.pypi_name} amulet-compiler-version${{{{ inputs.compiler-specifier }}}} {" ".join(f"{lib.pypi_name}${{{{ inputs.{lib.short_var_name.replace("_", "-")}-specifier }}}}" for lib in dependencies)} {library_data.pypi_name}${{{{ inputs.{library_data.short_var_name.replace("_", "-")}-specifier }}}}
+        python -m pip install --only-binary {library_data.pypi_name}{("," + ",".join(lib.pypi_name for lib in shared_dependencies)) if shared_dependencies else ""} amulet-compiler-version${{{{ inputs.compiler-specifier }}}} {" ".join(f"{lib.pypi_name}${{{{ inputs.{lib.short_var_name.replace("_", "-")}-specifier }}}}" for lib in dependencies)} {library_data.pypi_name}${{{{ inputs.{library_data.short_var_name.replace("_", "-")}-specifier }}}}
 
     - name: Build
       if: steps.install.outcome == 'failure'
