@@ -167,7 +167,9 @@ runs:
       if: steps.install.outcome == 'failure'
       shell: bash
       run: |
-        python -m pip install "${{ github.action_path }}"/../../../dist/amulet_level-*.whl
+        cache_dir=$(python -m pip cache dir)
+        rm -rf "$cache_dir"/http*
+        python -m pip install --only-binary amulet-level,amulet-leveldb,amulet-utils,amulet-zlib,amulet-nbt,amulet-core,amulet-game,amulet-anvil amulet-compiler-version${{ inputs.compiler-specifier }} pybind11${{ inputs.pybind11-specifier }} amulet-pybind11-extensions${{ inputs.pybind11-extensions-specifier }} amulet-io${{ inputs.io-specifier }} amulet-leveldb${{ inputs.leveldb-specifier }} amulet-utils${{ inputs.utils-specifier }} amulet-zlib${{ inputs.zlib-specifier }} amulet-nbt${{ inputs.nbt-specifier }} amulet-core${{ inputs.core-specifier }} amulet-game${{ inputs.game-specifier }} amulet-anvil${{ inputs.anvil-specifier }} amulet-level${{ inputs.level-specifier }}
 
     - name: Get __version__
       id: get-version

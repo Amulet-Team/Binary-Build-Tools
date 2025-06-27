@@ -126,7 +126,9 @@ runs:
       if: steps.install.outcome == 'failure'
       shell: bash
       run: |
-        python -m pip install "${{{{ github.action_path }}}}"/../../../dist/{library_data.pypi_name.replace("-", "_")}-*.whl
+        cache_dir=$(python -m pip cache dir)
+        rm -rf "$cache_dir"/http*
+        python -m pip install --only-binary {library_data.pypi_name}{("," + ",".join(lib.pypi_name for lib in shared_dependencies)) if shared_dependencies else ""} amulet-compiler-version${{{{ inputs.compiler-specifier }}}} {" ".join(f"{lib.pypi_name}${{{{ inputs.{lib.short_var_name.replace("_", "-")}-specifier }}}}" for lib in dependencies)} {library_data.pypi_name}${{{{ inputs.{library_data.short_var_name.replace("_", "-")}-specifier }}}}
 
     - name: Get __version__
       id: get-version
