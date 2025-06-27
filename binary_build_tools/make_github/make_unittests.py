@@ -117,8 +117,12 @@ f"""
     - name: Install
       env:
         AMULET_FREEZE_COMPILER: 1
-      run: |
-        pip install -v .[dev]
+      run: |{
+        f"""
+        pip install --only-binary {",".join(lib.pypi_name for lib in shared_libs)} -v .[dev]"""
+        if shared_libs else f"""
+        pip install -v .[dev]"""
+      }
         python tools/compile_tests.py
 
     - name: Test with unittest
