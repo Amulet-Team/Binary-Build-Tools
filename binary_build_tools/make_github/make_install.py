@@ -82,7 +82,15 @@ runs:
         if [ -z "${{{{ inputs.{library_data.short_var_name.replace("_", "-")}-specifier }}}}" ]; then
           echo "{library_data.short_var_name.replace("_", "-")}-specifier is empty"
           exit 1
-        fi
+        fi{
+    f"""
+
+    - name: Install Dependencies
+      shell: bash
+      run: |
+        python -m pip install --only-binary {",".join(lib.pypi_name for lib in shared_dependencies)} amulet-compiler-version${{{{ inputs.compiler-specifier }}}} {" ".join(f"{lib.pypi_name}${{{{ inputs.{lib.short_var_name.replace("_", "-")}-specifier }}}}" for lib in dependencies)}
+""" if shared_dependencies else ""
+}
 
     - name: Install Prebuilt
       id: install

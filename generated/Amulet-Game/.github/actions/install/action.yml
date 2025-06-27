@@ -91,6 +91,12 @@ runs:
           exit 1
         fi
 
+    - name: Install Dependencies
+      shell: bash
+      run: |
+        python -m pip install --only-binary amulet-zlib,amulet-nbt,amulet-core amulet-compiler-version${{ inputs.compiler-specifier }} pybind11${{ inputs.pybind11-specifier }} amulet-pybind11-extensions${{ inputs.pybind11-extensions-specifier }} amulet-io${{ inputs.io-specifier }} amulet-zlib${{ inputs.zlib-specifier }} amulet-nbt${{ inputs.nbt-specifier }} amulet-core${{ inputs.core-specifier }}
+
+
     - name: Install Prebuilt
       id: install
       shell: bash
