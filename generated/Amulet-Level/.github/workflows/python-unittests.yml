@@ -51,7 +51,7 @@ jobs:
       env:
         AMULET_FREEZE_COMPILER: 1
       run: |
-        pip install --only-binary amulet-leveldb,amulet-utils,amulet-zlib,amulet-nbt,amulet-core,amulet-game,amulet-anvil -v .[dev]
+        pip install --only-binary amulet-compiler-version,amulet-leveldb,amulet-utils,amulet-zlib,amulet-nbt,amulet-core,amulet-game,amulet-anvil -v .[dev]
         python tools/compile_tests.py
 
     - name: Test with unittest
