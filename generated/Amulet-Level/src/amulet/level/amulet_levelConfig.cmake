@@ -20,7 +20,7 @@ if (NOT TARGET amulet_level)
 
     add_library(amulet_level INTERFACE)
     target_link_libraries(amulet_level INTERFACE amulet_io)
-    target_link_libraries(amulet_level INTERFACE leveldb_mcpe)
+    target_link_libraries(amulet_level INTERFACE leveldb)
     target_link_libraries(amulet_level INTERFACE amulet_utils)
     target_link_libraries(amulet_level INTERFACE amulet_nbt)
     target_link_libraries(amulet_level INTERFACE amulet_core)

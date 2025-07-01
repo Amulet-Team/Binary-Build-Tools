@@ -35,10 +35,10 @@ list(REMOVE_ITEM SOURCES ${EXTENSION_SOURCES})
 list(REMOVE_ITEM HEADERS ${EXTENSION_HEADERS})
 
 # Add implementation
-add_library(leveldb_mcpe SHARED)
-target_compile_definitions(leveldb_mcpe PRIVATE None)
-target_include_directories(leveldb_mcpe PUBLIC ${SOURCE_PATH})
-target_sources(leveldb_mcpe PRIVATE ${SOURCES} ${HEADERS})
+add_library(leveldb SHARED)
+target_compile_definitions(leveldb PRIVATE None)
+target_include_directories(leveldb PUBLIC ${SOURCE_PATH})
+target_sources(leveldb PRIVATE ${SOURCES} ${HEADERS})
 foreach(FILE ${SOURCES} ${HEADERS})
     file(RELATIVE_PATH REL_PATH ${SOURCE_PATH} ${FILE})
     get_filename_component(GROUP ${REL_PATH} DIRECTORY)
@@ -49,7 +49,7 @@ endforeach()
 # Add python extension
 pybind11_add_module(_leveldb)
 target_link_libraries(_leveldb PRIVATE amulet_pybind11_extensions)
-target_link_libraries(_leveldb PRIVATE leveldb_mcpe)
+target_link_libraries(_leveldb PRIVATE leveldb)
 target_compile_definitions(_leveldb PRIVATE PYBIND11_DETAILED_ERROR_MESSAGES)
 target_compile_definitions(_leveldb PRIVATE PYBIND11_VERSION="${pybind11_VERSION}")
 target_compile_definitions(_leveldb PRIVATE COMPILER_ID="${CMAKE_CXX_COMPILER_ID}")
@@ -67,7 +67,7 @@ if(NOT DEFINED AMULET_LEVELDB_EXT_DIR)
 endif()
 
 # Install
-install(TARGETS leveldb_mcpe DESTINATION ${amulet_leveldb_DIR})
+install(TARGETS leveldb DESTINATION ${amulet_leveldb_DIR})
 install(TARGETS _leveldb DESTINATION ${AMULET_LEVELDB_EXT_DIR})
 
 if (DEFINED BUILD_AMULET_LEVELDB_TESTS)
