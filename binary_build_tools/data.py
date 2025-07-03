@@ -398,6 +398,32 @@ AmuletResourcePack = LibraryData(
     export_symbol="ExportAmuletResourcePack",
     specifier=SpecifierSet("~=1.0.0.0a1"),
 )
+AmuletEditor = LibraryData(
+    pypi_name="amulet-editor",
+    org_name="Amulet-Team",
+    repo_name="Amulet-Editor",
+    short_var_name="editor",
+    import_name="amulet_editor",
+    lib_name="amulet_editor",
+    ext_name="_amulet_editor",
+    library_type=LibraryType.Shared,
+    private_dependencies=(
+        AmuletLevel.pypi_name,
+        AmuletResourcePack.pypi_name,
+    ),
+    public_dependencies=(),
+    runtime_dependencies=(
+        Numpy.pypi_name,
+        Pillow.pypi_name,
+    ),
+    ext_dependencies=(
+        PyBind11.pypi_name,
+        PyBind11Extensions.pypi_name,
+    ),
+    test_dependencies=(),
+    export_symbol="ExportAmuletEditor",
+    specifier=SpecifierSet("~=1.0.0.0a1"),
+)
 
 
 interface_libraries: list[LibraryData] = [
@@ -418,6 +444,7 @@ shared_libraries: list[LibraryData] = [
     AmuletAnvil,
     AmuletLevel,
     AmuletResourcePack,
+    AmuletEditor,
 ]
 
 python_libraries: list[LibraryData] = [Numpy, Pillow, Platformdirs]
