@@ -28,7 +28,7 @@ endif()
 # Find dependencies{
 "".join(
     f"""
-if (NOT TARGET {libraries[lib_name].cmake_lib_name}pybind11::module)
+if (NOT TARGET {libraries[lib_name].cmake_lib_name})
     find_package({libraries[lib_name].cmake_package} CONFIG REQUIRED)
 endif()"""
     for lib_name in sorted(library_data.test_dependencies + (library_data.pypi_name,), key=library_order.__getitem__)

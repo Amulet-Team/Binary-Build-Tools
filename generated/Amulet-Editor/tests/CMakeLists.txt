@@ -18,7 +18,7 @@ else()
 endif()
 
 # Find dependencies
-if (NOT TARGET amulet_editorpybind11::module)
+if (NOT TARGET amulet_editor)
     find_package(amulet_editor CONFIG REQUIRED)
 endif()
 
