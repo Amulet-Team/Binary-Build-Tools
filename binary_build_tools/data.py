@@ -105,7 +105,7 @@ PyBind11 = LibraryData(
     cmake_lib_name="pybind11::module",
     cmake_package="pybind11",
     library_type=LibraryType.Interface,
-    specifier=SpecifierSet("==2.13.6"),
+    specifier=SpecifierSet("==3.0.0"),
 )
 PyBind11Extensions = LibraryData(
     pypi_name="amulet-pybind11-extensions",
