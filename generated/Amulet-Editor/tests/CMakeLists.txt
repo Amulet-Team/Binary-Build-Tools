@@ -18,7 +18,9 @@ else()
 endif()
 
 # Find dependencies
-find_package(amulet_editor CONFIG REQUIRED)
+if (NOT TARGET amulet_editorpybind11::module)
+    find_package(amulet_editor CONFIG REQUIRED)
+endif()
 
 # Find sources
 file(GLOB_RECURSE SOURCES LIST_DIRECTORIES false "${CMAKE_CURRENT_LIST_DIR}/*.py.cpp")

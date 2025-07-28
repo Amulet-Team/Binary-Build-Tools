@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.13)
 
 project(amulet_game LANGUAGES CXX)
 
+set(amulet_game_DIR ${CMAKE_CURRENT_LIST_DIR}/src/amulet/game CACHE PATH "")
+
 # Set C++20
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -22,11 +24,21 @@ if (MSVC)
 endif()
 
 # Find libraries
-find_package(pybind11 CONFIG REQUIRED)
-find_package(amulet_pybind11_extensions CONFIG REQUIRED)
-find_package(amulet_io CONFIG REQUIRED)
-find_package(amulet_nbt CONFIG REQUIRED)
-find_package(amulet_core CONFIG REQUIRED)
+if (NOT TARGET pybind11::module)
+    find_package(pybind11 CONFIG REQUIRED)
+endif()
+if (NOT TARGET amulet_pybind11_extensions)
+    find_package(amulet_pybind11_extensions CONFIG REQUIRED)
+endif()
+if (NOT TARGET amulet_io)
+    find_package(amulet_io CONFIG REQUIRED)
+endif()
+if (NOT TARGET amulet_nbt)
+    find_package(amulet_nbt CONFIG REQUIRED)
+endif()
+if (NOT TARGET amulet_core)
+    find_package(amulet_core CONFIG REQUIRED)
+endif()
 
 # Find C++ files
 file(REAL_PATH src SOURCE_PATH)

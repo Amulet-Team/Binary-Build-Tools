@@ -49,6 +49,8 @@ cmake_minimum_required(VERSION 3.13)
 
 project({library_data.cmake_package} LANGUAGES CXX)
 
+set({library_data.cmake_package}_DIR ${{CMAKE_CURRENT_LIST_DIR}}/src/{library_data.import_name.replace(".", "/")} CACHE PATH "")
+
 # Set C++20
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -69,7 +71,12 @@ if (MSVC)
 endif()
 
 # Find libraries{
-f"".join(f"\nfind_package({lib.cmake_package} CONFIG REQUIRED)" for lib in all_dependencies)
+f"".join(
+    f"""
+if (NOT TARGET {lib.cmake_lib_name})
+    find_package({lib.cmake_package} CONFIG REQUIRED)
+endif()"""
+    for lib in all_dependencies)
 }
 
 # Find C++ files
