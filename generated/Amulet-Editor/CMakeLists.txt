@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.13)
 project(amulet_editor LANGUAGES CXX)
 
 set(amulet_editor_DIR ${CMAKE_CURRENT_LIST_DIR}/src/amulet_editor CACHE PATH "")
+set(BUILD_AMULET_EDITOR_TESTS OFF CACHE BOOL "Should tests be built?")
 
 # Set C++20
 set(CMAKE_CXX_STANDARD 20)
@@ -116,6 +117,6 @@ endif()
 install(TARGETS amulet_editor DESTINATION ${amulet_editor_DIR})
 install(TARGETS _amulet_editor DESTINATION ${AMULET_EDITOR_EXT_DIR})
 
-if (DEFINED BUILD_AMULET_EDITOR_TESTS)
+if (BUILD_AMULET_EDITOR_TESTS)
     add_subdirectory(tests)
 endif()

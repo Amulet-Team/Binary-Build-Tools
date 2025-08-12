@@ -50,6 +50,7 @@ cmake_minimum_required(VERSION 3.13)
 project({library_data.cmake_package} LANGUAGES CXX)
 
 set({library_data.cmake_package}_DIR ${{CMAKE_CURRENT_LIST_DIR}}/src/{library_data.import_name.replace(".", "/")} CACHE PATH "")
+set(BUILD_{library_data.var_name.upper()}_TESTS OFF CACHE BOOL "Should tests be built?")
 
 # Set C++20
 set(CMAKE_CXX_STANDARD 20)
@@ -135,7 +136,7 @@ endif()
 install(TARGETS {library_data.lib_name} DESTINATION ${{{library_data.cmake_package}_DIR}})
 install(TARGETS {library_data.ext_name} DESTINATION ${{{library_data.var_name.upper()}_EXT_DIR}})
 
-if (DEFINED BUILD_{library_data.var_name.upper()}_TESTS)
+if (BUILD_{library_data.var_name.upper()}_TESTS)
     add_subdirectory(tests)
 endif()
 """

@@ -48,7 +48,7 @@ def main():
             f"-Damulet_core_DIR={fix_path(amulet.core.__path__[0])}",
             f"-Damulet_resource_pack_DIR={fix_path(os.path.join(RootDir, 'src', 'amulet', 'resource_pack'))}",
             f"-DCMAKE_INSTALL_PREFIX=install",
-            f"-DBUILD_AMULET_RESOURCE_PACK_TESTS=",
+            f"-DBUILD_AMULET_RESOURCE_PACK_TESTS=ON",
             "-B",
             "build",
         ]

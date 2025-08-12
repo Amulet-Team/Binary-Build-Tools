@@ -44,7 +44,7 @@ def main():
             f"-Damulet_nbt_DIR={fix_path(amulet.nbt.__path__[0])}",
             f"-Damulet_core_DIR={fix_path(os.path.join(RootDir, 'src', 'amulet', 'core'))}",
             f"-DCMAKE_INSTALL_PREFIX=install",
-            f"-DBUILD_AMULET_CORE_TESTS=",
+            f"-DBUILD_AMULET_CORE_TESTS=ON",
             "-B",
             "build",
         ]

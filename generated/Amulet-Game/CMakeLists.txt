@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.13)
 project(amulet_game LANGUAGES CXX)
 
 set(amulet_game_DIR ${CMAKE_CURRENT_LIST_DIR}/src/amulet/game CACHE PATH "")
+set(BUILD_AMULET_GAME_TESTS OFF CACHE BOOL "Should tests be built?")
 
 # Set C++20
 set(CMAKE_CXX_STANDARD 20)
@@ -91,6 +92,6 @@ endif()
 install(TARGETS amulet_game DESTINATION ${amulet_game_DIR})
 install(TARGETS _amulet_game DESTINATION ${AMULET_GAME_EXT_DIR})
 
-if (DEFINED BUILD_AMULET_GAME_TESTS)
+if (BUILD_AMULET_GAME_TESTS)
     add_subdirectory(tests)
 endif()

@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.13)
 project(amulet_resource_pack LANGUAGES CXX)
 
 set(amulet_resource_pack_DIR ${CMAKE_CURRENT_LIST_DIR}/src/amulet/resource_pack CACHE PATH "")
+set(BUILD_AMULET_RESOURCE_PACK_TESTS OFF CACHE BOOL "Should tests be built?")
 
 # Set C++20
 set(CMAKE_CXX_STANDARD 20)
@@ -96,6 +97,6 @@ endif()
 install(TARGETS amulet_resource_pack DESTINATION ${amulet_resource_pack_DIR})
 install(TARGETS _amulet_resource_pack DESTINATION ${AMULET_RESOURCE_PACK_EXT_DIR})
 
-if (DEFINED BUILD_AMULET_RESOURCE_PACK_TESTS)
+if (BUILD_AMULET_RESOURCE_PACK_TESTS)
     add_subdirectory(tests)
 endif()

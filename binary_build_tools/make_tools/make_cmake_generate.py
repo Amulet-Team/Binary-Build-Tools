@@ -67,7 +67,7 @@ def main():
                 )}
             f"-D{library_data.cmake_package}_DIR={{fix_path(os.path.join(RootDir, 'src', {", ".join(f"'{name}'" for name in library_data.import_name.split("."))}))}}",
             f"-DCMAKE_INSTALL_PREFIX=install",
-            f"-DBUILD_{library_data.var_name.upper()}_TESTS=",
+            f"-DBUILD_{library_data.var_name.upper()}_TESTS=ON",
             "-B",
             "build",
         ]
