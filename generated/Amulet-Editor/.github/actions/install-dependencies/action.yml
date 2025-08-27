@@ -288,6 +288,7 @@ runs:
         pybind11-specifier: ${{ steps.dep2.outputs.pybind11 }}
         pybind11-extensions-specifier: ${{ steps.dep2.outputs.pybind11_extensions }}
         io-specifier: ${{ steps.dep2.outputs.io }}
+        utils-specifier: ${{ steps.dep2.outputs.utils }}
         zlib-specifier: ${{ steps.dep2.outputs.zlib }}
         nbt-specifier: ${{ steps.dep2.outputs.nbt }}
         core-specifier: ${{ steps.dep2.outputs.core }}
@@ -310,6 +311,7 @@ runs:
         pybind11-specifier: ${{ steps.dep2.outputs.pybind11 }}
         pybind11-extensions-specifier: ${{ steps.dep2.outputs.pybind11_extensions }}
         io-specifier: ${{ steps.dep2.outputs.io }}
+        utils-specifier: ${{ steps.dep2.outputs.utils }}
         zlib-specifier: ${{ steps.dep2.outputs.zlib }}
         nbt-specifier: ${{ steps.dep2.outputs.nbt }}
         core-specifier: ${{ steps.dep2.outputs.core }}

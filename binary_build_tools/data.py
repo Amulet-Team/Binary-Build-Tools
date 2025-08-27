@@ -260,6 +260,7 @@ AmuletCore = LibraryData(
     public_dependencies=(
         AmuletIO.pypi_name,
         AmuletNBT.pypi_name,
+        AmuletUtils.pypi_name,
     ),
     runtime_dependencies=(Numpy.pypi_name,),
     ext_dependencies=(
