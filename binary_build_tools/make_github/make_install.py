@@ -19,7 +19,9 @@ def write(actions_path: str, library_data: LibraryData) -> None:
         False,
     )
 
-    shared_dependencies = tuple(lib for lib in dependencies if lib.library_type == LibraryType.Shared)
+    shared_dependencies = tuple(
+        lib for lib in dependencies if lib.library_type == LibraryType.Shared
+    )
 
     with open(os.path.join(action_dir, "action.yml"), "w", encoding="utf-8") as f:
         f.write(
