@@ -1,6 +1,6 @@
 import os
 
-from .data import LibraryData
+from .data import LibraryData, libraries
 
 
 def write(project_path: str, library_data: LibraryData) -> None:
@@ -41,7 +41,11 @@ dev = [
     "autoflake",
     "mypy",
     "types-pyinstaller",{
-'\n    "amulet-test-utils~=1.1",' * ("amulet-test-utils" in library_data.test_dependencies)
+        "".join(
+            f'\n    "{lib_name}{libraries[lib_name].specifier}",'
+            for lib_name in ("amulet-test-utils",)
+            if lib_name in library_data.test_dependencies
+        )
     }
 ]
 

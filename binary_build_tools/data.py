@@ -135,7 +135,7 @@ AmuletTestUtils = LibraryData(
     import_name="amulet.test_utils",
     cmake_lib_name="amulet_test_utils",
     library_type=LibraryType.Interface,
-    specifier=SpecifierSet("~=1.1"),
+    specifier=SpecifierSet("~=1.3"),
 )
 AmuletIO = LibraryData(
     pypi_name="amulet-io",
