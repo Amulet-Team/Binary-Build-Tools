@@ -3,6 +3,11 @@ from functools import lru_cache
 from packaging.specifiers import SpecifierSet
 
 
+MacOSRunner = "macos-15"
+WindowRunner = "windows-2025"
+UbuntuRunner = "ubuntu-24.04"
+
+
 class LibraryType(Enum):
     Shared = "Shared"
     Interface = "Interface"
@@ -84,7 +89,34 @@ Pillow = LibraryData(
     short_var_name="pillow",
     import_name="PIL",
     library_type=LibraryType.Python,
-    specifier=SpecifierSet("~=11.0"),
+    specifier=SpecifierSet("~=11.3"),
+)
+PyOpenGL = LibraryData(
+    pypi_name="PyOpenGL",
+    org_name="mcfletch",
+    repo_name="pyopengl",
+    short_var_name="pyopengl",
+    import_name="OpenGL",
+    library_type=LibraryType.Python,
+    specifier=SpecifierSet("~=3.1"),
+)
+RuntimeFinal = LibraryData(
+    pypi_name="amulet-runtime-final",
+    org_name="Amulet-Team",
+    repo_name="runtime-final",
+    short_var_name="runtime_final",
+    import_name="runtime_final",
+    library_type=LibraryType.Python,
+    specifier=SpecifierSet("~=1.1"),
+)
+PySide6 = LibraryData(
+    pypi_name="PySide6-Essentials",
+    org_name="THISDOESNOTEXIST",
+    repo_name="THISDOESNOTEXIST",
+    short_var_name="pyside6",
+    import_name="PySide6",
+    library_type=LibraryType.Python,
+    specifier=SpecifierSet("~=6.9"),
 )
 Platformdirs = LibraryData(
     pypi_name="platformdirs",
@@ -171,7 +203,7 @@ AmuletLevelDB = LibraryData(
         PyBind11.pypi_name,
         PyBind11Extensions.pypi_name,
     ),
-    specifier=SpecifierSet("~=3.0.2.0a0"),
+    specifier=SpecifierSet("~=3.0.4.0a0"),
 )
 AmuletUtils = LibraryData(
     pypi_name="amulet-utils",
@@ -198,7 +230,7 @@ AmuletUtils = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletUtils",
-    specifier=SpecifierSet("~=1.1.2.0a0"),
+    specifier=SpecifierSet("~=1.1.3.0a0"),
 )
 AmuletZlib = LibraryData(
     pypi_name="amulet-zlib",
@@ -221,7 +253,7 @@ AmuletZlib = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletZlib",
-    specifier=SpecifierSet("~=1.0.2.0a0"),
+    specifier=SpecifierSet("~=1.0.8.0a0"),
 )
 AmuletNBT = LibraryData(
     pypi_name="amulet-nbt",
@@ -416,6 +448,9 @@ AmuletEditor = LibraryData(
     runtime_dependencies=(
         Numpy.pypi_name,
         Pillow.pypi_name,
+        PyOpenGL.pypi_name,
+        RuntimeFinal.pypi_name,
+        PySide6.pypi_name,
     ),
     ext_dependencies=(
         PyBind11.pypi_name,
@@ -448,7 +483,7 @@ shared_libraries: list[LibraryData] = [
     AmuletEditor,
 ]
 
-python_libraries: list[LibraryData] = [Numpy, Pillow, Platformdirs]
+python_libraries: list[LibraryData] = [Numpy, Pillow, Platformdirs, PyOpenGL, RuntimeFinal, PySide6]
 
 libraries: dict[str, LibraryData] = {
     lib.pypi_name: lib

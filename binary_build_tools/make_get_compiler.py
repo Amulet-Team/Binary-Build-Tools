@@ -31,7 +31,7 @@ def main() -> str:
     with open(os.path.join(Dir, "build", "compiler_id.txt")) as f:
         compiler_id_str = f.read().strip()
     with open(os.path.join(Dir, "build", "compiler_version.txt")) as f:
-        compiler_version = f.read().strip()
+        compiler_version = f.read().strip().split(".", 1)[0]
 
     # convert the compiler id to an int so it can be used in a version number
     compiler_id_int = 0
@@ -40,7 +40,7 @@ def main() -> str:
         compiler_id_int += b
 
     # combine the compiler id and compiler version into a version number
-    return f"==3.0.0.{{compiler_id_int}}.{{compiler_version}}"
+    return f"==4.{{compiler_id_int}}.{{compiler_version}}"
 """
         )
 

@@ -128,18 +128,3 @@ venv*
 /{library_data.import_name.replace(".", "_")}-*
 """
         )
-        if any(
-            lib.library_type == LibraryType.Shared
-            for lib in find_dependencies(
-                library_data.pypi_name,
-                True,
-                True,
-                True,
-                False,
-                True,
-                True,
-                True,
-                False,
-            )
-        ):
-            f.write("/.github/actions/install-dependencies/*.json\n")
