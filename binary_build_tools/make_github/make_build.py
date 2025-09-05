@@ -1,6 +1,6 @@
 import os
 
-from binary_build_tools.data import LibraryData, LibraryType, find_dependencies
+from binary_build_tools.data import LibraryData, LibraryType, find_dependencies, MacOSRunner, WindowRunner, UbuntuRunner
 
 
 def write(workflows_path: str, library_data: LibraryData) -> None:
@@ -39,7 +39,7 @@ jobs:
       fail-fast: false
       matrix:
         python-version: [ '3.11', '3.12' ]
-        os: [ macos-14, windows-latest ]
+        os: [ {MacOSRunner}, {WindowRunner} ]
 
     runs-on: ${{{{ matrix.os }}}}
     defaults:
@@ -54,29 +54,19 @@ jobs:
         submodules: 'true'""" * library_data.has_submodules
 }
 
-    - name: Install dependencies
-      uses: ./.github/actions/install-dependencies
+    - name: Set up Python
+      uses: actions/setup-python@v5
       with:
         python-version: ${{{{ matrix.python-version }}}}
-        username: ${{{{ secrets.PYPI_USERNAME }}}}
-        compiler-version-password: ${{{{ secrets.AMULET_COMPILER_VERSION_PYPI_PASSWORD }}}}{
-"".join(
-f"""
-        {lib.short_var_name.replace("_", "-")}-password: ${{{{ secrets.{lib.var_name.upper()}_PYPI_PASSWORD }}}}"""
-    for lib in shared_libs
-)}{
-"\n        rest-token: ${{ secrets.GITHUB_TOKEN }}" * bool(shared_libs)
-}
 
-    - name: Build SDist
+    - name: Install dependencies
+      shell: bash
       run: |
-        python -m build --sdist .
+        pip install build twine
 
-    - name: Build Wheel
-      env:
-        AMULET_FREEZE_COMPILER: 1
+    - name: Build
       run: |
-        python -m build --wheel .
+        python -m build .
 
     - name: Publish
       env:

@@ -1,12 +1,13 @@
 import os
 
+from binary_build_tools.data import UbuntuRunner
 
 def write(workflows_path: str) -> None:
     with open(
         os.path.join(workflows_path, "python-stylecheck.yml"), "w", encoding="utf-8"
     ) as f:
         f.write(
-            """# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+            f"""# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
 name: Stylecheck
@@ -22,7 +23,7 @@ on:
 
 jobs:
   stylecheck:
-    runs-on: ubuntu-latest
+    runs-on: {UbuntuRunner}
 
     steps:
     - name: Clone

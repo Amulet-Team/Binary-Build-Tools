@@ -118,4 +118,3 @@ venv*
 *.ilk
 
 /amulet_resource_pack-*
-/.github/actions/install-dependencies/*.json

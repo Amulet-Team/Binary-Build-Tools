@@ -30,9 +30,9 @@ def write(project_path: str, library_data: LibraryData) -> None:
             f'''\
 import os
 from packaging.version import Version
+import get_compiler
 
 AMULET_COMPILER_TARGET_REQUIREMENT = "==2.0"
-AMULET_COMPILER_VERSION_REQUIREMENT = "==3.0.0"
 
 {
 "\n".join(
@@ -62,21 +62,19 @@ def get_specifier_set(version_str: str) -> str:
 
     return f"~={{version.major}}.{{version.minor}}.{{version.micro}}.0{{''.join(map(str, version.pre or ()))}}"
 
+AMULET_COMPILER_VERSION_REQUIREMENT = get_compiler.main()
 
-if os.environ.get("AMULET_FREEZE_COMPILER", None):
-    import get_compiler
-
-    AMULET_COMPILER_VERSION_REQUIREMENT = get_compiler.main(){
+{
 "".join(
-    f"""
+f"""
 
-    try:
-        import {lib.import_name}
-    except ImportError:
-        pass
-    else:
-        {lib.var_name.upper()}_REQUIREMENT = get_specifier_set({lib.import_name}.__version__)"""
-    for lib in dependencies if lib.pypi_name != "pybind11"
+try:
+    import {lib.import_name}
+except ImportError:
+    pass
+else:
+    {lib.var_name.upper()}_REQUIREMENT = get_specifier_set({lib.import_name}.__version__)"""
+for lib in dependencies if lib.pypi_name != "pybind11"
 )
 }
 
