@@ -147,7 +147,7 @@ PyBind11Extensions = LibraryData(
     import_name="amulet.pybind11_extensions",
     cmake_lib_name="amulet_pybind11_extensions",
     library_type=LibraryType.Interface,
-    specifier=SpecifierSet("~=1.1.0.0a0"),
+    specifier=SpecifierSet("~=1.2.0.0a0"),
 )
 AmuletCompilerVersion = LibraryData(
     pypi_name="amulet-compiler-version",
