@@ -11,7 +11,7 @@ disallow_untyped_defs = True
 check_untyped_defs = True
 warn_return_any = True
 python_version = 3.12
-mypy_path = $MYPY_CONFIG_FILE_DIR/src
-packages = {library_data.root_import_name}
+mypy_path = $MYPY_CONFIG_FILE_DIR/src,$MYPY_CONFIG_FILE_DIR/tests
+packages = {library_data.root_import_name},test_{library_data.var_name}
 """
         )
