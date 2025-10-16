@@ -393,7 +393,7 @@ AmuletAnvil = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletAnvil",
-    specifier=SpecifierSet("~=1.0.2.0a2"),
+    specifier=SpecifierSet("~=1.0.3.0a0"),
 )
 AmuletLevel = LibraryData(
     pypi_name="amulet-level",
