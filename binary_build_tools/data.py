@@ -380,7 +380,6 @@ AmuletAnvil = LibraryData(
     public_dependencies=(
         AmuletIO.pypi_name,
         AmuletNBT.pypi_name,
-        AmuletCore.pypi_name,
         AmuletUtils.pypi_name,
     ),
     runtime_dependencies=(),
