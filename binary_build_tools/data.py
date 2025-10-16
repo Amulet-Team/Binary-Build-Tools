@@ -305,7 +305,37 @@ AmuletCore = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletCore",
-    specifier=SpecifierSet("~=2.0.5.0a1"),
+    specifier=SpecifierSet("~=2.0.6.0a0"),
+)
+AmuletResourcePack = LibraryData(
+    pypi_name="amulet-resource-pack",
+    org_name="Amulet-Team",
+    repo_name="Amulet-Resource-Pack",
+    short_var_name="resource_pack",
+    import_name="amulet.resource_pack",
+    lib_name="amulet_resource_pack",
+    ext_name="_amulet_resource_pack",
+    library_type=LibraryType.Shared,
+    private_dependencies=(),
+    public_dependencies=(
+        AmuletUtils.pypi_name,
+        AmuletCore.pypi_name,
+    ),
+    runtime_dependencies=(
+        Numpy.pypi_name,
+        Pillow.pypi_name,
+    ),
+    ext_dependencies=(
+        PyBind11.pypi_name,
+        PyBind11Extensions.pypi_name,
+    ),
+    test_dependencies=(
+        PyBind11.pypi_name,
+        PyBind11Extensions.pypi_name,
+        AmuletTestUtils.pypi_name,
+    ),
+    export_symbol="ExportAmuletResourcePack",
+    specifier=SpecifierSet("~=1.0.2.0a1"),
 )
 AmuletGame = LibraryData(
     pypi_name="amulet-game",
@@ -335,7 +365,7 @@ AmuletGame = LibraryData(
     ),
     export_symbol="ExportAmuletGame",
     has_submodules=True,
-    specifier=SpecifierSet("~=1.0.2.0a0"),
+    specifier=SpecifierSet("~=1.0.2.0a1"),
 )
 AmuletAnvil = LibraryData(
     pypi_name="amulet-anvil",
@@ -364,7 +394,7 @@ AmuletAnvil = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletAnvil",
-    specifier=SpecifierSet("~=1.0.2.0a0"),
+    specifier=SpecifierSet("~=1.0.2.0a1"),
 )
 AmuletLevel = LibraryData(
     pypi_name="amulet-level",
@@ -399,37 +429,7 @@ AmuletLevel = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletLevel",
-    specifier=SpecifierSet("~=1.0.2.0a0"),
-)
-AmuletResourcePack = LibraryData(
-    pypi_name="amulet-resource-pack",
-    org_name="Amulet-Team",
-    repo_name="Amulet-Resource-Pack",
-    short_var_name="resource_pack",
-    import_name="amulet.resource_pack",
-    lib_name="amulet_resource_pack",
-    ext_name="_amulet_resource_pack",
-    library_type=LibraryType.Shared,
-    private_dependencies=(),
-    public_dependencies=(
-        AmuletUtils.pypi_name,
-        AmuletCore.pypi_name,
-    ),
-    runtime_dependencies=(
-        Numpy.pypi_name,
-        Pillow.pypi_name,
-    ),
-    ext_dependencies=(
-        PyBind11.pypi_name,
-        PyBind11Extensions.pypi_name,
-    ),
-    test_dependencies=(
-        PyBind11.pypi_name,
-        PyBind11Extensions.pypi_name,
-        AmuletTestUtils.pypi_name,
-    ),
-    export_symbol="ExportAmuletResourcePack",
-    specifier=SpecifierSet("~=1.0.2.0a0"),
+    specifier=SpecifierSet("~=1.0.3.0a0"),
 )
 AmuletEditor = LibraryData(
     pypi_name="amulet-editor",
@@ -458,7 +458,7 @@ AmuletEditor = LibraryData(
     ),
     test_dependencies=(),
     export_symbol="ExportAmuletEditor",
-    specifier=SpecifierSet("~=1.0.2.0a0"),
+    specifier=SpecifierSet("~=1.0.2.0a1"),
 )
 
 
@@ -476,10 +476,10 @@ shared_libraries: list[LibraryData] = [
     AmuletZlib,
     AmuletNBT,
     AmuletCore,
+    AmuletResourcePack,
     AmuletGame,
     AmuletAnvil,
     AmuletLevel,
-    AmuletResourcePack,
     AmuletEditor,
 ]
 

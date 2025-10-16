@@ -13,10 +13,10 @@ void init_module(py::module m)
     pyext::check_compatibility(py::module::import("amulet.zlib"), m);
     pyext::check_compatibility(py::module::import("amulet.nbt"), m);
     pyext::check_compatibility(py::module::import("amulet.core"), m);
+    pyext::check_compatibility(py::module::import("amulet.resource_pack"), m);
     pyext::check_compatibility(py::module::import("amulet.game"), m);
     pyext::check_compatibility(py::module::import("amulet.anvil"), m);
     pyext::check_compatibility(py::module::import("amulet.level"), m);
-    pyext::check_compatibility(py::module::import("amulet.resource_pack"), m);
 }
 
 PYBIND11_MODULE(_amulet_editor, m)

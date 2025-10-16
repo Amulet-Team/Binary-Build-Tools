@@ -28,10 +28,10 @@ def _init() -> None:
     import amulet.zlib
     import amulet.nbt
     import amulet.core
+    import amulet.resource_pack
     import amulet.game
     import amulet.anvil
     import amulet.level
-    import amulet.resource_pack
 
     # Load the shared library
     ctypes.cdll.LoadLibrary(lib_path)
