@@ -365,7 +365,7 @@ AmuletGame = LibraryData(
     ),
     export_symbol="ExportAmuletGame",
     has_submodules=True,
-    specifier=SpecifierSet("~=1.0.2.0a2"),
+    specifier=SpecifierSet("~=1.0.2.0a3"),
 )
 AmuletAnvil = LibraryData(
     pypi_name="amulet-anvil",
