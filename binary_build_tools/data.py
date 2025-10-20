@@ -116,7 +116,7 @@ PySide6 = LibraryData(
     short_var_name="pyside6",
     import_name="PySide6",
     library_type=LibraryType.Python,
-    specifier=SpecifierSet("~=6.9"),
+    specifier=SpecifierSet("~=6.10.0"),
 )
 Platformdirs = LibraryData(
     pypi_name="platformdirs",
