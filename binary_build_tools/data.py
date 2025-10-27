@@ -335,7 +335,7 @@ AmuletResourcePack = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletResourcePack",
-    specifier=SpecifierSet("~=1.0.2.0a2"),
+    specifier=SpecifierSet("~=1.0.2.0a3"),
 )
 AmuletGame = LibraryData(
     pypi_name="amulet-game",
