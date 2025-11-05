@@ -36,6 +36,13 @@ def str_sub_func(match: re.Match) -> str:
     return f"{match.group('var')}: str"
 
 
+CompilerConfigPattern = re.compile(r"compiler_config: dict.*")
+
+
+def compiler_config_sub_func(match: re.Match) -> str:
+    return "compiler_config: dict"
+
+
 EqPattern = re.compile(
     r"(?P<indent>[ \t]+)def __eq__\(self, arg0: (?P<other>[a-zA-Z1-9.]+)\) -> (?P<return>[a-zA-Z1-9.]+):"
     r"(?P<ellipsis_docstring>\s*((\.\.\.)|(\"\"\"(.|\n)*?\"\"\")))"
@@ -236,6 +243,7 @@ def main() -> None:
         pyi = UnionPattern.sub(union_sub_func, pyi)
         pyi = ClassVarUnionPattern.sub(class_var_union_sub_func, pyi)
         pyi = VersionPattern.sub(str_sub_func, pyi)
+        pyi = CompilerConfigPattern.sub(compiler_config_sub_func, pyi)
         pyi = GenericAliasPattern.sub(generic_alias_sub_func, pyi)
         pyi = pyi.replace(
             "__hash__: typing.ClassVar[None] = None",
