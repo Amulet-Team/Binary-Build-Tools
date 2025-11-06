@@ -24,6 +24,7 @@ import sys
 from pathlib import Path
 import platform
 from tempfile import TemporaryDirectory
+from typing import TypeAlias, TYPE_CHECKING
 
 from setuptools import setup, Extension, Command
 from setuptools.command.build_ext import build_ext
@@ -33,15 +34,20 @@ import versioneer
 import requirements
 
 
-def fix_path(path: str) -> str:
+def fix_path(path: str | os.PathLike[str]) -> str:
     return os.path.realpath(path).replace(os.sep, "/")
 
 
 cmdclass: dict[str, type[Command]] = versioneer.get_cmdclass()
 
+if TYPE_CHECKING:
+    BuildExt: TypeAlias = build_ext
+else:
+    BuildExt = cmdclass.get("build_ext", build_ext)
 
-class CMakeBuild(cmdclass.get("build_ext", build_ext)):
-    def build_extension(self, ext):
+
+class CMakeBuild(BuildExt):
+    def build_extension(self, ext: Extension) -> None:
         {"\n        ".join(f"import {lib.import_name}" for lib in dependencies)}
     
         ext_dir = (Path.cwd() / self.get_ext_fullpath("")).parent.resolve() / {" / ".join(f"\"{name}\"" for name in library_data.import_name.split("."))}
@@ -92,7 +98,7 @@ class CMakeBuild(cmdclass.get("build_ext", build_ext)):
                 raise RuntimeError("Error installing {library_data.pypi_name}")
 
 
-cmdclass["build_ext"] = CMakeBuild
+cmdclass["build_ext"] = CMakeBuild  # type: ignore
 
 
 setup(

@@ -31,7 +31,9 @@ classifiers = [
 [project.optional-dependencies]
 dev = [
     "setuptools>=42",
+    "types-setuptools",
     "versioneer",
+    "types-versioneer",
     "packaging",
     "wheel",
     "pybind11_stubgen>=2.5.4",
