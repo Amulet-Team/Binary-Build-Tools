@@ -6,7 +6,9 @@ def write(project_path: str):
         os.path.join(project_path, "build_requires.py"), "w", encoding="utf-8"
     ) as f:
         f.write(
-            """from typing import Union, Mapping
+            """# mypy: disable-error-code=no-redef
+
+from typing import Union, Mapping
 
 from setuptools import build_meta
 from setuptools.build_meta import *
