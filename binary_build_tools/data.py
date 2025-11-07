@@ -147,7 +147,7 @@ PyBind11Extensions = LibraryData(
     import_name="amulet.pybind11_extensions",
     cmake_lib_name="amulet_pybind11_extensions",
     library_type=LibraryType.Interface,
-    specifier=SpecifierSet("~=1.2.0.0a0"),
+    specifier=SpecifierSet("~=1.2.0.0a1"),
 )
 AmuletCompilerVersion = LibraryData(
     pypi_name="amulet-compiler-version",
@@ -203,7 +203,7 @@ AmuletLevelDB = LibraryData(
         PyBind11.pypi_name,
         PyBind11Extensions.pypi_name,
     ),
-    specifier=SpecifierSet("~=3.0.4.0a0"),
+    specifier=SpecifierSet("~=3.0.4.0a2"),
 )
 AmuletUtils = LibraryData(
     pypi_name="amulet-utils",
@@ -230,7 +230,7 @@ AmuletUtils = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletUtils",
-    specifier=SpecifierSet("~=1.1.3.0a0"),
+    specifier=SpecifierSet("~=1.1.3.0a3"),
 )
 AmuletZlib = LibraryData(
     pypi_name="amulet-zlib",
@@ -277,7 +277,7 @@ AmuletNBT = LibraryData(
         PyBind11Extensions.pypi_name,
     ),
     export_symbol="ExportAmuletNBT",
-    specifier=SpecifierSet("~=5.0.2.0a0"),
+    specifier=SpecifierSet("~=5.0.2.0a2"),
 )
 AmuletCore = LibraryData(
     pypi_name="amulet-core",
@@ -305,7 +305,7 @@ AmuletCore = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletCore",
-    specifier=SpecifierSet("~=2.0.6.0a0"),
+    specifier=SpecifierSet("~=2.0.6.0a1"),
 )
 AmuletResourcePack = LibraryData(
     pypi_name="amulet-resource-pack",
@@ -335,7 +335,7 @@ AmuletResourcePack = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletResourcePack",
-    specifier=SpecifierSet("~=1.0.2.0a3"),
+    specifier=SpecifierSet("~=1.0.2.0a4"),
 )
 AmuletGame = LibraryData(
     pypi_name="amulet-game",
@@ -365,7 +365,7 @@ AmuletGame = LibraryData(
     ),
     export_symbol="ExportAmuletGame",
     has_submodules=True,
-    specifier=SpecifierSet("~=1.0.2.0a3"),
+    specifier=SpecifierSet("~=1.0.2.0a4"),
 )
 AmuletAnvil = LibraryData(
     pypi_name="amulet-anvil",
@@ -393,7 +393,7 @@ AmuletAnvil = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletAnvil",
-    specifier=SpecifierSet("~=1.0.3.0a0"),
+    specifier=SpecifierSet("~=1.0.3.0a1"),
 )
 AmuletLevel = LibraryData(
     pypi_name="amulet-level",
@@ -428,7 +428,7 @@ AmuletLevel = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletLevel",
-    specifier=SpecifierSet("~=1.0.3.0a0"),
+    specifier=SpecifierSet("~=1.0.4.0a0"),
 )
 AmuletEditor = LibraryData(
     pypi_name="amulet-editor",
