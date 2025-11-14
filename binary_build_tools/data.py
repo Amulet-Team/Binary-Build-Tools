@@ -147,7 +147,7 @@ PyBind11Extensions = LibraryData(
     import_name="amulet.pybind11_extensions",
     cmake_lib_name="amulet_pybind11_extensions",
     library_type=LibraryType.Interface,
-    specifier=SpecifierSet("~=1.2.0.0a1"),
+    specifier=SpecifierSet("~=1.2.0.0a2"),
 )
 AmuletCompilerVersion = LibraryData(
     pypi_name="amulet-compiler-version",
@@ -203,7 +203,7 @@ AmuletLevelDB = LibraryData(
         PyBind11.pypi_name,
         PyBind11Extensions.pypi_name,
     ),
-    specifier=SpecifierSet("~=3.0.4.0a2"),
+    specifier=SpecifierSet("~=3.0.5.0a0"),
 )
 AmuletUtils = LibraryData(
     pypi_name="amulet-utils",
@@ -230,7 +230,7 @@ AmuletUtils = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletUtils",
-    specifier=SpecifierSet("~=1.1.3.0a3"),
+    specifier=SpecifierSet("~=1.1.3.0a4"),
 )
 AmuletZlib = LibraryData(
     pypi_name="amulet-zlib",
