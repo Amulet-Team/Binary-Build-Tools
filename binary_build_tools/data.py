@@ -137,7 +137,7 @@ PyBind11 = LibraryData(
     cmake_lib_name="pybind11::module",
     cmake_package="pybind11",
     library_type=LibraryType.Interface,
-    specifier=SpecifierSet("==3.0.0"),
+    specifier=SpecifierSet("==3.0.1"),
 )
 PyBind11Extensions = LibraryData(
     pypi_name="amulet-pybind11-extensions",
@@ -230,7 +230,7 @@ AmuletUtils = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletUtils",
-    specifier=SpecifierSet("~=1.1.3.0a4"),
+    specifier=SpecifierSet("~=1.1.3.0a6"),
 )
 AmuletZlib = LibraryData(
     pypi_name="amulet-zlib",
@@ -305,7 +305,7 @@ AmuletCore = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletCore",
-    specifier=SpecifierSet("~=2.0.6.0a1"),
+    specifier=SpecifierSet("~=2.0.7.0a0"),
 )
 AmuletResourcePack = LibraryData(
     pypi_name="amulet-resource-pack",
@@ -335,7 +335,7 @@ AmuletResourcePack = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletResourcePack",
-    specifier=SpecifierSet("~=1.0.2.0a4"),
+    specifier=SpecifierSet("~=1.0.3.0a0"),
 )
 AmuletGame = LibraryData(
     pypi_name="amulet-game",
@@ -365,7 +365,7 @@ AmuletGame = LibraryData(
     ),
     export_symbol="ExportAmuletGame",
     has_submodules=True,
-    specifier=SpecifierSet("~=1.0.2.0a4"),
+    specifier=SpecifierSet("~=1.0.2.0a5"),
 )
 AmuletAnvil = LibraryData(
     pypi_name="amulet-anvil",
