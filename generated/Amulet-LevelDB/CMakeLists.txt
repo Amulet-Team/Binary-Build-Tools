@@ -45,6 +45,7 @@ list(REMOVE_ITEM HEADERS ${EXTENSION_HEADERS})
 
 # Add implementation
 add_library(leveldb SHARED)
+set_target_properties(leveldb PROPERTIES FOLDER "CPP")
 target_compile_definitions(leveldb PRIVATE None)
 target_include_directories(leveldb PUBLIC ${SOURCE_PATH})
 target_sources(leveldb PRIVATE ${SOURCES} ${HEADERS})
@@ -57,6 +58,7 @@ endforeach()
 
 # Add python extension
 pybind11_add_module(_leveldb)
+set_target_properties(_leveldb PROPERTIES FOLDER "Python")
 target_link_libraries(_leveldb PRIVATE amulet_pybind11_extensions)
 target_link_libraries(_leveldb PRIVATE leveldb)
 target_compile_definitions(_leveldb PRIVATE PYBIND11_DETAILED_ERROR_MESSAGES)

@@ -41,6 +41,7 @@ endif()"""
 file(GLOB_RECURSE SOURCES LIST_DIRECTORIES false "${{CMAKE_CURRENT_LIST_DIR}}/*.py.cpp")
 
 pybind11_add_module(_test_{library_data.var_name})
+set_target_properties(_test_{library_data.var_name} PROPERTIES FOLDER "Tests")
 target_compile_definitions(_test_{library_data.var_name} PRIVATE PYBIND11_DETAILED_ERROR_MESSAGES)
 target_compile_definitions(_test_{library_data.var_name} PRIVATE PYBIND11_VERSION="${{pybind11_VERSION}}")
 target_compile_definitions(_test_{library_data.var_name} PRIVATE COMPILER_ID="${{CMAKE_CXX_COMPILER_ID}}")

@@ -93,6 +93,7 @@ list(REMOVE_ITEM HEADERS ${{EXTENSION_HEADERS}})
 
 # Add implementation
 add_library({library_data.lib_name} SHARED)
+set_target_properties({library_data.lib_name} PROPERTIES FOLDER "CPP")
 target_compile_definitions({library_data.lib_name} PRIVATE {library_data.export_symbol}){
     "".join(
         f"\ntarget_link_libraries({library_data.lib_name} {"PUBLIC" if lib in lib_public_dependencies else "PRIVATE"} {lib.cmake_lib_name})"
@@ -109,7 +110,8 @@ foreach(FILE ${{SOURCES}} ${{HEADERS}})
 endforeach()
 
 # Add python extension
-pybind11_add_module({library_data.ext_name}){
+pybind11_add_module({library_data.ext_name})
+set_target_properties({library_data.ext_name} PROPERTIES FOLDER "Python"){
     "".join(
         f"\ntarget_link_libraries({library_data.ext_name} PRIVATE {libraries[lib].cmake_lib_name})"
         for lib in sorted(library_data.ext_dependencies + (library_data.pypi_name,), key=library_order.__getitem__)
