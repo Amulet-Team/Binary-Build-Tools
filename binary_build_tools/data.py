@@ -365,7 +365,7 @@ AmuletGame = LibraryData(
     ),
     export_symbol="ExportAmuletGame",
     has_submodules=True,
-    specifier=SpecifierSet("~=1.0.3.0a0"),
+    specifier=SpecifierSet("~=1.0.4.0a0"),
 )
 AmuletAnvil = LibraryData(
     pypi_name="amulet-anvil",
@@ -450,6 +450,7 @@ AmuletEditor = LibraryData(
         PyOpenGL.pypi_name,
         RuntimeFinal.pypi_name,
         PySide6.pypi_name,
+        AmuletGame.pypi_name,
     ),
     ext_dependencies=(
         PyBind11.pypi_name,
