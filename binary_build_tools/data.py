@@ -450,7 +450,6 @@ AmuletEditor = LibraryData(
         PyOpenGL.pypi_name,
         RuntimeFinal.pypi_name,
         PySide6.pypi_name,
-        AmuletGame.pypi_name,
     ),
     ext_dependencies=(
         PyBind11.pypi_name,
