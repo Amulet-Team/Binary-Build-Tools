@@ -305,7 +305,7 @@ AmuletCore = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletCore",
-    specifier=SpecifierSet("~=2.0.8.0a0"),
+    specifier=SpecifierSet("~=2.0.8.0a1"),
 )
 AmuletResourcePack = LibraryData(
     pypi_name="amulet-resource-pack",
@@ -428,7 +428,7 @@ AmuletLevel = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletLevel",
-    specifier=SpecifierSet("~=1.0.4.0a0"),
+    specifier=SpecifierSet("~=1.0.5.0a0"),
 )
 AmuletEditor = LibraryData(
     pypi_name="amulet-editor",
