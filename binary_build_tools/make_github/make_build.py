@@ -1,6 +1,13 @@
 import os
 
-from binary_build_tools.data import LibraryData, LibraryType, find_dependencies, MacOSRunner, WindowRunner, UbuntuRunner
+from binary_build_tools.data import (
+    LibraryData,
+    LibraryType,
+    find_dependencies,
+    MacOSRunner,
+    WindowRunner,
+    UbuntuRunner,
+)
 
 
 def write(workflows_path: str, library_data: LibraryData) -> None:

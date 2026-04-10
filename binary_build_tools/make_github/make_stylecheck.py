@@ -2,6 +2,7 @@ import os
 
 from binary_build_tools.data import UbuntuRunner
 
+
 def write(workflows_path: str) -> None:
     with open(
         os.path.join(workflows_path, "python-stylecheck.yml"), "w", encoding="utf-8"

@@ -482,7 +482,14 @@ shared_libraries: list[LibraryData] = [
     AmuletEditor,
 ]
 
-python_libraries: list[LibraryData] = [Numpy, Pillow, Platformdirs, PyOpenGL, RuntimeFinal, PySide6]
+python_libraries: list[LibraryData] = [
+    Numpy,
+    Pillow,
+    Platformdirs,
+    PyOpenGL,
+    RuntimeFinal,
+    PySide6,
+]
 
 libraries: dict[str, LibraryData] = {
     lib.pypi_name: lib
