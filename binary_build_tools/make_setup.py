@@ -72,7 +72,7 @@ class CMakeBuild(BuildExt):
                 [
                     "cmake",
                     *platform_args,
-                    f"-DPYTHON_EXECUTABLE={{sys.executable}}",
+                    f"-DPython3_EXECUTABLE={{fix_path(sys.executable)}}",
                     {"".join(
                         """
                     f"-Dpybind11_DIR={fix_path(pybind11.get_cmake_dir())}","""
