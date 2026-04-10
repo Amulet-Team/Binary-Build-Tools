@@ -19,6 +19,8 @@ else()
     message( FATAL_ERROR "Unsupported platform. Please submit a pull request to support this platform." )
 endif()
 
+find_package(Python3 COMPONENTS Interpreter Development)
+
 # Find dependencies
 if (NOT TARGET amulet_editor)
     find_package(amulet_editor CONFIG REQUIRED)
