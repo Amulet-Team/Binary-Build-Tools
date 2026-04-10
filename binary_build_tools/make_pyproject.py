@@ -35,7 +35,6 @@ dev = [
     "versioneer",
     "types-versioneer",
     "packaging",
-    "wheel",
     "pybind11_stubgen>=2.5.4",
     "black>=22.3",
     "isort",
