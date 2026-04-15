@@ -45,7 +45,7 @@ def write(project_path: str, library_data: LibraryData) -> None:
     with open(os.path.join(project_path, "CMakeLists.txt"), "w", encoding="utf-8") as f:
         f.write(
             f"""\
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 4.1)
 
 project({library_data.cmake_package} LANGUAGES CXX)
 
