@@ -27,7 +27,7 @@ else()
     message( FATAL_ERROR "Unsupported platform. Please submit a pull request to support this platform." )
 endif()
 
-find_package(Python3 COMPONENTS Interpreter Development)
+find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 
 # Find dependencies{
 "".join(
