@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 4.1)
 
 project(amulet_editor_tests LANGUAGES CXX)
 
@@ -19,7 +19,7 @@ else()
     message( FATAL_ERROR "Unsupported platform. Please submit a pull request to support this platform." )
 endif()
 
-find_package(Python3 COMPONENTS Interpreter Development)
+find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 
 # Find dependencies
 if (NOT TARGET amulet_editor)
