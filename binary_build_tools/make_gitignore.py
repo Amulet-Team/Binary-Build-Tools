@@ -125,4 +125,4 @@ venv*
 *.ilk
 
 /{library_data.import_name.replace(".", "_")}-*
-""")
+{"".join(f"{line}\n" for line in library_data.gitignore)}""")

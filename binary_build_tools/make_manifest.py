@@ -14,6 +14,6 @@ include get_compiler/__init__.py
 recursive-include src/{library_data.root_import_name} *.cpp *.hpp *Config.cmake
 
 include CMakeLists.txt
-
+{"".join(f"{line}\n" for line in library_data.manifest)}
 prune tests
 """)

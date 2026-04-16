@@ -12,9 +12,9 @@ name = "amulet-game"
 authors = [
     {name = "James Clare"},
 ]
-description = ""
+description = "A Minecraft metadata and low level translation library."
 dynamic = ["version", "readme", "dependencies"]
-requires-python = ">=3.11"
+requires-python = ">=3.14"
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
@@ -52,6 +52,7 @@ include-package-data = false
     "**/*.so",
     "**/*.dylib",
     "**/*.lib",
+    "**/*.pkl.gz",
 ]
 
 [tool.setuptools.dynamic]

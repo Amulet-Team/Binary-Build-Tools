@@ -118,3 +118,4 @@ venv*
 *.ilk
 
 /amulet_leveldb-*
+/src/amulet/leveldb/include/leveldb

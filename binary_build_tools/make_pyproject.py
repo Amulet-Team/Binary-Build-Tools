@@ -1,6 +1,6 @@
 import os
 
-from .data import LibraryData, libraries
+from .data import LibraryData, libraries, PythonVersion
 
 
 def write(project_path: str, library_data: LibraryData) -> None:
@@ -17,11 +17,11 @@ backend-path = [""]
 [project]
 name = "{library_data.pypi_name}"
 authors = [
-    {{name = "James Clare"}},
+{"\n".join(f"    {{name = \"{name}\"}}," for name in library_data.authors)}
 ]
-description = ""
+description = "{library_data.description}"
 dynamic = ["version", "readme", "dependencies"]
-requires-python = ">=3.11"
+requires-python = ">={PythonVersion}"
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
@@ -46,7 +46,7 @@ dev = [
             if lib_name in library_data.test_dependencies
         )
     }
-]
+]{"".join(f"\n{group} = [\n{"".join(f"    \"{dep}\",\n" for dep in deps)}]" for group, deps in library_data.optional_dependencies.items())}
 
 [project.urls]
 Homepage = "https://www.amuletmc.com"
@@ -64,7 +64,7 @@ include-package-data = false
     "**/*.so",
     "**/*.dylib",
     "**/*.lib",
-]
+{"".join(f"    \"{line}\",\n" for line in library_data.package_data)}]
 
 [tool.setuptools.dynamic]
 readme = {{file = ["README.md"], content-type = "text/markdown"}}

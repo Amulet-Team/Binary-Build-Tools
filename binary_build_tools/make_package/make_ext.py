@@ -33,14 +33,17 @@ def write(package_path: str, library_data: LibraryData) -> None:
 namespace py = pybind11;
 namespace pyext = Amulet::pybind11_extensions;
 
-void init_module(py::module m)
+void init_{library_data.import_name.replace(".", "_")}(py::module);
+
+static void _init_{library_data.import_name.replace(".", "_")}(py::module m)
 {{
     pyext::init_compiler_config(m);{
     "".join(f'\n    pyext::check_compatibility(py::module::import("{lib.import_name}"), m);' for lib in dependencies) if dependencies else ""}
+    init_{library_data.import_name.replace(".", "_")}(m);
 }}
 
 PYBIND11_MODULE({library_data.ext_name}, m)
 {{
-    m.def("init", &init_module, py::arg("m"));
+    m.def("init", &_init_{library_data.import_name.replace(".", "_")}, py::arg("m"));
 }}
 """)

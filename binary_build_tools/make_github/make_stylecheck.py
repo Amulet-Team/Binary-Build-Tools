@@ -1,6 +1,6 @@
 import os
 
-from binary_build_tools.data import UbuntuRunner
+from binary_build_tools.data import UbuntuX64Runner, PythonVersion
 
 
 def write(workflows_path: str) -> None:
@@ -24,20 +24,19 @@ on:
 
 jobs:
   stylecheck:
-    runs-on: {UbuntuRunner}
+    runs-on: {UbuntuX64Runner}
 
     steps:
     - name: Clone
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: Set up Python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
-        python-version: 3.12
+        python-version: {PythonVersion}
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
         pip install black
 
     - name: run stylecheck

@@ -5,12 +5,15 @@
 namespace py = pybind11;
 namespace pyext = Amulet::pybind11_extensions;
 
-void init_module(py::module m)
+void init_amulet_utils(py::module);
+
+static void _init_amulet_utils(py::module m)
 {
     pyext::init_compiler_config(m);
+    init_amulet_utils(m);
 }
 
 PYBIND11_MODULE(_amulet_utils, m)
 {
-    m.def("init", &init_module, py::arg("m"));
+    m.def("init", &_init_amulet_utils, py::arg("m"));
 }

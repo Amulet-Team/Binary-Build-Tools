@@ -1,10 +1,15 @@
 from enum import Enum
 from functools import lru_cache
 from packaging.specifiers import SpecifierSet
+from collections.abc import Iterable, Mapping
+from types import MappingProxyType
 
-MacOSRunner = "macos-15"
-WindowRunner = "windows-2025"
-UbuntuRunner = "ubuntu-24.04"
+MacOSArm64Runner = "macos-15"
+MacOSX64Runner = "macos-15-intel"
+WindowX64Runner = "windows-2025"
+WindowArm64Runner = "windows-11-arm"
+UbuntuX64Runner = "ubuntu-24.04"
+PythonVersion = "3.14"
 
 
 class LibraryType(Enum):
@@ -49,6 +54,15 @@ class LibraryData:
         test_dependencies: tuple[str, ...] = (),
         has_submodules: bool = False,
         specifier: SpecifierSet,
+        description: str = "",
+        gitignore: Iterable[str] = (),
+        manifest: Iterable[str] = (),
+        package_data: Iterable[str] = (),
+        include_dir: str = "../..",
+        optional_dependencies: Mapping[str, Iterable[str]] = MappingProxyType({}),
+        unittest_dep_groups: Iterable[str] = ("dev",),
+        unittest_workflow_steps: str = "",
+        authors: Iterable[str] = ("James Clare",)
     ):
         self.pypi_name = pypi_name.replace("_", "-")
         self.org_name = org_name
@@ -70,6 +84,15 @@ class LibraryData:
         self.test_dependencies = test_dependencies
         self.has_submodules = has_submodules
         self.specifier = specifier
+        self.description = description
+        self.gitignore = gitignore
+        self.manifest = manifest
+        self.package_data = package_data
+        self.include_dir = include_dir
+        self.optional_dependencies = optional_dependencies
+        self.unittest_dep_groups = unittest_dep_groups
+        self.unittest_workflow_steps = unittest_workflow_steps
+        self.authors = authors
 
 
 Numpy = LibraryData(
@@ -203,6 +226,9 @@ AmuletLevelDB = LibraryData(
         PyBind11Extensions.pypi_name,
     ),
     specifier=SpecifierSet("~=3.0.5.0a0"),
+    description="A pybind11 wrapper for Mojang's custom LevelDB.",
+    gitignore=["/src/amulet/leveldb/include/leveldb"],
+    include_dir="include",
 )
 AmuletUtils = LibraryData(
     pypi_name="amulet-utils",
@@ -230,6 +256,16 @@ AmuletUtils = LibraryData(
     ),
     export_symbol="ExportAmuletUtils",
     specifier=SpecifierSet("~=1.1.3.0a6"),
+    description="A C++ utility library with a python wrapper.",
+    optional_dependencies={"numpy": ["numpy~=2.0"], "pillow": ["pillow~=11.0"], "pyside6": ["PySide6-Essentials~=6.9"]},
+    unittest_dep_groups=("dev", "numpy", "pillow", "pyside6"),
+    package_data=["**/*.png"],
+    unittest_workflow_steps="""
+
+    - name: Install Ubuntu Extra
+      if: startsWith(matrix.cfg.os, 'ubuntu')
+      run: |
+        sudo apt install libegl1"""
 )
 AmuletZlib = LibraryData(
     pypi_name="amulet-zlib",
@@ -253,6 +289,9 @@ AmuletZlib = LibraryData(
     ),
     export_symbol="ExportAmuletZlib",
     specifier=SpecifierSet("~=1.0.8.0a0"),
+    description="A Python and C++ wrapper around zlib.",
+    optional_dependencies={"docs": ["Sphinx>=1.7.4", "sphinx-autodoc-typehints>=1.3.0", "sphinx_rtd_theme>=0.3.1"]},
+
 )
 AmuletNBT = LibraryData(
     pypi_name="amulet-nbt",
@@ -277,6 +316,9 @@ AmuletNBT = LibraryData(
     ),
     export_symbol="ExportAmuletNBT",
     specifier=SpecifierSet("~=5.0.3.0a0"),
+    description="Read and write Minecraft NBT and SNBT data.",
+    optional_dependencies={"docs": ["Sphinx>=1.7.4", "sphinx-autodoc-typehints>=1.3.0", "sphinx_rtd_theme>=0.3.1"]},
+    authors=("James Clare", "Ben Gothard")
 )
 AmuletCore = LibraryData(
     pypi_name="amulet-core",
@@ -365,6 +407,10 @@ AmuletGame = LibraryData(
     export_symbol="ExportAmuletGame",
     has_submodules=True,
     specifier=SpecifierSet("~=1.0.4.0a0"),
+    description="A Minecraft metadata and low level translation library.",
+    gitignore=["/src/amulet/game/versions.pkl.gz"],
+    manifest=["recursive-include submodules/PyMCTranslate *.json"],
+    package_data=["**/*.pkl.gz"],
 )
 AmuletAnvil = LibraryData(
     pypi_name="amulet-anvil",

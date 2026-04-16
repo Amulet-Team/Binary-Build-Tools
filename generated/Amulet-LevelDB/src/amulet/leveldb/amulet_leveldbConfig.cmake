@@ -1,7 +1,7 @@
 if (NOT TARGET leveldb)
     message(STATUS "Finding leveldb")
 
-    set(leveldb_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/../..")
+    set(leveldb_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/include")
     find_library(leveldb_LIBRARY NAMES leveldb PATHS "${CMAKE_CURRENT_LIST_DIR}")
     message(STATUS "leveldb_LIBRARY: ${leveldb_LIBRARY}")
 
