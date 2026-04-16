@@ -7,8 +7,7 @@ def write(project_path: str) -> None:
     with open(
         os.path.join(get_compiler_path, "__init__.py"), "w", encoding="utf-8"
     ) as f:
-        f.write(
-            f"""\
+        f.write(f"""\
 import os
 import subprocess
 from tempfile import TemporaryDirectory
@@ -41,14 +40,12 @@ def main() -> str:
 
     # combine the compiler id and compiler version into a version number
     return f"==4.{{compiler_id_int}}.{{compiler_version}}"
-"""
-        )
+""")
 
     with open(
         os.path.join(get_compiler_path, "CMakeLists.txt"), "w", encoding="utf-8"
     ) as f:
-        f.write(
-            f"""\
+        f.write(f"""\
 cmake_minimum_required(VERSION 4.1)
 
 project(get_compiler LANGUAGES CXX)
@@ -60,5 +57,4 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 write_file("${{CMAKE_BINARY_DIR}}/compiler_id.txt" "${{CMAKE_CXX_COMPILER_ID}}")
 write_file("${{CMAKE_BINARY_DIR}}/compiler_version.txt" "${{CMAKE_CXX_COMPILER_VERSION}}")
-"""
-        )
+""")

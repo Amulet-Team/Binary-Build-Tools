@@ -5,8 +5,7 @@ def write(project_path: str):
     with open(
         os.path.join(project_path, "build_requires.py"), "w", encoding="utf-8"
     ) as f:
-        f.write(
-            """# mypy: disable-error-code=no-redef
+        f.write("""# mypy: disable-error-code=no-redef
 
 from typing import Union, Mapping
 
@@ -32,5 +31,4 @@ def get_requires_for_build_editable(
         *build_meta.get_requires_for_build_editable(config_settings),
         *requirements.get_build_dependencies(),
     ]
-"""
-        )
+""")

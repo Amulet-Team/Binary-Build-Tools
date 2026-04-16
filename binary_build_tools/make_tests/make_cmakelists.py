@@ -5,8 +5,7 @@ from binary_build_tools.data import LibraryData, libraries, library_order
 
 def write(tests_path: str, library_data: LibraryData) -> None:
     with open(os.path.join(tests_path, "CMakeLists.txt"), "w", encoding="utf-8") as f:
-        f.write(
-            f"""cmake_minimum_required(VERSION 4.1)
+        f.write(f"""cmake_minimum_required(VERSION 4.1)
 
 project({library_data.var_name}_tests LANGUAGES CXX)
 
@@ -65,5 +64,4 @@ endforeach()
 
 # Install
 install(TARGETS _test_{library_data.var_name} DESTINATION "${{CMAKE_CURRENT_LIST_DIR}}/test_{library_data.var_name}")
-"""
-        )
+""")

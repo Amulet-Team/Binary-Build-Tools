@@ -5,8 +5,7 @@ from binary_build_tools.data import LibraryData
 
 def write(package_path: str, library_data: LibraryData) -> None:
     with open(os.path.join(package_path, "_version.py"), "w", encoding="utf-8") as f:
-        f.write(
-            f'''# mypy: ignore-errors
+        f.write(f'''# mypy: ignore-errors
 # This file helps to compute a version number in source trees obtained from
 # git-archive tarball (such as those provided by githubs download-from-tag
 # feature). Distribution tarballs (built by setup.py sdist) and build
@@ -723,5 +722,4 @@ def get_versions() -> Dict[str, Any]:
         "error": "unable to compute version",
         "date": None,
     }}
-'''
-        )
+''')

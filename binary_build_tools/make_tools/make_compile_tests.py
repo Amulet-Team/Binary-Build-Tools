@@ -22,8 +22,7 @@ def write(tools_path: str, library_data: LibraryData) -> None:
     )
 
     with open(os.path.join(tools_path, "compile_tests.py"), "w", encoding="utf-8") as f:
-        f.write(
-            f"""import subprocess
+        f.write(f"""import subprocess
 import sys
 import shutil
 import os
@@ -89,5 +88,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-"""
-        )
+""")

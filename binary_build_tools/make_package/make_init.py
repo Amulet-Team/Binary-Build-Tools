@@ -21,8 +21,7 @@ def write(package_path: str, library_data: LibraryData) -> None:
     )
 
     with open(os.path.join(package_path, "__init__.py"), "w", encoding="utf-8") as f:
-        f.write(
-            f"""import logging as _logging
+        f.write(f"""import logging as _logging
 
 from . import _version
 
@@ -60,5 +59,4 @@ def _init() -> None:
 
 _init()
 del _init
-"""
-        )
+""")

@@ -25,8 +25,7 @@ def write(package_path: str, library_data: LibraryData) -> None:
         "w",
         encoding="utf-8",
     ) as f:
-        f.write(
-            f"""\
+        f.write(f"""\
 #include <pybind11/pybind11.h>
 
 #include <amulet/pybind11_extensions/compatibility.hpp>
@@ -44,5 +43,4 @@ PYBIND11_MODULE({library_data.ext_name}, m)
 {{
     m.def("init", &init_module, py::arg("m"));
 }}
-"""
-        )
+""")

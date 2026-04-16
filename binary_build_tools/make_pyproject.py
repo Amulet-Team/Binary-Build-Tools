@@ -5,8 +5,7 @@ from .data import LibraryData, libraries
 
 def write(project_path: str, library_data: LibraryData) -> None:
     with open(os.path.join(project_path, "pyproject.toml"), "w", encoding="utf-8") as f:
-        f.write(
-            f"""[build-system]
+        f.write(f"""[build-system]
 requires = [
     "setuptools>=42",
     "versioneer",
@@ -80,5 +79,4 @@ versionfile_source = "src/{library_data.import_name.replace(".", "/")}/_version.
 versionfile_build = "{library_data.import_name.replace(".", "/")}/_version.py"
 tag_prefix = ""
 parentdir_prefix = "{library_data.pypi_name.replace("-", "_")}-"
-"""
-        )
+""")

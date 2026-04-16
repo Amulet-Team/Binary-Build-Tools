@@ -9,11 +9,9 @@ def write(package_path: str, library_data: LibraryData) -> None:
     with open(
         os.path.join(pyinstaller_path, "__init__.py"), "w", encoding="utf-8"
     ) as f:
-        f.write(
-            """def get_hook_dirs() -> list[str]:
+        f.write("""def get_hook_dirs() -> list[str]:
     return __path__
-"""
-        )
+""")
     with open(
         os.path.join(pyinstaller_path, f"hook-{library_data.import_name}.py"),
         "w",

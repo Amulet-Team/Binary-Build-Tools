@@ -43,8 +43,7 @@ def write(project_path: str, library_data: LibraryData) -> None:
     )
 
     with open(os.path.join(project_path, "CMakeLists.txt"), "w", encoding="utf-8") as f:
-        f.write(
-            f"""\
+        f.write(f"""\
 cmake_minimum_required(VERSION 4.1)
 
 project({library_data.cmake_package} LANGUAGES CXX)
@@ -143,5 +142,4 @@ install(TARGETS {library_data.ext_name} DESTINATION ${{{library_data.var_name.up
 if (BUILD_{library_data.var_name.upper()}_TESTS)
     add_subdirectory(tests)
 endif()
-"""
-        )
+""")

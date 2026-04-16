@@ -5,8 +5,7 @@ from .data import LibraryData
 
 def write(project_path: str, library_data: LibraryData) -> None:
     with open(os.path.join(project_path, "mypy.ini"), "w", encoding="utf-8") as f:
-        f.write(
-            f"""[mypy]
+        f.write(f"""[mypy]
 disallow_untyped_defs = True
 check_untyped_defs = True
 warn_return_any = True
@@ -21,5 +20,4 @@ files =
     build_requires.py,
     requirements.py,
     setup.py
-"""
-        )
+""")

@@ -2,7 +2,6 @@ from enum import Enum
 from functools import lru_cache
 from packaging.specifiers import SpecifierSet
 
-
 MacOSRunner = "macos-15"
 WindowRunner = "windows-2025"
 UbuntuRunner = "ubuntu-24.04"
