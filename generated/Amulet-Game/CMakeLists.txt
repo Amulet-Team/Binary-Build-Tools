@@ -59,6 +59,7 @@ list(REMOVE_ITEM HEADERS ${EXTENSION_HEADERS})
 
 # Add implementation
 add_library(amulet_game SHARED)
+set_target_properties(amulet_game PROPERTIES CXX_VISIBILITY_PRESET hidden)
 set_target_properties(amulet_game PROPERTIES FOLDER "CPP")
 target_compile_definitions(amulet_game PRIVATE ExportAmuletGame)
 target_link_libraries(amulet_game PUBLIC pybind11::module)
@@ -78,6 +79,7 @@ endforeach()
 
 # Add python extension
 pybind11_add_module(_amulet_game)
+set_target_properties(_amulet_game PROPERTIES CXX_VISIBILITY_PRESET hidden)
 set_target_properties(_amulet_game PROPERTIES FOLDER "Python")
 target_link_libraries(_amulet_game PRIVATE amulet_pybind11_extensions)
 target_link_libraries(_amulet_game PRIVATE amulet_game)
