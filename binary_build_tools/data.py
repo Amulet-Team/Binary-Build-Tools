@@ -257,7 +257,11 @@ AmuletUtils = LibraryData(
     export_symbol="ExportAmuletUtils",
     specifier=SpecifierSet("~=1.1.3.0a6"),
     description="A C++ utility library with a python wrapper.",
-    optional_dependencies={"numpy": ["numpy~=2.0"], "pillow": ["pillow~=11.0"], "pyside6": ["PySide6-Essentials~=6.9"]},
+    optional_dependencies={
+        "numpy": ["numpy~=2.0"],
+        "pillow": ["pillow~=11.0"],
+        "pyside6": ["PySide6-Essentials~=6.9"],
+    },
     unittest_dep_groups=("dev", "numpy", "pillow", "pyside6"),
     package_data=["**/*.png"],
     unittest_workflow_steps="""
@@ -265,7 +269,7 @@ AmuletUtils = LibraryData(
     - name: Install Ubuntu Extra
       if: startsWith(matrix.cfg.os, 'ubuntu')
       run: |
-        sudo apt install libegl1"""
+        sudo apt install libegl1""",
 )
 AmuletZlib = LibraryData(
     pypi_name="amulet-zlib",
@@ -290,8 +294,13 @@ AmuletZlib = LibraryData(
     export_symbol="ExportAmuletZlib",
     specifier=SpecifierSet("~=1.0.8.0a0"),
     description="A Python and C++ wrapper around zlib.",
-    optional_dependencies={"docs": ["Sphinx>=1.7.4", "sphinx-autodoc-typehints>=1.3.0", "sphinx_rtd_theme>=0.3.1"]},
-
+    optional_dependencies={
+        "docs": [
+            "Sphinx>=1.7.4",
+            "sphinx-autodoc-typehints>=1.3.0",
+            "sphinx_rtd_theme>=0.3.1",
+        ]
+    },
 )
 AmuletNBT = LibraryData(
     pypi_name="amulet-nbt",
@@ -317,8 +326,14 @@ AmuletNBT = LibraryData(
     export_symbol="ExportAmuletNBT",
     specifier=SpecifierSet("~=5.0.3.0a0"),
     description="Read and write Minecraft NBT and SNBT data.",
-    optional_dependencies={"docs": ["Sphinx>=1.7.4", "sphinx-autodoc-typehints>=1.3.0", "sphinx_rtd_theme>=0.3.1"]},
-    authors=("James Clare", "Ben Gothard")
+    optional_dependencies={
+        "docs": [
+            "Sphinx>=1.7.4",
+            "sphinx-autodoc-typehints>=1.3.0",
+            "sphinx_rtd_theme>=0.3.1",
+        ]
+    },
+    authors=("James Clare", "Ben Gothard"),
 )
 AmuletCore = LibraryData(
     pypi_name="amulet-core",
