@@ -124,5 +124,5 @@ venv*
 *.pdb
 *.ilk
 
-/{library_data.import_name.replace(".", "_")}-*
+/{library_data.pypi_name.replace("-", "_")}-*
 {"".join(f"{line}\n" for line in library_data.gitignore)}""")
