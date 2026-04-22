@@ -11,19 +11,9 @@ _logging.basicConfig(level=_logging.INFO, format="%(levelname)s - %(message)s")
 def _init() -> None:
     import os
     import sys
-    import ctypes
 
     if os.environ.get("AMULET_SKIP_COMPILE", None):
         return
-
-    if sys.platform == "win32":
-        lib_path = os.path.join(os.path.dirname(__file__), "amulet_editor.dll")
-    elif sys.platform == "darwin":
-        lib_path = os.path.join(os.path.dirname(__file__), "libamulet_editor.dylib")
-    elif sys.platform == "linux":
-        lib_path = os.path.join(os.path.dirname(__file__), "libamulet_editor.so")
-    else:
-        raise RuntimeError(f"Unsupported platform {sys.platform}")
 
     # Import dependencies
     import amulet.leveldb
@@ -36,10 +26,7 @@ def _init() -> None:
     import amulet.anvil
     import amulet.level
 
-    # Load the shared library
-    ctypes.cdll.LoadLibrary(lib_path)
-
-    from ._amulet_editor import init
+    from ._amulet_app import init
 
     init(sys.modules[__name__])
 

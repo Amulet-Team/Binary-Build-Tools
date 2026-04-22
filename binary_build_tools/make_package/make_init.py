@@ -34,11 +34,12 @@ _logging.basicConfig(level=_logging.INFO, format="%(levelname)s - %(message)s")
 def _init() -> None:
     import os
     import sys
-    import ctypes
-    
+{"" if library_data.lib_name is None else "    import ctypes\n"}\
+
     if os.environ.get("AMULET_SKIP_COMPILE", None):
         return
 
+{"" if library_data.lib_name is None else f"""\
     if sys.platform == "win32":
         lib_path = os.path.join(os.path.dirname(__file__), "{library_data.lib_name}.dll")
     elif sys.platform == "darwin":
@@ -47,10 +48,17 @@ def _init() -> None:
         lib_path = os.path.join(os.path.dirname(__file__), "lib{library_data.lib_name}.so")
     else:
         raise RuntimeError(f"Unsupported platform {{sys.platform}}")
-    {"\n    # Import dependencies\n    " + "\n    ".join(f"import {lib.import_name}" for lib in dependencies) if dependencies else ""}
+    """}\
 
+{f"""\
+    # Import dependencies
+{"".join(f"    import {lib.import_name}\n" for lib in dependencies)}
+""" if dependencies else ""}\
+
+{"" if library_data.lib_name is None else f"""\
     # Load the shared library
     ctypes.cdll.LoadLibrary(lib_path)
+"""}\
 
     from .{library_data.ext_name} import init
 
