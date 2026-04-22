@@ -39,11 +39,15 @@ jobs:
       with:
         python-version: ${{ matrix.cfg.python-version }}
         architecture: ${{ matrix.cfg.architecture }}
-        
+
     - name: Build
       run: |
         pip install -v .[dev]
         python tools/compile_tests.py
-        
+
+    - name: Install Minecraft Worlds
+      run: |
+        pip install git+https://github.com/Amulet-Team/Amulet-Minecraft-Worlds.git
+
     - name: Test with unittest
       run: python -m unittest discover -v -s tests

@@ -59,13 +59,13 @@ jobs:
       uses: actions/setup-python@v6
       with:
         python-version: ${{{{ matrix.cfg.python-version }}}}
-        architecture: ${{{{ matrix.cfg.architecture }}}}{library_data.unittest_workflow_steps}
-        
+        architecture: ${{{{ matrix.cfg.architecture }}}}
+{library_data.unittests_pre_build}
     - name: Build
       run: |
         pip install -v .{f"[{",".join(library_data.unittest_dep_groups)}]" if library_data.unittest_dep_groups else ""}
         python tools/compile_tests.py
-        
+{library_data.unittests_pre_test}
     - name: Test with unittest
       run: python -m unittest discover -v -s tests
 """)

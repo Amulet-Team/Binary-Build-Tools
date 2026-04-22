@@ -44,11 +44,11 @@ jobs:
       if: startsWith(matrix.cfg.os, 'ubuntu')
       run: |
         sudo apt install libegl1
-        
+
     - name: Build
       run: |
         pip install -v .[dev,numpy,pillow,pyside6]
         python tools/compile_tests.py
-        
+
     - name: Test with unittest
       run: python -m unittest discover -v -s tests

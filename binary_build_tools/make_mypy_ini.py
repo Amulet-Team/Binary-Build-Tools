@@ -12,7 +12,7 @@ warn_return_any = True
 python_version = {PythonVersion}
 explicit_package_bases = True
 mypy_path = $MYPY_CONFIG_FILE_DIR/src,$MYPY_CONFIG_FILE_DIR/tests
-files = 
+files =
     src,
     tests,
     tools,
