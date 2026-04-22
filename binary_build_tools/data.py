@@ -71,9 +71,8 @@ class LibraryData:
         self.repo_name = repo_name
         self.import_name = import_name
         self.root_import_name = import_name.split(".", 1)[0]
-        self.var_name = import_name.replace(".", "_")
         self.short_var_name = short_var_name
-        self.macro_name = macro_name or self.import_name.replace(".", "_").upper()
+        self.macro_name = macro_name or import_name.replace(".", "_").upper()
         self.lib_name = lib_name
         self.cmake_lib_name = cmake_lib_name or lib_name
         self.cmake_package = cmake_package or self.cmake_lib_name

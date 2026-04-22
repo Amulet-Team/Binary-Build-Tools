@@ -7,7 +7,7 @@ def write(tests_path: str, library_data: LibraryData) -> None:
     with open(os.path.join(tests_path, "CMakeLists.txt"), "w", encoding="utf-8") as f:
         f.write(f"""cmake_minimum_required(VERSION 4.1)
 
-project({library_data.var_name}_tests LANGUAGES CXX)
+project({library_data.cmake_package}_tests LANGUAGES CXX)
 
 # Set C++20
 set(CMAKE_CXX_STANDARD 20)
@@ -41,21 +41,21 @@ endif()"""
 # Find sources
 file(GLOB_RECURSE SOURCES LIST_DIRECTORIES false "${{CMAKE_CURRENT_LIST_DIR}}/*.py.cpp")
 
-pybind11_add_module(_test_{library_data.var_name})
-set_target_properties(_test_{library_data.var_name} PROPERTIES CXX_VISIBILITY_PRESET hidden)
-set_target_properties(_test_{library_data.var_name} PROPERTIES FOLDER "Tests")
-target_compile_definitions(_test_{library_data.var_name} PRIVATE PYBIND11_DETAILED_ERROR_MESSAGES)
-target_compile_definitions(_test_{library_data.var_name} PRIVATE PYBIND11_VERSION="${{pybind11_VERSION}}")
-target_compile_definitions(_test_{library_data.var_name} PRIVATE COMPILER_ID="${{CMAKE_CXX_COMPILER_ID}}")
-target_compile_definitions(_test_{library_data.var_name} PRIVATE COMPILER_VERSION="${{CMAKE_CXX_COMPILER_VERSION}}"){
+pybind11_add_module(_test_{library_data.cmake_package})
+set_target_properties(_test_{library_data.cmake_package} PROPERTIES CXX_VISIBILITY_PRESET hidden)
+set_target_properties(_test_{library_data.cmake_package} PROPERTIES FOLDER "Tests")
+target_compile_definitions(_test_{library_data.cmake_package} PRIVATE PYBIND11_DETAILED_ERROR_MESSAGES)
+target_compile_definitions(_test_{library_data.cmake_package} PRIVATE PYBIND11_VERSION="${{pybind11_VERSION}}")
+target_compile_definitions(_test_{library_data.cmake_package} PRIVATE COMPILER_ID="${{CMAKE_CXX_COMPILER_ID}}")
+target_compile_definitions(_test_{library_data.cmake_package} PRIVATE COMPILER_VERSION="${{CMAKE_CXX_COMPILER_VERSION}}"){
 "".join(
     f"""
-target_link_libraries(_test_{library_data.var_name} PRIVATE {libraries[lib_name].cmake_lib_name})"""
+target_link_libraries(_test_{library_data.cmake_package} PRIVATE {libraries[lib_name].cmake_lib_name})"""
     for lib_name in sorted(library_data.test_dependencies + (library_data.pypi_name,), key=library_order.__getitem__)
     if lib_name != "pybind11"
 )
 }
-target_sources(_test_{library_data.var_name} PRIVATE ${{SOURCES}})
+target_sources(_test_{library_data.cmake_package} PRIVATE ${{SOURCES}})
 foreach(FILE ${{SOURCES}})
     file(RELATIVE_PATH REL_PATH ${{CMAKE_CURRENT_LIST_DIR}} ${{FILE}})
     get_filename_component(GROUP ${{REL_PATH}} DIRECTORY)
@@ -64,5 +64,5 @@ foreach(FILE ${{SOURCES}})
 endforeach()
 
 # Install
-install(TARGETS _test_{library_data.var_name} DESTINATION "${{CMAKE_CURRENT_LIST_DIR}}/test_{library_data.var_name}")
+install(TARGETS _test_{library_data.cmake_package} DESTINATION "${{CMAKE_CURRENT_LIST_DIR}}/test_{library_data.cmake_package}")
 """)
