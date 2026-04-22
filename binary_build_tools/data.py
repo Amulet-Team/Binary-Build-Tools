@@ -27,6 +27,7 @@ class LibraryData:
         pypi_name: str,  # The PyPi hyphenated library name (amulet-nbt)
         import_name: str,  # The import name to the package (amulet.nbt)
         short_var_name: str,  # A string for use in Python variables (amulet_nbt)
+        macro_name: str = "", # Name used in macros. (AMULET_NBT) Defaults to import_name.replace(".", "_").upper()
         lib_name: str | None = None,  # The name of the shared library (amulet_nbt)
         cmake_lib_name: (
             str | None
@@ -72,6 +73,7 @@ class LibraryData:
         self.root_import_name = import_name.split(".", 1)[0]
         self.var_name = import_name.replace(".", "_")
         self.short_var_name = short_var_name
+        self.macro_name = macro_name or self.import_name.replace(".", "_").upper()
         self.lib_name = lib_name
         self.cmake_lib_name = cmake_lib_name or lib_name
         self.cmake_package = cmake_package or self.cmake_lib_name
