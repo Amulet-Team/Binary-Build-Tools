@@ -80,7 +80,7 @@ jobs:
     - name: Publish
       env:
         TWINE_USERNAME: ${{{{ secrets.PYPI_USERNAME }}}}
-        TWINE_PASSWORD: ${{{{ secrets.{library_data.macro_name}_PYPI_PASSWORD }}}}
+        TWINE_PASSWORD: ${{{{ secrets.{library_data.project_macro_name}_PYPI_PASSWORD }}}}
       run: |
         twine upload dist/* --skip-existing
 """)

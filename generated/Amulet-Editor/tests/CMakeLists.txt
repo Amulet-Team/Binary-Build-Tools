@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 4.1)
 
-project(amulet_editor_tests LANGUAGES CXX)
+project(amulet_app_tests LANGUAGES CXX)
 
 # Set C++20
 set(CMAKE_CXX_STANDARD 20)
@@ -22,22 +22,18 @@ endif()
 find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 
 # Find dependencies
-if (NOT TARGET amulet_editor)
-    find_package(amulet_editor CONFIG REQUIRED)
-endif()
 
 # Find sources
 file(GLOB_RECURSE SOURCES LIST_DIRECTORIES false "${CMAKE_CURRENT_LIST_DIR}/*.py.cpp")
 
-pybind11_add_module(_test_amulet_editor)
-set_target_properties(_test_amulet_editor PROPERTIES CXX_VISIBILITY_PRESET hidden)
-set_target_properties(_test_amulet_editor PROPERTIES FOLDER "Tests")
-target_compile_definitions(_test_amulet_editor PRIVATE PYBIND11_DETAILED_ERROR_MESSAGES)
-target_compile_definitions(_test_amulet_editor PRIVATE PYBIND11_VERSION="${pybind11_VERSION}")
-target_compile_definitions(_test_amulet_editor PRIVATE COMPILER_ID="${CMAKE_CXX_COMPILER_ID}")
-target_compile_definitions(_test_amulet_editor PRIVATE COMPILER_VERSION="${CMAKE_CXX_COMPILER_VERSION}")
-target_link_libraries(_test_amulet_editor PRIVATE amulet_editor)
-target_sources(_test_amulet_editor PRIVATE ${SOURCES})
+pybind11_add_module(_test_amulet_app)
+set_target_properties(_test_amulet_app PROPERTIES CXX_VISIBILITY_PRESET hidden)
+set_target_properties(_test_amulet_app PROPERTIES FOLDER "Tests")
+target_compile_definitions(_test_amulet_app PRIVATE PYBIND11_DETAILED_ERROR_MESSAGES)
+target_compile_definitions(_test_amulet_app PRIVATE PYBIND11_VERSION="${pybind11_VERSION}")
+target_compile_definitions(_test_amulet_app PRIVATE COMPILER_ID="${CMAKE_CXX_COMPILER_ID}")
+target_compile_definitions(_test_amulet_app PRIVATE COMPILER_VERSION="${CMAKE_CXX_COMPILER_VERSION}")
+target_sources(_test_amulet_app PRIVATE ${SOURCES})
 foreach(FILE ${SOURCES})
     file(RELATIVE_PATH REL_PATH ${CMAKE_CURRENT_LIST_DIR} ${FILE})
     get_filename_component(GROUP ${REL_PATH} DIRECTORY)
@@ -46,4 +42,4 @@ foreach(FILE ${SOURCES})
 endforeach()
 
 # Install
-install(TARGETS _test_amulet_editor DESTINATION "${CMAKE_CURRENT_LIST_DIR}/test_amulet_editor")
+install(TARGETS _test_amulet_app DESTINATION "${CMAKE_CURRENT_LIST_DIR}/test_amulet_app")

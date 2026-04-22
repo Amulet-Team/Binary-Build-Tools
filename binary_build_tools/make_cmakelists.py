@@ -49,7 +49,7 @@ cmake_minimum_required(VERSION 4.1)
 project({library_data.cmake_package} LANGUAGES CXX)
 
 set({library_data.cmake_package}_DIR ${{CMAKE_CURRENT_LIST_DIR}}/src/{library_data.import_name.replace(".", "/")} CACHE PATH "")
-set(BUILD_{library_data.macro_name}_TESTS OFF CACHE BOOL "Should tests be built?")
+set(BUILD_{library_data.project_macro_name}_TESTS OFF CACHE BOOL "Should tests be built?")
 
 # Set C++20
 set(CMAKE_CXX_STANDARD 20)
@@ -87,6 +87,8 @@ endif()"""
 file(REAL_PATH src SOURCE_PATH)
 file(GLOB_RECURSE EXTENSION_SOURCES LIST_DIRECTORIES false ${{SOURCE_PATH}}/amulet/*.py.cpp)
 file(GLOB_RECURSE EXTENSION_HEADERS LIST_DIRECTORIES false ${{SOURCE_PATH}}/amulet/*.py.hpp)
+{
+"" if library_data.lib_name is None else f"""\
 file(GLOB_RECURSE SOURCES LIST_DIRECTORIES false ${{SOURCE_PATH}}/amulet/*.cpp)
 file(GLOB_RECURSE HEADERS LIST_DIRECTORIES false ${{SOURCE_PATH}}/amulet/*.hpp)
 list(REMOVE_ITEM SOURCES ${{EXTENSION_SOURCES}})
@@ -96,12 +98,14 @@ list(REMOVE_ITEM HEADERS ${{EXTENSION_HEADERS}})
 add_library({library_data.lib_name} SHARED)
 set_target_properties({library_data.lib_name} PROPERTIES CXX_VISIBILITY_PRESET hidden)
 set_target_properties({library_data.lib_name} PROPERTIES FOLDER "CPP")
-target_compile_definitions({library_data.lib_name} PRIVATE {library_data.export_symbol}){
+{"" if library_data.lib_name is None else f"target_compile_definitions({library_data.lib_name} PRIVATE {library_data.export_symbol})\n"}\
+{
     "".join(
-        f"\ntarget_link_libraries({library_data.lib_name} {"PUBLIC" if lib in lib_public_dependencies else "PRIVATE"} {lib.cmake_lib_name})"
+        f"target_link_libraries({library_data.lib_name} {"PUBLIC" if lib in lib_public_dependencies else "PRIVATE"} {lib.cmake_lib_name})\n"
         for lib in lib_dependencies
+        if lib.cmake_lib_name is not None
     )
-}
+}\
 target_include_directories({library_data.lib_name} PUBLIC ${{SOURCE_PATH}})
 target_sources({library_data.lib_name} PRIVATE ${{SOURCES}} ${{HEADERS}})
 foreach(FILE ${{SOURCES}} ${{HEADERS}})
@@ -110,17 +114,20 @@ foreach(FILE ${{SOURCES}} ${{HEADERS}})
     string(REPLACE "/" "\\\\" GROUP ${{GROUP}})
     source_group(${{GROUP}} FILES ${{FILE}})
 endforeach()
+"""
+}\
 
 # Add python extension
 pybind11_add_module({library_data.ext_name})
 set_target_properties({library_data.ext_name} PROPERTIES CXX_VISIBILITY_PRESET hidden)
-set_target_properties({library_data.ext_name} PROPERTIES FOLDER "Python"){
+set_target_properties({library_data.ext_name} PROPERTIES FOLDER "Python")
+{
     "".join(
-        f"\ntarget_link_libraries({library_data.ext_name} PRIVATE {libraries[lib].cmake_lib_name})"
+        f"target_link_libraries({library_data.ext_name} PRIVATE {libraries[lib].cmake_lib_name})\n"
         for lib in sorted(library_data.ext_dependencies + (library_data.pypi_name,), key=library_order.__getitem__)
-        if lib != "pybind11"
+        if lib != "pybind11" and libraries[lib].cmake_lib_name is not None
     )
-}
+}\
 target_compile_definitions({library_data.ext_name} PRIVATE PYBIND11_DETAILED_ERROR_MESSAGES)
 target_compile_definitions({library_data.ext_name} PRIVATE PYBIND11_VERSION="${{pybind11_VERSION}}")
 target_compile_definitions({library_data.ext_name} PRIVATE COMPILER_ID="${{CMAKE_CXX_COMPILER_ID}}")
@@ -133,15 +140,15 @@ foreach(FILE ${{EXTENSION_SOURCES}} ${{EXTENSION_HEADERS}})
     source_group(${{GROUP}} FILES ${{FILE}})
 endforeach()
 
-if(NOT DEFINED {library_data.macro_name}_EXT_DIR)
-    set({library_data.macro_name}_EXT_DIR ${{{library_data.cmake_package}_DIR}})
+if(NOT DEFINED {library_data.ext_macro_name}_EXT_DIR)
+    set({library_data.ext_macro_name}_EXT_DIR ${{{library_data.cmake_package}_DIR}})
 endif()
 
 # Install
-install(TARGETS {library_data.lib_name} DESTINATION ${{{library_data.cmake_package}_DIR}})
-install(TARGETS {library_data.ext_name} DESTINATION ${{{library_data.macro_name}_EXT_DIR}})
+{"" if library_data.lib_name is None else f"install(TARGETS {library_data.lib_name} DESTINATION ${{{library_data.cmake_package}_DIR}})\n"}\
+install(TARGETS {library_data.ext_name} DESTINATION ${{{library_data.ext_macro_name}_EXT_DIR}})
 
-if (BUILD_{library_data.macro_name}_TESTS)
+if (BUILD_{library_data.project_macro_name}_TESTS)
     add_subdirectory(tests)
 endif()
 """)

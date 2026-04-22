@@ -85,7 +85,7 @@ class CMakeBuild(BuildExt):
                     f"-D{lib.cmake_package}_DIR={{fix_path({lib.import_name}.__path__[0])}}",""" for lib in dependencies
                     )}
                     f"-D{library_data.cmake_package}_DIR={{fix_path({library_data.short_var_name}_src_dir)}}",
-                    f"-D{library_data.import_name.replace(".", "_").upper()}_EXT_DIR={{fix_path(ext_dir)}}",
+                    f"-D{library_data.ext_macro_name}_EXT_DIR={{fix_path(ext_dir)}}",
                     f"-DCMAKE_INSTALL_PREFIX=install",
                     "-B",
                     tempdir,

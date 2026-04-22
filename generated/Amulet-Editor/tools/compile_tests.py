@@ -5,7 +5,7 @@ import os
 import sysconfig
 
 
-import amulet_editor
+import amulet.app
 
 
 def fix_path(path: str) -> str:
@@ -40,7 +40,7 @@ def main() -> None:
             "cmake",
             *platform_args,
             f"-DPython3_EXECUTABLE={fix_path(sys.executable)}",
-            f"-Damulet_editor_DIR={fix_path(amulet_editor.__path__[0])}",
+            f"-Damulet_app_DIR={fix_path(amulet.app.__path__[0])}",
             f"-DCMAKE_INSTALL_PREFIX=install",
             "-B",
             "build",

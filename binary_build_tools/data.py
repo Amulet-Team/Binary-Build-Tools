@@ -27,8 +27,9 @@ class LibraryData:
         pypi_name: str,  # The PyPi hyphenated library name (amulet-nbt)
         import_name: str,  # The import name to the package (amulet.nbt)
         short_var_name: str,  # A string for use in Python variables (amulet_nbt)
-        macro_name: str = "", # Name used in macros. (AMULET_NBT) Defaults to import_name.replace(".", "_").upper()
-        lib_name: str | None = None,  # The name of the shared library (amulet_nbt)
+        ext_macro_name: str = "", # Name used in extension macros. (AMULET_NBT) Defaults to import_name.replace(".", "_").upper()
+        project_macro_name: str = "", # Name used in project macros. (AMULET_NBT) Defaults to ext_macro_name
+        lib_name: str | None = None,  # The name of the shared library. None if there is no shared library. (amulet_nbt)
         cmake_lib_name: (
             str | None
         ) = None,  # The cmake library alias. Defaults to lib_name (pybind11::module)
@@ -72,7 +73,8 @@ class LibraryData:
         self.import_name = import_name
         self.root_import_name = import_name.split(".", 1)[0]
         self.short_var_name = short_var_name
-        self.macro_name = macro_name or import_name.replace(".", "_").upper()
+        self.ext_macro_name = ext_macro_name or import_name.replace(".", "_").upper()
+        self.project_macro_name = project_macro_name or self.ext_macro_name
         self.lib_name = lib_name
         self.cmake_lib_name = cmake_lib_name or lib_name
         self.cmake_package = cmake_package or self.cmake_lib_name
@@ -518,13 +520,15 @@ AmuletLevel = LibraryData(
 """,
 )
 AmuletEditor = LibraryData(
-    pypi_name="amulet-editor",
     org_name="Amulet-Team",
     repo_name="Amulet-Editor",
-    short_var_name="editor",
-    import_name="amulet_editor",
-    lib_name="amulet_editor",
-    ext_name="_amulet_editor",
+    pypi_name="amulet-editor",
+    import_name="amulet.app",
+    short_var_name="app",
+    ext_macro_name="AMULET_APP",
+    project_macro_name="AMULET_EDITOR",
+    cmake_package="amulet_app",
+    ext_name="_amulet_app",
     library_type=LibraryType.Shared,
     private_dependencies=(
         AmuletLevel.pypi_name,
@@ -543,8 +547,7 @@ AmuletEditor = LibraryData(
         PyBind11Extensions.pypi_name,
     ),
     test_dependencies=(),
-    export_symbol="ExportAmuletEditor",
-    specifier=SpecifierSet("~=1.0.2.0a1"),
+    specifier=SpecifierSet("~=1.0.3.0a0"),
     gitignore=["", "# Visual Studio Code extensions", ".qt_for_python", "", "# Qt Creator", "*.pyproject.user", "*.ui.autosave", "", "working/"],
     unittests_pre_build="""
     - name: Install Qt (Windows)

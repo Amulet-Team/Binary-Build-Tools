@@ -42,10 +42,10 @@ class CMakeBuild(BuildExt):
         import amulet.level
 
         ext_dir = (
-            Path.cwd() / self.get_ext_fullpath("")
-        ).parent.resolve() / "amulet_editor"
-        editor_src_dir = (
-            Path.cwd() / "src" / "amulet_editor" if self.editable_mode else ext_dir
+            (Path.cwd() / self.get_ext_fullpath("")).parent.resolve() / "amulet" / "app"
+        )
+        app_src_dir = (
+            Path.cwd() / "src" / "amulet" / "app" if self.editable_mode else ext_dir
         )
 
         platform_args = []
@@ -83,8 +83,8 @@ class CMakeBuild(BuildExt):
                     f"-Damulet_game_DIR={fix_path(amulet.game.__path__[0])}",
                     f"-Damulet_anvil_DIR={fix_path(amulet.anvil.__path__[0])}",
                     f"-Damulet_level_DIR={fix_path(amulet.level.__path__[0])}",
-                    f"-Damulet_editor_DIR={fix_path(editor_src_dir)}",
-                    f"-DAMULET_EDITOR_EXT_DIR={fix_path(ext_dir)}",
+                    f"-Damulet_app_DIR={fix_path(app_src_dir)}",
+                    f"-DAMULET_APP_EXT_DIR={fix_path(ext_dir)}",
                     f"-DCMAKE_INSTALL_PREFIX=install",
                     "-B",
                     tempdir,
@@ -107,7 +107,7 @@ cmdclass["build_ext"] = CMakeBuild  # type: ignore
 setup(
     version=versioneer.get_version(),
     cmdclass=cmdclass,
-    ext_modules=[Extension("amulet_editor._amulet_editor", [])]
+    ext_modules=[Extension("amulet.app._amulet_app", [])]
     * (not os.environ.get("AMULET_SKIP_COMPILE", None)),
     install_requires=requirements.get_runtime_dependencies(),
 )

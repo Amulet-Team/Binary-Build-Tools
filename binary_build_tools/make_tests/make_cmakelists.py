@@ -35,6 +35,7 @@ if (NOT TARGET {libraries[lib_name].cmake_lib_name})
     find_package({libraries[lib_name].cmake_package} CONFIG REQUIRED)
 endif()"""
     for lib_name in sorted(library_data.test_dependencies + (library_data.pypi_name,), key=library_order.__getitem__)
+    if libraries[lib_name].cmake_lib_name is not None
 )
 }
 
@@ -52,7 +53,7 @@ target_compile_definitions(_test_{library_data.cmake_package} PRIVATE COMPILER_V
     f"""
 target_link_libraries(_test_{library_data.cmake_package} PRIVATE {libraries[lib_name].cmake_lib_name})"""
     for lib_name in sorted(library_data.test_dependencies + (library_data.pypi_name,), key=library_order.__getitem__)
-    if lib_name != "pybind11"
+    if lib_name != "pybind11" and libraries[lib_name].cmake_lib_name is not None
 )
 }
 target_sources(_test_{library_data.cmake_package} PRIVATE ${{SOURCES}})
