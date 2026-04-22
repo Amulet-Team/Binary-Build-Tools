@@ -98,7 +98,7 @@ list(REMOVE_ITEM HEADERS ${{EXTENSION_HEADERS}})
 add_library({library_data.lib_name} SHARED)
 set_target_properties({library_data.lib_name} PROPERTIES CXX_VISIBILITY_PRESET hidden)
 set_target_properties({library_data.lib_name} PROPERTIES FOLDER "CPP")
-{"" if library_data.lib_name is None else f"target_compile_definitions({library_data.lib_name} PRIVATE {library_data.export_symbol})\n"}\
+{f"target_compile_definitions({library_data.lib_name} PRIVATE {library_data.export_symbol})\n" if library_data.lib_name and library_data.export_symbol else ""}\
 {
     "".join(
         f"target_link_libraries({library_data.lib_name} {"PUBLIC" if lib in lib_public_dependencies else "PRIVATE"} {lib.cmake_lib_name})\n"
