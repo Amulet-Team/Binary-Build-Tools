@@ -22,11 +22,11 @@ class LibraryData:
     def __init__(
         self,
         *,
-        pypi_name: str,  # The PyPi hyphenated library name (amulet-nbt)
         org_name: str,  # The github organisation/user name (Amulet-Team)
         repo_name: str,  # The name of the github repository (Amulet-NBT)
-        short_var_name: str,  # A string for use in Python variables (amulet_nbt)
+        pypi_name: str,  # The PyPi hyphenated library name (amulet-nbt)
         import_name: str,  # The import name to the package (amulet.nbt)
+        short_var_name: str,  # A string for use in Python variables (amulet_nbt)
         lib_name: str | None = None,  # The name of the shared library (amulet_nbt)
         cmake_lib_name: (
             str | None
