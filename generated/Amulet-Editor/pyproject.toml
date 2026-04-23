@@ -52,7 +52,6 @@ include-package-data = false
     "**/*.so",
     "**/*.dylib",
     "**/*.lib",
-    "**/*.jpg",
     "**/*.png",
     "**/*.svg",
     "**/*.ico",
