@@ -27,9 +27,11 @@ class LibraryData:
         pypi_name: str,  # The PyPi hyphenated library name (amulet-nbt)
         import_name: str,  # The import name to the package (amulet.nbt)
         short_var_name: str,  # A string for use in Python variables (amulet_nbt)
-        ext_macro_name: str = "", # Name used in extension macros. (AMULET_NBT) Defaults to import_name.replace(".", "_").upper()
-        project_macro_name: str = "", # Name used in project macros. (AMULET_NBT) Defaults to ext_macro_name
-        lib_name: str | None = None,  # The name of the shared library. None if there is no shared library. (amulet_nbt)
+        ext_macro_name: str = "",  # Name used in extension macros. (AMULET_NBT) Defaults to import_name.replace(".", "_").upper()
+        project_macro_name: str = "",  # Name used in project macros. (AMULET_NBT) Defaults to ext_macro_name
+        lib_name: (
+            str | None
+        ) = None,  # The name of the shared library. None if there is no shared library. (amulet_nbt)
         cmake_lib_name: (
             str | None
         ) = None,  # The cmake library alias. Defaults to lib_name (pybind11::module)
@@ -563,13 +565,30 @@ AmuletEditor = LibraryData(
     test_dependencies=(),
     specifier=SpecifierSet("~=1.0.3.0a0"),
     authors=("James Clare", "Ben Gothard"),
-    gitignore=["", "# Visual Studio Code extensions", ".qt_for_python", "", "# Qt Creator", "*.pyproject.user", "*.ui.autosave", "", "working/"],
+    gitignore=[
+        "",
+        "# Visual Studio Code extensions",
+        ".qt_for_python",
+        "",
+        "# Qt Creator",
+        "*.pyproject.user",
+        "*.ui.autosave",
+        "",
+        "working/",
+    ],
     description="A Minecraft world editor and converter that supports all versions since Java 1.12 and Bedrock 1.7.",
     manifest=[
         "recursive-include src/amulet *.png *.svg *.ico *.lang *.json",
         "recursive-include src/plugins *.cpp *.hpp *.json *.lang *.svg",
     ],
-    package_data=["**/*.png", "**/*.svg", "**/*.ico", "**/*.lang", "**/*.json", "**/*.qss"],
+    package_data=[
+        "**/*.png",
+        "**/*.svg",
+        "**/*.ico",
+        "**/*.lang",
+        "**/*.json",
+        "**/*.qss",
+    ],
     unittests_pre_build="""
     - name: Install Qt (Windows)
       if: matrix.os == 'windows-latest'
@@ -585,7 +604,7 @@ AmuletEditor = LibraryData(
         version: '6.10.1'
 """,
     console_scripts={"amulet_editor": "amulet.app.__main__:main"},
-    gui_scripts={"amulet_editor_no_console": "amulet.app.__main__:main"}
+    gui_scripts={"amulet_editor_no_console": "amulet.app.__main__:main"},
 )
 
 
