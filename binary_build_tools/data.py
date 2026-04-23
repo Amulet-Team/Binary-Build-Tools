@@ -158,7 +158,7 @@ PySide6 = LibraryData(
     short_var_name="pyside6",
     import_name="PySide6",
     library_type=LibraryType.Python,
-    specifier=SpecifierSet("==6.10.1"),
+    specifier=SpecifierSet("==6.10.2"),
 )
 Platformdirs = LibraryData(
     pypi_name="platformdirs",
@@ -590,18 +590,10 @@ AmuletEditor = LibraryData(
         "**/*.qss",
     ],
     unittests_pre_build="""
-    - name: Install Qt (Windows)
-      if: matrix.os == 'windows-latest'
+    - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: '6.10.1'
-        arch: 'win64_msvc2022_64'
-
-    - name: Install Qt (Linux/MacOS)
-      if: matrix.os != 'windows-latest'
-      uses: jurplel/install-qt-action@v4
-      with:
-        version: '6.10.1'
+        version: '6.10.2'
 """,
     console_scripts={"amulet_editor": "amulet.app.__main__:main"},
     gui_scripts={"amulet_editor_no_console": "amulet.app.__main__:main"},
