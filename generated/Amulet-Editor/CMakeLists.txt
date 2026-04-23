@@ -65,8 +65,8 @@ endif()
 
 # Find C++ files
 file(REAL_PATH src SOURCE_PATH)
-file(GLOB_RECURSE EXTENSION_SOURCES LIST_DIRECTORIES false ${SOURCE_PATH}/amulet/*.py.cpp)
-file(GLOB_RECURSE EXTENSION_HEADERS LIST_DIRECTORIES false ${SOURCE_PATH}/amulet/*.py.hpp)
+file(GLOB_RECURSE EXTENSION_SOURCES LIST_DIRECTORIES false ${SOURCE_PATH}/amulet/app/*.py.cpp)
+file(GLOB_RECURSE EXTENSION_HEADERS LIST_DIRECTORIES false ${SOURCE_PATH}/amulet/app/*.py.hpp)
 
 # Add python extension
 pybind11_add_module(_amulet_app)

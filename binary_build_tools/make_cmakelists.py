@@ -85,12 +85,12 @@ endif()"""
 
 # Find C++ files
 file(REAL_PATH src SOURCE_PATH)
-file(GLOB_RECURSE EXTENSION_SOURCES LIST_DIRECTORIES false ${{SOURCE_PATH}}/amulet/*.py.cpp)
-file(GLOB_RECURSE EXTENSION_HEADERS LIST_DIRECTORIES false ${{SOURCE_PATH}}/amulet/*.py.hpp)
+file(GLOB_RECURSE EXTENSION_SOURCES LIST_DIRECTORIES false ${{SOURCE_PATH}}/{library_data.import_name.replace(".", "/")}/*.py.cpp)
+file(GLOB_RECURSE EXTENSION_HEADERS LIST_DIRECTORIES false ${{SOURCE_PATH}}/{library_data.import_name.replace(".", "/")}/*.py.hpp)
 {
 "" if library_data.lib_name is None else f"""\
-file(GLOB_RECURSE SOURCES LIST_DIRECTORIES false ${{SOURCE_PATH}}/amulet/*.cpp)
-file(GLOB_RECURSE HEADERS LIST_DIRECTORIES false ${{SOURCE_PATH}}/amulet/*.hpp)
+file(GLOB_RECURSE SOURCES LIST_DIRECTORIES false ${{SOURCE_PATH}}/{library_data.import_name.replace(".", "/")}/*.cpp)
+file(GLOB_RECURSE HEADERS LIST_DIRECTORIES false ${{SOURCE_PATH}}/{library_data.import_name.replace(".", "/")}/*.hpp)
 list(REMOVE_ITEM SOURCES ${{EXTENSION_SOURCES}})
 list(REMOVE_ITEM HEADERS ${{EXTENSION_HEADERS}})
 
