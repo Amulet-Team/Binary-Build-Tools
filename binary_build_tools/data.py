@@ -548,7 +548,10 @@ AmuletEditor = LibraryData(
     ),
     test_dependencies=(),
     specifier=SpecifierSet("~=1.0.3.0a0"),
+    authors=("James Clare", "Ben Gothard"),
     gitignore=["", "# Visual Studio Code extensions", ".qt_for_python", "", "# Qt Creator", "*.pyproject.user", "*.ui.autosave", "", "working/"],
+    description="A Minecraft world editor and converter that supports all versions since Java 1.12 and Bedrock 1.7.",
+    package_data=["**/*.jpg", "**/*.png", "**/*.svg", "**/*.ico", "**/*.lang", "**/*.json", "**/*.qss"],
     unittests_pre_build="""
     - name: Install Qt (Windows)
       if: matrix.os == 'windows-latest'
