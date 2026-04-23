@@ -4,6 +4,8 @@ from binary_build_tools.data import LibraryData
 
 
 def write(test_package_path: str, library_data: LibraryData) -> None:
+    if library_data.lib_name is None:
+        return
     with open(
         os.path.join(
             test_package_path,
