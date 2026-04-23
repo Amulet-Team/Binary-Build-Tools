@@ -12,6 +12,8 @@ from binary_build_tools.data import (
 
 
 def write(workflows_path: str, library_data: LibraryData) -> None:
+    if not library_data.create_build_workflow:
+        return
     dependencies = find_dependencies(
         library_data.pypi_name,
         True,

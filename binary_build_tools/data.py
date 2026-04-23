@@ -70,6 +70,7 @@ class LibraryData:
         authors: Iterable[str] = ("James Clare",),
         console_scripts: Mapping[str, str] = MappingProxyType({}),
         gui_scripts: Mapping[str, str] = MappingProxyType({}),
+        create_build_workflow: bool = True,
     ):
         self.pypi_name = pypi_name.replace("_", "-")
         self.org_name = org_name
@@ -104,6 +105,7 @@ class LibraryData:
         self.authors = authors
         self.console_scripts = console_scripts
         self.gui_scripts = gui_scripts
+        self.create_build_workflow = create_build_workflow
 
 
 Packaging = LibraryData(
@@ -597,6 +599,7 @@ AmuletEditor = LibraryData(
 """,
     console_scripts={"amulet_editor": "amulet.app.__main__:main"},
     gui_scripts={"amulet_editor_no_console": "amulet.app.__main__:main"},
+    create_build_workflow=False,
 )
 
 
