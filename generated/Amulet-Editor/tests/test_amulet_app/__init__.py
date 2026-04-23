@@ -7,19 +7,3 @@ if __name__ != "test_amulet_app":
 import faulthandler as _faulthandler
 
 _faulthandler.enable()
-
-
-def _init() -> None:
-    import sys
-
-    # Import dependencies
-    import amulet.app
-
-    # This needs to be an absolute path otherwise it may get called twice
-    # on different module objects and crash when the interpreter shuts down.
-    from test_amulet_app._test_amulet_app import init
-
-    init(sys.modules[__name__])
-
-
-_init()

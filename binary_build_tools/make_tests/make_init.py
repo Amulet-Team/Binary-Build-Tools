@@ -16,6 +16,8 @@ def write(test_package_path: str, library_data: LibraryData) -> None:
 import faulthandler as _faulthandler
 
 _faulthandler.enable()
+{
+"" if library_data.lib_name is None else f"""\
 
 
 def _init() -> None:
@@ -33,4 +35,6 @@ def _init() -> None:
 
 _init()
 del _init
+"""
+}\
 """)

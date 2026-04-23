@@ -64,7 +64,7 @@ jobs:
     - name: Build
       run: |
         pip install -v .{f"[{",".join(library_data.unittest_dep_groups)}]" if library_data.unittest_dep_groups else ""}
-        python tools/compile_tests.py
+{"" if library_data.lib_name is None else "        python tools/compile_tests.py\n"}\
 {library_data.unittests_pre_test}
     - name: Test with unittest
       run: python -m unittest discover -v -s tests

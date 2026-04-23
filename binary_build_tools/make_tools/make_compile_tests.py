@@ -9,6 +9,8 @@ from binary_build_tools.data import (
 
 
 def write(tools_path: str, library_data: LibraryData) -> None:
+    if library_data.lib_name is None:
+        return
     dependencies = find_dependencies(
         library_data.pypi_name,
         False,
