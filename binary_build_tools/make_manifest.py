@@ -11,7 +11,7 @@ include requirements.py
 include get_compiler/CMakeLists.txt
 include get_compiler/__init__.py
 
-recursive-include src/{library_data.root_import_name} *.cpp *.hpp *Config.cmake
+recursive-include src/{library_data.root_import_name} *.cpp *.hpp{"" if library_data.lib_name is None else " *Config.cmake"}
 
 include CMakeLists.txt
 {"".join(f"{line}\n" for line in library_data.manifest)}

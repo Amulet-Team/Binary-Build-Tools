@@ -4,7 +4,7 @@ include requirements.py
 include get_compiler/CMakeLists.txt
 include get_compiler/__init__.py
 
-recursive-include src/amulet *.cpp *.hpp *Config.cmake
+recursive-include src/amulet *.cpp *.hpp
 
 include CMakeLists.txt
 
