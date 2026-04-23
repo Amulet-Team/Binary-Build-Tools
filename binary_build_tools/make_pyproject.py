@@ -72,6 +72,20 @@ readme = {{file = ["README.md"], content-type = "text/markdown"}}
 [project.entry-points.pyinstaller40]
 hook-dirs = "{library_data.import_name}.__pyinstaller:get_hook_dirs"
 
+{
+f"""\
+[project.entry-points.console_scripts]
+{"\n".join(f"{name} = \"{func}\"" for name, func in library_data.console_scripts.items())}
+
+""" if library_data.console_scripts else ""
+}\
+{
+f"""\
+[project.entry-points.gui_scripts]
+{"\n".join(f"{name} = \"{func}\"" for name, func in library_data.gui_scripts.items())}
+
+""" if library_data.gui_scripts else ""
+}\
 [tool.versioneer]
 VCS = "git"
 style = "pep440"

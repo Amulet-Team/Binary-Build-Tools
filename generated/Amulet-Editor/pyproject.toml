@@ -67,6 +67,12 @@ readme = {file = ["README.md"], content-type = "text/markdown"}
 [project.entry-points.pyinstaller40]
 hook-dirs = "amulet.app.__pyinstaller:get_hook_dirs"
 
+[project.entry-points.console_scripts]
+amulet_editor = "amulet.app.__main__:main"
+
+[project.entry-points.gui_scripts]
+amulet_editor_no_console = "amulet.app.__main__:main"
+
 [tool.versioneer]
 VCS = "git"
 style = "pep440"

@@ -65,7 +65,9 @@ class LibraryData:
         unittest_dep_groups: Iterable[str] = ("dev",),
         unittests_pre_build: str = "",
         unittests_pre_test: str = "",
-        authors: Iterable[str] = ("James Clare",)
+        authors: Iterable[str] = ("James Clare",),
+        console_scripts: Mapping[str, str] = MappingProxyType({}),
+        gui_scripts: Mapping[str, str] = MappingProxyType({}),
     ):
         self.pypi_name = pypi_name.replace("_", "-")
         self.org_name = org_name
@@ -98,6 +100,8 @@ class LibraryData:
         self.unittests_pre_build = unittests_pre_build
         self.unittests_pre_test = unittests_pre_test
         self.authors = authors
+        self.console_scripts = console_scripts
+        self.gui_scripts = gui_scripts
 
 
 Numpy = LibraryData(
@@ -565,7 +569,9 @@ AmuletEditor = LibraryData(
       uses: jurplel/install-qt-action@v4
       with:
         version: '6.10.1'
-"""
+""",
+    console_scripts={"amulet_editor": "amulet.app.__main__:main"},
+    gui_scripts={"amulet_editor_no_console": "amulet.app.__main__:main"}
 )
 
 
