@@ -77,13 +77,13 @@ class CMakeBuild(BuildExt):
                     "cmake",
                     *platform_args,
                     f"-DPython3_EXECUTABLE={{fix_path(sys.executable)}}",
-                    {"".join(
-                        """
-                    f"-Dpybind11_DIR={fix_path(pybind11.get_cmake_dir())}","""
+{"".join(
+                        """\
+                    f"-Dpybind11_DIR={fix_path(pybind11.get_cmake_dir())}",\n"""
                         if lib.pypi_name == "pybind11" else
-                        f"""
-                    f"-D{lib.cmake_package}_DIR={{fix_path({lib.import_name}.__path__[0])}}",""" for lib in dependencies
-                    )}
+                        f"""\
+                    f"-D{lib.cmake_package}_DIR={{fix_path({lib.import_name}.__path__[0])}}",\n""" for lib in dependencies
+                    )}\
                     f"-D{library_data.cmake_package}_DIR={{fix_path({library_data.short_var_name}_src_dir)}}",
                     f"-D{library_data.ext_macro_name}_EXT_DIR={{fix_path(ext_dir)}}",
                     f"-DCMAKE_INSTALL_PREFIX=install",

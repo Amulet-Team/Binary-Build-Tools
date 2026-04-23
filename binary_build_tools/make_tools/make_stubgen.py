@@ -17,7 +17,6 @@ import pybind11_stubgen
 from pybind11_stubgen.structs import Identifier
 from pybind11_stubgen.parser.mixins.filter import FilterClassMembers
 
-
 ForwardRefPattern = re.compile(r"ForwardRef\\('(?P<variable>[a-zA-Z_][a-zA-Z0-9_]*)'\\)")
 
 QuotePattern = re.compile(r"'(?P<variable>[a-zA-Z_][a-zA-Z0-9_]*)'")
@@ -238,12 +237,12 @@ def main() -> None:
         pyi = EqPattern.sub(eq_sub_func, pyi)
         pyi = pyi.replace("**kwargs)", "**kwargs: typing.Any)")
         pyi_split = [l.rstrip("\\r") for l in pyi.split("\\n")]
-        for hidden_import in [
-            "typing",
-            "types"
-        ]:
+        for hidden_import in ["typing", "types"]:
             if hidden_import in pyi and f"import {{hidden_import}}" not in pyi_split:
-                pyi_split.insert(pyi_split.index("from __future__ import annotations") + 1, f"import {{hidden_import}}")
+                pyi_split.insert(
+                    pyi_split.index("from __future__ import annotations") + 1,
+                    f"import {{hidden_import}}",
+                )
         pyi = "\\n".join(pyi_split)
         with open(stub_path, "w", encoding="utf-8") as f:
             f.write(pyi)
@@ -270,4 +269,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()''')
+    main()
+''')

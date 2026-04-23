@@ -48,18 +48,17 @@ def _init() -> None:
         lib_path = os.path.join(os.path.dirname(__file__), "lib{library_data.lib_name}.so")
     else:
         raise RuntimeError(f"Unsupported platform {{sys.platform}}")
-    """}\
 
+"""}\
 {f"""\
     # Import dependencies
 {"".join(f"    import {lib.import_name}\n" for lib in dependencies)}
 """ if dependencies else ""}\
-
 {"" if library_data.lib_name is None else f"""\
     # Load the shared library
     ctypes.cdll.LoadLibrary(lib_path)
-"""}\
 
+"""}\
     from .{library_data.ext_name} import init
 
     init(sys.modules[__name__])

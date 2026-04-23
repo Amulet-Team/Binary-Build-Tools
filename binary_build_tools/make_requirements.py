@@ -61,22 +61,23 @@ def get_specifier_set(version_str: str) -> str:
 
     return f"~={{version.major}}.{{version.minor}}.{{version.micro}}.0{{''.join(map(str, version.pre or ()))}}"
 
+
 AMULET_COMPILER_VERSION_REQUIREMENT = get_compiler.main()
 
 {
 "".join(
-f"""
+f"""\
 
 try:
     import {lib.import_name}
 except ImportError:
     pass
 else:
-    {lib.project_macro_name}_REQUIREMENT = get_specifier_set({lib.import_name}.__version__)"""
+    {lib.project_macro_name}_REQUIREMENT = get_specifier_set({lib.import_name}.__version__)
+"""
 for lib in dependencies if lib.pypi_name != "pybind11"
 )
 }
-
 
 def get_build_dependencies() -> list:
     return [
