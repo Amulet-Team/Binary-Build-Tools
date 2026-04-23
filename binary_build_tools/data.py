@@ -104,6 +104,15 @@ class LibraryData:
         self.gui_scripts = gui_scripts
 
 
+Packaging = LibraryData(
+    pypi_name="packaging",
+    org_name="pypa",
+    repo_name="packaging",
+    short_var_name="packaging",
+    import_name="packaging",
+    library_type=LibraryType.Python,
+    specifier=SpecifierSet("~=25.0"),
+)
 Numpy = LibraryData(
     pypi_name="numpy",
     org_name="numpy",
@@ -545,6 +554,7 @@ AmuletEditor = LibraryData(
         PyOpenGL.pypi_name,
         RuntimeFinal.pypi_name,
         PySide6.pypi_name,
+        Packaging.pypi_name,
     ),
     ext_dependencies=(
         PyBind11.pypi_name,
@@ -607,6 +617,7 @@ python_libraries: list[LibraryData] = [
     PyOpenGL,
     RuntimeFinal,
     PySide6,
+    Packaging,
 ]
 
 libraries: dict[str, LibraryData] = {
