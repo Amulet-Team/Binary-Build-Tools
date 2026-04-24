@@ -160,7 +160,7 @@ PySide6 = LibraryData(
     short_var_name="pyside6",
     import_name="PySide6",
     library_type=LibraryType.Python,
-    specifier=SpecifierSet("==6.10.2"),
+    specifier=SpecifierSet("==6.11.0"),
 )
 Platformdirs = LibraryData(
     pypi_name="platformdirs",
@@ -595,7 +595,7 @@ AmuletEditor = LibraryData(
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: '6.10.2'
+        version: '6.11.0'
 """,
     console_scripts={"amulet_editor": "amulet.app.__main__:main"},
     gui_scripts={"amulet_editor_no_console": "amulet.app.__main__:main"},
