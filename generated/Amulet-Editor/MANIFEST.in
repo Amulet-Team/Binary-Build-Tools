@@ -8,6 +8,6 @@ recursive-include src/amulet *.cpp *.hpp
 
 include CMakeLists.txt
 recursive-include src/amulet *.png *.svg *.ico *.lang *.json
-recursive-include src/plugins *.cpp *.hpp *.json *.lang *.svg
+recursive-include src/plugins *.cpp *.hpp CMakeLists.txt *.json *.lang *.svg
 
 prune tests

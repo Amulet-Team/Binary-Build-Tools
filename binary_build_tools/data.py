@@ -581,7 +581,7 @@ AmuletEditor = LibraryData(
     description="A Minecraft world editor and converter that supports all versions since Java 1.12 and Bedrock 1.7.",
     manifest=[
         "recursive-include src/amulet *.png *.svg *.ico *.lang *.json",
-        "recursive-include src/plugins *.cpp *.hpp *.json *.lang *.svg",
+        "recursive-include src/plugins *.cpp *.hpp CMakeLists.txt *.json *.lang *.svg",
     ],
     package_data=[
         "**/*.png",
