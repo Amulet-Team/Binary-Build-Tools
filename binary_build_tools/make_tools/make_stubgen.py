@@ -160,7 +160,7 @@ def main() -> None:
     src_path = os.path.join(root_path, "src")
     {library_data.import_name.replace(".", "_")}_path = get_package_dir("{library_data.import_name}")
     tests_path = os.path.join(root_path, "tests")
-    test_{library_data.import_name.replace(".", "_")}_path = os.path.join(tests_path, "test_{library_data.import_name.replace(".", "_")}")
+{"" if library_data.lib_name is None else f"""    test_{library_data.import_name.replace(".", "_")}_path = os.path.join(tests_path, "test_{library_data.import_name.replace(".", "_")}")\n"""}\
 
     # make tests importable
     sys.path.append(tests_path)
@@ -168,7 +168,7 @@ def main() -> None:
     # out_dir, module_dir, module_name
     modules: list[tuple[str, str, str]] = [
         (src_path, {library_data.import_name.replace(".", "_")}_path, "{library_data.import_name}"),
-        (tests_path, test_{library_data.import_name.replace(".", "_")}_path, "test_{library_data.import_name.replace(".", "_")}"),
+{"" if library_data.lib_name is None else f"""        (tests_path, test_{library_data.import_name.replace(".", "_")}_path, "test_{library_data.import_name.replace(".", "_")}"),\n"""}\
     ]
 
     # Remove all existing stub files
