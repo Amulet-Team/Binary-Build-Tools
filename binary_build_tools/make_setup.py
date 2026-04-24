@@ -1,6 +1,6 @@
 import os
 
-from .data import LibraryData, find_dependencies
+from .data import LibraryData, find_dependencies, PySide6
 
 
 def write(project_path: str, library_data: LibraryData) -> None:
@@ -69,6 +69,14 @@ class CMakeBuild(BuildExt):
             if platform.machine() == "arm64":
                 platform_args.append("-DCMAKE_OSX_ARCHITECTURES=x86_64;arm64")
 
+{f"""\
+        qt6_dir = os.environ.get("QT_ROOT_DIR", None)
+        if qt6_dir is None:
+            raise RuntimeError(
+                "Could not find Qt6 installation. Set QT_ROOT_DIR environment variable."
+            )
+
+""" if PySide6.pypi_name in library_data.runtime_dependencies else ""}\
         if subprocess.run(["cmake", "--version"]).returncode:
             raise RuntimeError("Could not find cmake")
         with TemporaryDirectory() as tempdir:
@@ -77,6 +85,7 @@ class CMakeBuild(BuildExt):
                     "cmake",
                     *platform_args,
                     f"-DPython3_EXECUTABLE={{fix_path(sys.executable)}}",
+{f"""                    f"-DQt6_DIR={{qt6_dir}}",\n""" if PySide6.pypi_name in library_data.runtime_dependencies else ""}\
 {"".join(
                         """\
                     f"-Dpybind11_DIR={fix_path(pybind11.get_cmake_dir())}",\n"""
