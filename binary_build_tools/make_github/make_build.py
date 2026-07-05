@@ -92,6 +92,8 @@ jobs:
       with:
         output-dir: dist
         only: "cp{PythonVersion.replace(".", "")}-manylinux_x86_64"
+      env:
+        CIBW_BEFORE_ALL_LINUX: "yum install -y cmake"
 
     - name: Publish
       env:
