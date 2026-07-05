@@ -1,6 +1,6 @@
 import os
 
-from binary_build_tools.data import UbuntuX64Runner, PythonVersion
+from binary_build_tools.data import UbuntuX64Runner, PythonVersion, CheckoutVersion, SetupPythonVersion
 
 
 def write(workflows_path: str) -> None:
@@ -28,10 +28,10 @@ jobs:
 
     steps:
     - name: Clone
-      uses: actions/checkout@v7
+      uses: actions/checkout@v{CheckoutVersion}
 
     - name: Set up Python
-      uses: actions/setup-python@v6
+      uses: actions/setup-python@v{SetupPythonVersion}
       with:
         python-version: {PythonVersion}
 

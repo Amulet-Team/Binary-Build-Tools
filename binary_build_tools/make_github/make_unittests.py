@@ -8,6 +8,9 @@ from binary_build_tools.data import (
     WindowArm64Runner,
     UbuntuX64Runner,
     PythonVersion,
+    CheckoutVersion,
+    SetupCMakeVersion,
+    SetupPythonVersion,
 )
 
 
@@ -46,17 +49,17 @@ jobs:
 
     steps:
     - name: Clone
-      uses: actions/checkout@v7{
+      uses: actions/checkout@v{CheckoutVersion}{
 """
       with:
         submodules: 'true'""" * library_data.has_submodules
 }
 
     - name: Setup cmake
-      uses: jwlawson/actions-setup-cmake@v2
+      uses: jwlawson/actions-setup-cmake@v{SetupCMakeVersion}
 
     - name: Set up Python
-      uses: actions/setup-python@v6
+      uses: actions/setup-python@v{SetupPythonVersion}
       with:
         python-version: ${{{{ matrix.cfg.python-version }}}}
         architecture: ${{{{ matrix.cfg.architecture }}}}

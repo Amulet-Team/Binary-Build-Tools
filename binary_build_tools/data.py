@@ -10,6 +10,12 @@ WindowX64Runner = "windows-2025"
 WindowArm64Runner = "windows-11-arm"
 UbuntuX64Runner = "ubuntu-24.04"
 PythonVersion = "3.14"
+CIBuildWheelVersion = "4.1"
+CheckoutVersion = "7"
+SetupPythonVersion = "6"
+SetupCMakeVersion = "2"
+InstallQtVersion = "4"
+QtVersion = "6.11.1"
 
 
 class LibraryType(Enum):
@@ -160,7 +166,7 @@ PySide6 = LibraryData(
     short_var_name="pyside6",
     import_name="PySide6",
     library_type=LibraryType.Python,
-    specifier=SpecifierSet("==6.11.1"),
+    specifier=SpecifierSet(f"=={QtVersion}"),
 )
 Platformdirs = LibraryData(
     pypi_name="platformdirs",
@@ -591,11 +597,11 @@ AmuletEditor = LibraryData(
         "**/*.json",
         "**/*.qss",
     ],
-    unittests_pre_build="""
+    unittests_pre_build=f"""
     - name: Install Qt
-      uses: jurplel/install-qt-action@v4
+      uses: jurplel/install-qt-action@v{InstallQtVersion}
       with:
-        version: '6.11.1'
+        version: '{QtVersion}'
 """,
     console_scripts={"amulet_editor": "amulet.app.__main__:main"},
     gui_scripts={"amulet_editor_no_console": "amulet.app.__main__:main"},
