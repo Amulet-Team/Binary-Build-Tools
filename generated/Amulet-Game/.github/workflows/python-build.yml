@@ -13,6 +13,7 @@ jobs:
           - { os: windows-2025, python-version: '3.14', architecture: x64 }
           - { os: windows-11-arm, python-version: '3.14', architecture: arm64 }
           - { os: macos-15, python-version: '3.14', architecture: arm64 }
+          - { os: ubuntu-24.04, python-version: '3.14', architecture: x64 }
 
     runs-on: ${{ matrix.cfg.os }}
     defaults:
@@ -38,9 +39,17 @@ jobs:
       run: |
         pip install build twine
 
-    - name: Build
+    - name: Build (Windows/MacOS)
+      if: matrix.cfg.os != 'ubuntu-24.04'
       run: |
         python -m build .
+        
+    - name: Build (Linux)
+      if: matrix.cfg.os == 'ubuntu-24.04'
+      uses: pypa/cibuildwheel@v4.1
+      with:
+        output-dir: dist
+        only: "cp314-manylinux_x86_64"
 
     - name: Publish
       env:

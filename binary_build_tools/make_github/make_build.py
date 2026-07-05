@@ -7,7 +7,9 @@ from binary_build_tools.data import (
     MacOSArm64Runner,
     WindowX64Runner,
     WindowArm64Runner,
+    UbuntuX64Runner,
     PythonVersion,
+    CIBuildWheelVersion,
     CheckoutVersion,
     SetupPythonVersion,
     SetupCMakeVersion,
@@ -51,6 +53,7 @@ jobs:
           - {{ os: {WindowX64Runner}, python-version: '{PythonVersion}', architecture: x64 }}
           - {{ os: {WindowArm64Runner}, python-version: '{PythonVersion}', architecture: arm64 }}
           - {{ os: {MacOSArm64Runner}, python-version: '{PythonVersion}', architecture: arm64 }}
+          - {{ os: {UbuntuX64Runner}, python-version: '{PythonVersion}', architecture: x64 }}
 
     runs-on: ${{{{ matrix.cfg.os }}}}
     defaults:
@@ -78,9 +81,17 @@ jobs:
       run: |
         pip install build twine
 
-    - name: Build
+    - name: Build (Windows/MacOS)
+      if: matrix.cfg.os != '{UbuntuX64Runner}'
       run: |
         python -m build .
+        
+    - name: Build (Linux)
+      if: matrix.cfg.os == '{UbuntuX64Runner}'
+      uses: pypa/cibuildwheel@v{CIBuildWheelVersion}
+      with:
+        output-dir: dist
+        only: "cp{PythonVersion.replace(".", "")}-manylinux_x86_64"
 
     - name: Publish
       env:
