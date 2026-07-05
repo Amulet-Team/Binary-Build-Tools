@@ -6,8 +6,8 @@ from types import MappingProxyType
 
 MacOSArm64Runner = "macos-15"
 MacOSX64Runner = "macos-15-intel"
-WindowX64Runner = "windows-2025"
-WindowArm64Runner = "windows-11-arm"
+WindowX64Runner = "windows-2025-vs2026"
+WindowArm64Runner = "windows-11-vs2026-arm"
 UbuntuX64Runner = "ubuntu-24.04"
 PythonVersion = "3.14"
 CIBuildWheelVersion = "4.1"
