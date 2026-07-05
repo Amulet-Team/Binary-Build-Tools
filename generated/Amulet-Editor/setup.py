@@ -59,7 +59,7 @@ class CMakeBuild(BuildExt):
                 platform_args.extend(["-A", "ARM64"])
             else:
                 raise RuntimeError(f"Unsupported platform: {sysconfig.get_platform()}")
-            platform_args.extend(["-T", "v143"])
+            platform_args.extend(["-T", "v145"])
         elif sys.platform == "darwin":
             if platform.machine() == "arm64":
                 platform_args.append("-DCMAKE_OSX_ARCHITECTURES=x86_64;arm64")
