@@ -40,12 +40,12 @@ jobs:
         pip install build twine
 
     - name: Build (Windows/MacOS)
-      if: matrix.cfg.os != 'ubuntu-24.04'
+      if: runner.os != 'Linux'
       run: |
         python -m build .
         
     - name: Build (Linux)
-      if: matrix.cfg.os == 'ubuntu-24.04'
+      if: runner.os == 'Linux'
       uses: pypa/cibuildwheel@v4.1
       with:
         output-dir: dist

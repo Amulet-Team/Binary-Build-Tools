@@ -82,12 +82,12 @@ jobs:
         pip install build twine
 
     - name: Build (Windows/MacOS)
-      if: matrix.cfg.os != '{UbuntuX64Runner}'
+      if: runner.os != 'Linux'
       run: |
         python -m build .
         
     - name: Build (Linux)
-      if: matrix.cfg.os == '{UbuntuX64Runner}'
+      if: runner.os == 'Linux'
       uses: pypa/cibuildwheel@v{CIBuildWheelVersion}
       with:
         output-dir: dist
