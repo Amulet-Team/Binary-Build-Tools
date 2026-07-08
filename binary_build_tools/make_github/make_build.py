@@ -69,6 +69,7 @@ jobs:
 }
 
     - name: Setup cmake
+      if: runner.os != 'Linux'
       uses: jwlawson/actions-setup-cmake@v{SetupCMakeVersion}
 
     - name: Set up Python
