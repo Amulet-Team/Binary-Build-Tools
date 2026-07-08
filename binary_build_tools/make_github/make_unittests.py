@@ -11,6 +11,7 @@ from binary_build_tools.data import (
     CheckoutVersion,
     SetupCMakeVersion,
     SetupPythonVersion,
+    CIBuildWheelVersion,
 )
 
 
@@ -63,12 +64,38 @@ jobs:
       with:
         python-version: ${{{{ matrix.cfg.python-version }}}}
         architecture: ${{{{ matrix.cfg.architecture }}}}
+\
 {library_data.unittests_pre_build}
-    - name: Build
+\
+    - name: Build (Windows/MacOS)
+      if: runner.os != 'Linux'
       run: |
-        pip install -v .{f"[{",".join(library_data.unittest_dep_groups)}]" if library_data.unittest_dep_groups else ""}
-{"" if library_data.lib_name is None else "        python tools/compile_tests.py\n"}\
-{library_data.unittests_pre_test}
+        pip install build
+        python -m build .
+        
+    - name: Build (Linux)
+      if: runner.os == 'Linux'
+      uses: pypa/cibuildwheel@v{CIBuildWheelVersion}
+      with:
+        output-dir: dist
+        only: "cp{PythonVersion.replace(".", "")}-manylinux_x86_64"
+
+    - name: Install
+      run: |
+        pip install -v dist/*.whl{f"[{",".join(library_data.unittest_dep_groups)}]" if library_data.unittest_dep_groups else ""}
+
+{"" if library_data.lib_name is None else """\
+    - name: Compile Tests
+      run: |
+        python -m venv venv
+        source venv/bin/activate
+        pip install -v dist/*.whl[dev]
+        python tools/compile_tests.py
+
+"""}\
+\
+{library_data.unittests_pre_test}\
+\
     - name: Test with unittest
       run: python -m unittest discover -v -s tests
 """)

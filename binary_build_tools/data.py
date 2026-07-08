@@ -70,7 +70,7 @@ class LibraryData:
         package_data: Iterable[str] = (),
         include_dir: str = "../..",
         optional_dependencies: Mapping[str, Iterable[str]] = MappingProxyType({}),
-        unittest_dep_groups: Iterable[str] = ("dev",),
+        unittest_dep_groups: Iterable[str] = (),
         unittests_pre_build: str = "",
         unittests_pre_test: str = "",
         authors: Iterable[str] = ("James Clare",),
@@ -290,7 +290,7 @@ AmuletUtils = LibraryData(
         "pillow": ["pillow~=11.0"],
         "pyside6": ["PySide6-Essentials~=6.9"],
     },
-    unittest_dep_groups=("dev", "numpy", "pillow", "pyside6"),
+    unittest_dep_groups=("numpy", "pillow", "pyside6"),
     package_data=["**/*.png"],
     unittests_pre_build="""
     - name: Install Ubuntu Extra
@@ -495,10 +495,11 @@ AmuletAnvil = LibraryData(
     export_symbol="ExportAmuletAnvil",
     specifier=SpecifierSet("~=1.0.5.0a0"),
     description="A C++ library with Python wrapper for the Minecraft Anvil format.",
-    unittests_pre_test="""
+    unittests_pre_test="""\
     - name: Install Minecraft Worlds
       run: |
         pip install git+https://github.com/Amulet-Team/Amulet-Minecraft-Worlds.git
+
 """,
 )
 AmuletLevel = LibraryData(
@@ -536,10 +537,11 @@ AmuletLevel = LibraryData(
     export_symbol="ExportAmuletLevel",
     specifier=SpecifierSet("~=1.0.6.0a0"),
     description="A Python and C++ library for interacting with Minecraft worlds and structures.",
-    unittests_pre_test="""
+    unittests_pre_test="""\
     - name: Install Minecraft Worlds
       run: |
         pip install git+https://github.com/Amulet-Team/Amulet-Minecraft-Worlds.git
+
 """,
 )
 AmuletEditor = LibraryData(
