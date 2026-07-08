@@ -66,3 +66,6 @@ versionfile_source = "src/amulet/leveldb/_version.py"
 versionfile_build = "amulet/leveldb/_version.py"
 tag_prefix = ""
 parentdir_prefix = "amulet_leveldb-"
+
+[tool.cibuildwheel.linux]
+before-all = "yum install -y cmake"

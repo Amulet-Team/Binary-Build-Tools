@@ -93,4 +93,7 @@ versionfile_source = "src/{library_data.import_name.replace(".", "/")}/_version.
 versionfile_build = "{library_data.import_name.replace(".", "/")}/_version.py"
 tag_prefix = ""
 parentdir_prefix = "{library_data.pypi_name.replace("-", "_")}-"
+
+[tool.cibuildwheel.linux]
+before-all = "yum install -y cmake"
 """)

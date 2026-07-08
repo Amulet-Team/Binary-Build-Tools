@@ -73,3 +73,6 @@ versionfile_source = "src/amulet/core/_version.py"
 versionfile_build = "amulet/core/_version.py"
 tag_prefix = ""
 parentdir_prefix = "amulet_core-"
+
+[tool.cibuildwheel.linux]
+before-all = "yum install -y cmake"
