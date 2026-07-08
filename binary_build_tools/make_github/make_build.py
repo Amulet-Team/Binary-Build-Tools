@@ -75,6 +75,7 @@ jobs:
       uses: actions/setup-python@v{SetupPythonVersion}
       with:
         python-version: ${{{{ matrix.cfg.python-version }}}}
+        architecture: ${{{{ matrix.cfg.architecture }}}}
 
     - name: Build (Windows/MacOS)
       if: runner.os != 'Linux'
