@@ -61,6 +61,11 @@ endforeach()
 
 # Add python extension
 pybind11_add_module(_amulet_zlib)
+if(APPLE)
+    set_target_properties(_amulet_zlib PROPERTIES INSTALL_RPATH "@loader_path")
+elseif(UNIX)
+    set_target_properties(_amulet_zlib PROPERTIES INSTALL_RPATH "$ORIGIN")
+endif()
 set_target_properties(_amulet_zlib PROPERTIES CXX_VISIBILITY_PRESET hidden)
 set_target_properties(_amulet_zlib PROPERTIES FOLDER "Python")
 target_link_libraries(_amulet_zlib PRIVATE amulet_pybind11_extensions)

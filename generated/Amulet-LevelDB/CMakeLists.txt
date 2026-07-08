@@ -60,6 +60,11 @@ endforeach()
 
 # Add python extension
 pybind11_add_module(_leveldb)
+if(APPLE)
+    set_target_properties(_leveldb PROPERTIES INSTALL_RPATH "@loader_path")
+elseif(UNIX)
+    set_target_properties(_leveldb PROPERTIES INSTALL_RPATH "$ORIGIN")
+endif()
 set_target_properties(_leveldb PROPERTIES CXX_VISIBILITY_PRESET hidden)
 set_target_properties(_leveldb PROPERTIES FOLDER "Python")
 target_link_libraries(_leveldb PRIVATE amulet_pybind11_extensions)

@@ -119,6 +119,11 @@ endforeach()
 
 # Add python extension
 pybind11_add_module({library_data.ext_name})
+if(APPLE)
+    set_target_properties({library_data.ext_name} PROPERTIES INSTALL_RPATH "@loader_path")
+elseif(UNIX)
+    set_target_properties({library_data.ext_name} PROPERTIES INSTALL_RPATH "$ORIGIN")
+endif()
 set_target_properties({library_data.ext_name} PROPERTIES CXX_VISIBILITY_PRESET hidden)
 set_target_properties({library_data.ext_name} PROPERTIES FOLDER "Python")
 {
