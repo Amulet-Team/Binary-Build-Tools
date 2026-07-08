@@ -82,14 +82,14 @@ jobs:
 
     - name: Install
       run: |
-        pip install -v dist/*.whl{f"[{",".join(library_data.unittest_dep_groups)}]" if library_data.unittest_dep_groups else ""}
+        pip install "$(ls dist/*.whl | head -n 1){f"[{",".join(library_data.unittest_dep_groups)}]" if library_data.unittest_dep_groups else ""}"
 
 {"" if library_data.lib_name is None else """\
     - name: Compile Tests
       run: |
         python -m venv venv
         source venv/bin/activate
-        pip install -v dist/*.whl[dev]
+        pip install "$(ls dist/*.whl | head -n 1)[dev]"
         python tools/compile_tests.py
 
 """}\

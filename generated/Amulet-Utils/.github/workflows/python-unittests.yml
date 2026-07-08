@@ -60,13 +60,13 @@ jobs:
 
     - name: Install
       run: |
-        pip install -v dist/*.whl[numpy,pillow,pyside6]
+        pip install "$(ls dist/*.whl | head -n 1)[numpy,pillow,pyside6]"
 
     - name: Compile Tests
       run: |
         python -m venv venv
         source venv/bin/activate
-        pip install -v dist/*.whl[dev]
+        pip install "$(ls dist/*.whl | head -n 1)[dev]"
         python tools/compile_tests.py
 
     - name: Test with unittest
