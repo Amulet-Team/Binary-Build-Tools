@@ -72,7 +72,7 @@ if (MSVC)
     add_definitions("/MP")
 endif()
 
-find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
+find_package(Python3 COMPONENTS Interpreter Development.Module REQUIRED)
 
 # Find libraries{
 f"".join(
