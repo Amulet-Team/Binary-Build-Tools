@@ -76,14 +76,10 @@ jobs:
       with:
         python-version: ${{{{ matrix.cfg.python-version }}}}
 
-    - name: Install dependencies
-      shell: bash
-      run: |
-        pip install build twine
-
     - name: Build (Windows/MacOS)
       if: runner.os != 'Linux'
       run: |
+        pip install build
         python -m build .
         
     - name: Build (Linux)
@@ -92,6 +88,11 @@ jobs:
       with:
         output-dir: dist
         only: "cp{PythonVersion.replace(".", "")}-manylinux_x86_64"
+
+    - name: Install twine
+      shell: bash
+      run: |
+        pip install twine
 
     - name: Publish
       env:
