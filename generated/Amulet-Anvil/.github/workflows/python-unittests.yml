@@ -15,11 +15,11 @@ jobs:
       fail-fast: false
       matrix:
         cfg:
-          - { os: windows-2025-vs2026, python-version: '3.14', architecture: x64 }
-          - { os: windows-11-vs2026-arm, python-version: '3.14', architecture: arm64 }
-          - { os: macos-15-intel, python-version: '3.14', architecture: x64 }
-          - { os: macos-15, python-version: '3.14', architecture: arm64 }
-          - { os: ubuntu-24.04, python-version: '3.14', architecture: x64 }
+          - { os: windows-2025-vs2026, python-version: '3.14', architecture: x64, whl: 'cp314-win_amd64' }
+          - { os: windows-11-vs2026-arm, python-version: '3.14', architecture: arm64, whl: 'cp314-win_arm64' }
+          - { os: macos-15-intel, python-version: '3.14', architecture: x64, whl: 'cp314-macosx_x86_64' }
+          - { os: macos-15, python-version: '3.14', architecture: arm64, whl: 'cp314-macosx_arm64' }
+          - { os: ubuntu-24.04, python-version: '3.14', architecture: x64, whl: 'cp314-manylinux_x86_64' }
 
     runs-on: ${{ matrix.cfg.os }}
     timeout-minutes: 45
@@ -31,46 +31,18 @@ jobs:
     - name: Clone
       uses: actions/checkout@v7
 
-    - name: Setup cmake
-      uses: jwlawson/actions-setup-cmake@v2
-
     - name: Set up Python
       uses: actions/setup-python@v6
       with:
         python-version: ${{ matrix.cfg.python-version }}
         architecture: ${{ matrix.cfg.architecture }}
 
-    - name: Build (Windows/MacOS)
-      if: runner.os != 'Linux'
+    - name: Build and Test
       run: |
-        pip install build
-        python -m build .
-        
-    - name: Build (Linux)
-      if: runner.os == 'Linux'
-      uses: pypa/cibuildwheel@v4.1
+        pip install cibuildwheel~=4.1
+        cibuildwheel --only ${{ matrix.cfg.whl }} --output-dir dist .
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v7
       with:
-        output-dir: dist
-        only: "cp314-manylinux_x86_64"
-
-    - name: Install
-      run: |
-        pip install "$(ls dist/*.whl | head -n 1)"
-
-    - name: Compile Tests
-      run: |
-        python -m venv venv
-        if [ "$RUNNER_OS" == "Windows" ]; then
-          source venv/Scripts/activate
-        else
-          source venv/bin/activate
-        fi
-        pip install "$(ls dist/*.whl | head -n 1)[dev]"
-        python tools/compile_tests.py
-
-    - name: Install Minecraft Worlds
-      run: |
-        pip install git+https://github.com/Amulet-Team/Amulet-Minecraft-Worlds.git
-
-    - name: Test with unittest
-      run: python -m unittest discover -v -s tests
+        path: dist/*

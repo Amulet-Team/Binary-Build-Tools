@@ -93,5 +93,7 @@ setup(
     cmdclass=cmdclass,
     ext_modules=[Extension("amulet.utils._amulet_utils", [])]
     * (not os.environ.get("AMULET_SKIP_COMPILE", None)),
-    install_requires=requirements.get_runtime_dependencies(),
+    install_requires=requirements.get_runtime_dependencies(
+        sys.argv[1] in ["egg_info", "sdist"]
+    ),
 )

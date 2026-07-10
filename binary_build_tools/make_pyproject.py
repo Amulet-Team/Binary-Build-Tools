@@ -1,9 +1,11 @@
 import os
 
-from .data import LibraryData, libraries, PythonVersion
+from .data import LibraryData, libraries, PythonVersion, find_dependencies
 
 
 def write(project_path: str, library_data: LibraryData) -> None:
+    dependencies = find_dependencies(library_data.pypi_name, True, True, True, False, True, True, False, False)
+    shared_libs = [lib.lib_name for lib in dependencies if lib.lib_name]
     with open(os.path.join(project_path, "pyproject.toml"), "w", encoding="utf-8") as f:
         f.write(f"""[build-system]
 requires = [
@@ -94,6 +96,35 @@ versionfile_build = "{library_data.import_name.replace(".", "/")}/_version.py"
 tag_prefix = ""
 parentdir_prefix = "{library_data.pypi_name.replace("-", "_")}-"
 
+[tool.cibuildwheel]
+test-sources = ["tests", "tools/compile_tests.py"]
+{f"test-extras = [{",".join(map("\"{}\"".format, library_data.unittest_dep_groups))}]\n" if library_data.unittest_dep_groups else ""}\
+{f"before-test = [{",".join(map("\"{}\"".format, library_data.unittests_pre_test))}]\n" if library_data.unittests_pre_test else ""}\
+test-command = [
+    "python -m venv venv_build",
+    "venv_build/bin/pip install {{wheel}}[dev]",
+    "venv_build/bin/python tools/compile_tests.py",
+    "python -m unittest discover -s tests"
+]
+
+manylinux-x86_64-image = "manylinux_2_34"
+
 [tool.cibuildwheel.linux]
-before-all = "yum install -y cmake"
+before-all = "yum install -y cmake{"".join(f" {lib}" for lib in library_data.unittests_linux_libs)}"
+{f"""repair-wheel-command = "auditwheel repair{"".join(f" --exclude lib{lib}.so" for lib in shared_libs)} -w {{dest_dir}} {{wheel}}"
+""" if shared_libs else ""}\
+
+{f"""\
+[tool.cibuildwheel.macos]
+repair-wheel-command = "delocate-wheel --require-archs {{delocate_archs}} --ignore-missing-dependencies{"".join(f" --exclude lib{lib}.dylib" for lib in shared_libs)} -w {{dest_dir}} -v {{wheel}}"
+
+""" if shared_libs else ""}\
+[tool.cibuildwheel.windows]
+repair-wheel-command = "delvewheel repair --ignore-existing --exclude {f"\\\"msvcp140.dll{"".join(f";{lib}.dll" for lib in shared_libs)}\\\"" if shared_libs else "msvcp140.dll"} -w {{dest_dir}} -v {{wheel}}"
+test-command = [
+    "python -m venv venv_build",
+    "venv_build\\\\Scripts\\\\pip install {{wheel}}[dev]",
+    "venv_build\\\\Scripts\\\\python tools/compile_tests.py",
+    "python -m unittest discover -s tests"
+]
 """)

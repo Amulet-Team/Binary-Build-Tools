@@ -118,6 +118,8 @@ setup(
     version=versioneer.get_version(),
     cmdclass=cmdclass,
     ext_modules=[Extension("{library_data.import_name}.{library_data.ext_name}", [])] * (not os.environ.get("AMULET_SKIP_COMPILE", None)),
-    install_requires=requirements.get_runtime_dependencies(),
+    install_requires=requirements.get_runtime_dependencies(
+        sys.argv[1] in ["egg_info", "sdist"]
+    ),
 )
 """)

@@ -13,7 +13,6 @@ PythonVersion = "3.14"
 CIBuildWheelVersion = "4.1"
 CheckoutVersion = "7"
 SetupPythonVersion = "6"
-SetupCMakeVersion = "2"
 InstallQtVersion = "4"
 QtVersion = "6.11.1"
 
@@ -72,7 +71,8 @@ class LibraryData:
         optional_dependencies: Mapping[str, Iterable[str]] = MappingProxyType({}),
         unittest_dep_groups: Iterable[str] = (),
         unittests_pre_build: str = "",
-        unittests_pre_test: str = "",
+        unittests_linux_libs: Iterable[str] = (),
+        unittests_pre_test: Iterable[str] = (),
         authors: Iterable[str] = ("James Clare",),
         console_scripts: Mapping[str, str] = MappingProxyType({}),
         gui_scripts: Mapping[str, str] = MappingProxyType({}),
@@ -107,6 +107,7 @@ class LibraryData:
         self.optional_dependencies = optional_dependencies
         self.unittest_dep_groups = unittest_dep_groups
         self.unittests_pre_build = unittests_pre_build
+        self.unittests_linux_libs = unittests_linux_libs
         self.unittests_pre_test = unittests_pre_test
         self.authors = authors
         self.console_scripts = console_scripts
@@ -207,7 +208,7 @@ AmuletCompilerVersion = LibraryData(
     import_name="amulet_compiler_version",
     cmake_lib_name="amulet_compiler_version",
     library_type=LibraryType.Interface,
-    specifier=SpecifierSet("~=3.0"),
+    specifier=SpecifierSet("~=4.0"),
 )
 AmuletTestUtils = LibraryData(
     pypi_name="amulet-test-utils",
@@ -253,7 +254,7 @@ AmuletLevelDB = LibraryData(
         PyBind11.pypi_name,
         PyBind11Extensions.pypi_name,
     ),
-    specifier=SpecifierSet("~=3.0.6.0a0"),
+    specifier=SpecifierSet("~=3.0.7.0a0"),
     description="A pybind11 wrapper for Mojang's custom LevelDB.",
     gitignore=["/src/amulet/leveldb/include/leveldb"],
     include_dir="include",
@@ -283,7 +284,7 @@ AmuletUtils = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletUtils",
-    specifier=SpecifierSet("~=1.1.4.0a"),
+    specifier=SpecifierSet("~=1.1.5.0a"),
     description="A C++ utility library with a python wrapper.",
     optional_dependencies={
         "numpy": ["numpy~=2.0"],
@@ -292,12 +293,7 @@ AmuletUtils = LibraryData(
     },
     unittest_dep_groups=("numpy", "pillow", "pyside6"),
     package_data=["**/*.png"],
-    unittests_pre_build="""
-    - name: Install Ubuntu Extra
-      if: startsWith(matrix.cfg.os, 'ubuntu')
-      run: |
-        sudo apt install libegl1
-""",
+    unittests_linux_libs=["libxkbcommon"],
 )
 AmuletZlib = LibraryData(
     pypi_name="amulet-zlib",
@@ -320,7 +316,7 @@ AmuletZlib = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletZlib",
-    specifier=SpecifierSet("~=1.0.9.0a0"),
+    specifier=SpecifierSet("~=1.0.11.0a0"),
     description="A Python and C++ wrapper around zlib.",
     optional_dependencies={
         "docs": [
@@ -352,7 +348,7 @@ AmuletNBT = LibraryData(
         PyBind11Extensions.pypi_name,
     ),
     export_symbol="ExportAmuletNBT",
-    specifier=SpecifierSet("~=5.0.4.0a0"),
+    specifier=SpecifierSet("~=5.0.5.0a0"),
     description="Read and write Minecraft NBT and SNBT data.",
     optional_dependencies={
         "docs": [
@@ -389,7 +385,7 @@ AmuletCore = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletCore",
-    specifier=SpecifierSet("~=2.0.9.0a0"),
+    specifier=SpecifierSet("~=2.0.10.0a0"),
     description="A Python library for reading/writing Minecraft's various save formats.",
     optional_dependencies={
         "docs": [
@@ -428,7 +424,7 @@ AmuletResourcePack = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletResourcePack",
-    specifier=SpecifierSet("~=1.0.5.0a0"),
+    specifier=SpecifierSet("~=1.0.6.0a0"),
     description="A Python and C++ library for interacting with Minecraft resource packs.",
     package_data=["**/*.json", "**/*.mcmeta", "**/*.png"],
     manifest=["recursive-include src/amulet *.json *.mcmeta *.png"],
@@ -461,7 +457,7 @@ AmuletGame = LibraryData(
     ),
     export_symbol="ExportAmuletGame",
     has_submodules=True,
-    specifier=SpecifierSet("~=1.0.5.0a0"),
+    specifier=SpecifierSet("~=1.0.6.0a0"),
     description="A Minecraft metadata and low level translation library.",
     gitignore=["/src/amulet/game/versions.pkl.gz"],
     manifest=["recursive-include submodules/PyMCTranslate *.json"],
@@ -493,14 +489,11 @@ AmuletAnvil = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletAnvil",
-    specifier=SpecifierSet("~=1.0.5.0a0"),
+    specifier=SpecifierSet("~=1.0.6.0a0"),
     description="A C++ library with Python wrapper for the Minecraft Anvil format.",
-    unittests_pre_test="""\
-    - name: Install Minecraft Worlds
-      run: |
-        pip install git+https://github.com/Amulet-Team/Amulet-Minecraft-Worlds.git
-
-""",
+    unittests_pre_test=[
+        "pip install git+https://github.com/Amulet-Team/Amulet-Minecraft-Worlds.git",
+    ],
 )
 AmuletLevel = LibraryData(
     pypi_name="amulet-level",
@@ -535,14 +528,11 @@ AmuletLevel = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletLevel",
-    specifier=SpecifierSet("~=1.0.6.0a0"),
+    specifier=SpecifierSet("~=1.0.7.0a0"),
     description="A Python and C++ library for interacting with Minecraft worlds and structures.",
-    unittests_pre_test="""\
-    - name: Install Minecraft Worlds
-      run: |
-        pip install git+https://github.com/Amulet-Team/Amulet-Minecraft-Worlds.git
-
-""",
+    unittests_pre_test=[
+        "pip install git+https://github.com/Amulet-Team/Amulet-Minecraft-Worlds.git"
+    ],
 )
 AmuletEditor = LibraryData(
     org_name="Amulet-Team",
@@ -573,7 +563,7 @@ AmuletEditor = LibraryData(
         PyBind11Extensions.pypi_name,
     ),
     test_dependencies=(),
-    specifier=SpecifierSet("~=1.0.3.0a0"),
+    specifier=SpecifierSet("~=1.0.4.0a0"),
     authors=("James Clare", "Ben Gothard"),
     gitignore=[
         "",
