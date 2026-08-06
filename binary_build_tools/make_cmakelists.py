@@ -3,19 +3,7 @@ import os
 from .data import LibraryData, libraries, library_order, find_dependencies
 
 
-def write(project_path: str, library_data: LibraryData) -> None:
-    all_dependencies = find_dependencies(
-        library_data.pypi_name,
-        True,
-        True,
-        True,
-        False,
-        False,
-        True,
-        False,
-        False,
-    )
-
+def get_library_properties(library_name: str, library_data: LibraryData, indent: str = "") -> str:
     lib_dependencies = find_dependencies(
         library_data.pypi_name,
         True,
@@ -41,6 +29,52 @@ def write(project_path: str, library_data: LibraryData) -> None:
             False,
         )
     )
+    return f"""\
+set_target_properties({library_name} PROPERTIES CXX_VISIBILITY_PRESET hidden)
+{indent}set_target_properties({library_name} PROPERTIES FOLDER "CPP")
+{f"{indent}target_compile_definitions({library_name} PRIVATE {library_data.export_symbol})\n" if library_data.lib_name and library_data.export_symbol else ""}\
+{
+    "".join(
+        f"{indent}target_link_libraries({library_name} {"PUBLIC" if lib in lib_public_dependencies else "PRIVATE"} {lib.cmake_lib_name})\n"
+        for lib in lib_dependencies
+        if lib.cmake_lib_name is not None
+    )
+}\
+{indent}target_include_directories({library_name} PUBLIC ${{SOURCE_PATH}})
+{indent}target_sources({library_name} PRIVATE ${{SOURCES}} ${{HEADERS}})
+"""
+
+def get_module_properties(module_name: str, library_data: LibraryData, indent: str = "") -> str:
+    return f"""\
+set_target_properties({module_name} PROPERTIES CXX_VISIBILITY_PRESET hidden)
+{indent}set_target_properties({module_name} PROPERTIES FOLDER "Python")
+{
+    "".join(
+        f"{indent}target_link_libraries({module_name} PRIVATE {libraries[lib].cmake_lib_name})\n"
+        for lib in sorted(library_data.ext_dependencies + (library_data.pypi_name,), key=library_order.__getitem__)
+        if lib != "pybind11" and libraries[lib].cmake_lib_name is not None
+    )
+}\
+{indent}target_compile_definitions({module_name} PRIVATE PYBIND11_DETAILED_ERROR_MESSAGES)
+{indent}target_compile_definitions({module_name} PRIVATE PYBIND11_VERSION="${{pybind11_VERSION}}")
+{indent}target_compile_definitions({module_name} PRIVATE COMPILER_ID="${{CMAKE_CXX_COMPILER_ID}}")
+{indent}target_compile_definitions({module_name} PRIVATE COMPILER_VERSION="${{CMAKE_CXX_COMPILER_VERSION}}")
+{indent}target_sources({module_name} PRIVATE ${{EXTENSION_SOURCES}} ${{EXTENSION_HEADERS}})
+"""
+
+
+def write(project_path: str, library_data: LibraryData) -> None:
+    all_dependencies = find_dependencies(
+        library_data.pypi_name,
+        True,
+        True,
+        True,
+        False,
+        False,
+        True,
+        False,
+        False,
+    )
 
     with open(os.path.join(project_path, "CMakeLists.txt"), "w", encoding="utf-8") as f:
         f.write(f"""\
@@ -50,6 +84,11 @@ project({library_data.cmake_package} LANGUAGES CXX)
 
 set({library_data.cmake_package}_DIR ${{CMAKE_CURRENT_LIST_DIR}}/src/{library_data.import_name.replace(".", "/")} CACHE PATH "")
 {"" if library_data.lib_name is None else f"""set(BUILD_{library_data.project_macro_name}_TESTS OFF CACHE BOOL "Should tests be built?")\n"""}\
+option(THREAD_SAFETY_ANALYSIS "Run clang thread safety analysis over the sources before building" OFF)
+
+if(THREAD_SAFETY_ANALYSIS AND NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    message(FATAL_ERROR "THREAD_SAFETY_ANALYSIS requires Clang")
+endif()
 
 # Set C++20
 set(CMAKE_CXX_STANDARD 20)
@@ -96,24 +135,20 @@ list(REMOVE_ITEM HEADERS ${{EXTENSION_HEADERS}})
 
 # Add implementation
 add_library({library_data.lib_name} SHARED)
-set_target_properties({library_data.lib_name} PROPERTIES CXX_VISIBILITY_PRESET hidden)
-set_target_properties({library_data.lib_name} PROPERTIES FOLDER "CPP")
-{f"target_compile_definitions({library_data.lib_name} PRIVATE {library_data.export_symbol})\n" if library_data.lib_name and library_data.export_symbol else ""}\
-{
-    "".join(
-        f"target_link_libraries({library_data.lib_name} {"PUBLIC" if lib in lib_public_dependencies else "PRIVATE"} {lib.cmake_lib_name})\n"
-        for lib in lib_dependencies
-        if lib.cmake_lib_name is not None
-    )
-}\
-target_include_directories({library_data.lib_name} PUBLIC ${{SOURCE_PATH}})
-target_sources({library_data.lib_name} PRIVATE ${{SOURCES}} ${{HEADERS}})
+{get_library_properties(library_data.lib_name, library_data)}\
 foreach(FILE ${{SOURCES}} ${{HEADERS}})
     file(RELATIVE_PATH REL_PATH ${{SOURCE_PATH}} ${{FILE}})
     get_filename_component(GROUP ${{REL_PATH}} DIRECTORY)
     string(REPLACE "/" "\\\\" GROUP ${{GROUP}})
     source_group(${{GROUP}} FILES ${{FILE}})
 endforeach()
+
+if(THREAD_SAFETY_ANALYSIS)
+    add_library({library_data.lib_name}_thread_analysis OBJECT)
+    {get_library_properties(f"{library_data.lib_name}_thread_analysis", library_data, indent="\t")}\
+    target_compile_options({library_data.lib_name}_thread_analysis PRIVATE -fsyntax-only -Wthread-safety -Werror=thread-safety)
+    add_dependencies({library_data.lib_name} {library_data.lib_name}_thread_analysis)
+endif()
 """
 }\
 
@@ -124,26 +159,21 @@ if(APPLE)
 elseif(UNIX)
     set_target_properties({library_data.ext_name} PROPERTIES INSTALL_RPATH "$ORIGIN")
 endif()
-set_target_properties({library_data.ext_name} PROPERTIES CXX_VISIBILITY_PRESET hidden)
-set_target_properties({library_data.ext_name} PROPERTIES FOLDER "Python")
-{
-    "".join(
-        f"target_link_libraries({library_data.ext_name} PRIVATE {libraries[lib].cmake_lib_name})\n"
-        for lib in sorted(library_data.ext_dependencies + (library_data.pypi_name,), key=library_order.__getitem__)
-        if lib != "pybind11" and libraries[lib].cmake_lib_name is not None
-    )
-}\
-target_compile_definitions({library_data.ext_name} PRIVATE PYBIND11_DETAILED_ERROR_MESSAGES)
-target_compile_definitions({library_data.ext_name} PRIVATE PYBIND11_VERSION="${{pybind11_VERSION}}")
-target_compile_definitions({library_data.ext_name} PRIVATE COMPILER_ID="${{CMAKE_CXX_COMPILER_ID}}")
-target_compile_definitions({library_data.ext_name} PRIVATE COMPILER_VERSION="${{CMAKE_CXX_COMPILER_VERSION}}")
-target_sources({library_data.ext_name} PRIVATE ${{EXTENSION_SOURCES}} ${{EXTENSION_HEADERS}})
+{get_module_properties(library_data.ext_name, library_data)}\
 foreach(FILE ${{EXTENSION_SOURCES}} ${{EXTENSION_HEADERS}})
     file(RELATIVE_PATH REL_PATH ${{SOURCE_PATH}} ${{FILE}})
     get_filename_component(GROUP ${{REL_PATH}} DIRECTORY)
     string(REPLACE "/" "\\\\" GROUP ${{GROUP}})
     source_group(${{GROUP}} FILES ${{FILE}})
 endforeach()
+
+if(THREAD_SAFETY_ANALYSIS)
+    add_library({library_data.ext_name}_thread_analysis OBJECT)
+    target_link_libraries({library_data.ext_name}_thread_analysis PRIVATE pybind11::module)
+    {get_module_properties(f"{library_data.ext_name}_thread_analysis", library_data, indent="\t")}\
+    target_compile_options({library_data.ext_name}_thread_analysis PRIVATE -fsyntax-only -Wthread-safety -Werror=thread-safety)
+    add_dependencies({library_data.ext_name} {library_data.ext_name}_thread_analysis)
+endif()
 
 if(NOT DEFINED {library_data.ext_macro_name}_EXT_DIR)
     set({library_data.ext_macro_name}_EXT_DIR ${{{library_data.cmake_package}_DIR}})

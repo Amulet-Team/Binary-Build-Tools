@@ -3,6 +3,11 @@ cmake_minimum_required(VERSION 4.1)
 project(amulet_app LANGUAGES CXX)
 
 set(amulet_app_DIR ${CMAKE_CURRENT_LIST_DIR}/src/amulet/app CACHE PATH "")
+option(THREAD_SAFETY_ANALYSIS "Run clang thread safety analysis over the sources before building" OFF)
+
+if(THREAD_SAFETY_ANALYSIS AND NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    message(FATAL_ERROR "THREAD_SAFETY_ANALYSIS requires Clang")
+endif()
 
 # Set C++20
 set(CMAKE_CXX_STANDARD 20)
@@ -88,6 +93,21 @@ foreach(FILE ${EXTENSION_SOURCES} ${EXTENSION_HEADERS})
     string(REPLACE "/" "\\" GROUP ${GROUP})
     source_group(${GROUP} FILES ${FILE})
 endforeach()
+
+if(THREAD_SAFETY_ANALYSIS)
+    add_library(_amulet_app_thread_analysis OBJECT)
+    target_link_libraries(_amulet_app_thread_analysis PRIVATE pybind11::module)
+    set_target_properties(_amulet_app_thread_analysis PROPERTIES CXX_VISIBILITY_PRESET hidden)
+	set_target_properties(_amulet_app_thread_analysis PROPERTIES FOLDER "Python")
+	target_link_libraries(_amulet_app_thread_analysis PRIVATE amulet_pybind11_extensions)
+	target_compile_definitions(_amulet_app_thread_analysis PRIVATE PYBIND11_DETAILED_ERROR_MESSAGES)
+	target_compile_definitions(_amulet_app_thread_analysis PRIVATE PYBIND11_VERSION="${pybind11_VERSION}")
+	target_compile_definitions(_amulet_app_thread_analysis PRIVATE COMPILER_ID="${CMAKE_CXX_COMPILER_ID}")
+	target_compile_definitions(_amulet_app_thread_analysis PRIVATE COMPILER_VERSION="${CMAKE_CXX_COMPILER_VERSION}")
+	target_sources(_amulet_app_thread_analysis PRIVATE ${EXTENSION_SOURCES} ${EXTENSION_HEADERS})
+    target_compile_options(_amulet_app_thread_analysis PRIVATE -fsyntax-only -Wthread-safety -Werror=thread-safety)
+    add_dependencies(_amulet_app _amulet_app_thread_analysis)
+endif()
 
 if(NOT DEFINED AMULET_APP_EXT_DIR)
     set(AMULET_APP_EXT_DIR ${amulet_app_DIR})
