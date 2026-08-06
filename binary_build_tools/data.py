@@ -37,6 +37,7 @@ class LibraryData:
         lib_name: (
             str | None
         ) = None,  # The name of the shared library. None if there is no shared library. (amulet_nbt)
+        lib_major_version: int | None = None,
         cmake_lib_name: (
             str | None
         ) = None,  # The cmake library alias. Defaults to lib_name (pybind11::module)
@@ -87,6 +88,7 @@ class LibraryData:
         self.ext_macro_name = ext_macro_name or import_name.replace(".", "_").upper()
         self.project_macro_name = project_macro_name or self.ext_macro_name
         self.lib_name = lib_name
+        self.lib_major_version = lib_major_version
         self.cmake_lib_name = cmake_lib_name or lib_name
         self.cmake_package = cmake_package or self.cmake_lib_name
         self.ext_name = ext_name
@@ -241,6 +243,7 @@ AmuletLevelDB = LibraryData(
     short_var_name="leveldb",
     import_name="amulet.leveldb",
     lib_name="leveldb",
+    lib_major_version=1,
     cmake_package="amulet_leveldb",
     ext_name="_leveldb",
     library_type=LibraryType.Shared,
@@ -258,6 +261,30 @@ AmuletLevelDB = LibraryData(
     description="A pybind11 wrapper for Mojang's custom LevelDB.",
     gitignore=["/src/amulet/leveldb/include/leveldb"],
     include_dir="include",
+)
+AmuletRocksDB = LibraryData(
+    pypi_name="amulet-rocksdb",
+    org_name="Amulet-Team",
+    repo_name="Amulet-RocksDB",
+    short_var_name="amulet.rocksdb",
+    import_name="amulet.rocksdb",
+    lib_name="rocksdb",
+    lib_major_version=1,
+    cmake_package="amulet_rocksdb",
+    ext_name="_rocksdb",
+    library_type=LibraryType.Shared,
+    private_dependencies=(),
+    public_dependencies=(),
+    ext_dependencies=(
+        PyBind11.pypi_name,
+        PyBind11Extensions.pypi_name,
+    ),
+    test_dependencies=(
+        PyBind11.pypi_name,
+        PyBind11Extensions.pypi_name,
+    ),
+    specifier=SpecifierSet("~=3.0.7.0a0"),
+    description="A pybind11 wrapper for Facebook's RocksDB.",
 )
 AmuletUtils = LibraryData(
     pypi_name="amulet-utils",
@@ -611,6 +638,7 @@ interface_libraries: list[LibraryData] = [
 
 shared_libraries: list[LibraryData] = [
     AmuletLevelDB,
+    AmuletRocksDB,
     AmuletUtils,
     AmuletZlib,
     AmuletNBT,

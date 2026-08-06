@@ -1,0 +1,55 @@
+import sys
+import subprocess
+import os
+import shutil
+import sysconfig
+
+import pybind11
+import amulet.pybind11_extensions
+
+
+def fix_path(path: str) -> str:
+    return os.path.realpath(path).replace(os.sep, "/")
+
+
+RootDir = fix_path(os.path.dirname(os.path.dirname(__file__)))
+
+
+def main() -> None:
+    platform_args = []
+    if sys.platform == "win32":
+        platform_args.extend(["-G", "Visual Studio 18 2026"])
+        if sysconfig.get_platform() == "win-amd64":
+            platform_args.extend(["-A", "x64"])
+        elif sysconfig.get_platform() == "win32":
+            platform_args.extend(["-A", "Win32"])
+        elif sysconfig.get_platform() == "win-arm64":
+            platform_args.extend(["-A", "ARM64"])
+        else:
+            raise RuntimeError(f"Unsupported platform: {sysconfig.get_platform()}")
+        platform_args.extend(["-T", "v145"])
+
+    os.chdir(RootDir)
+    shutil.rmtree(os.path.join(RootDir, "build", "CMakeFiles"), ignore_errors=True)
+
+    if subprocess.run(["cmake", "--version"]).returncode:
+        raise RuntimeError("Could not find cmake")
+    if subprocess.run(
+        [
+            "cmake",
+            *platform_args,
+            f"-DPython3_EXECUTABLE={fix_path(sys.executable)}",
+            f"-Dpybind11_DIR={fix_path(pybind11.get_cmake_dir())}",
+            f"-Damulet_pybind11_extensions_DIR={fix_path(amulet.pybind11_extensions.__path__[0])}",
+            f"-Damulet_rocksdb_DIR={fix_path(os.path.join(RootDir, 'src', 'amulet', 'rocksdb'))}",
+            f"-DCMAKE_INSTALL_PREFIX=install",
+            f"-DBUILD_AMULET_ROCKSDB_TESTS=ON",
+            "-B",
+            "build",
+        ]
+    ).returncode:
+        raise RuntimeError("Error configuring amulet-rocksdb")
+
+
+if __name__ == "__main__":
+    main()
