@@ -69,5 +69,6 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v7
       with:
+        name: ${{{{ matrix.cfg.whl }}}}
         path: dist/*
 """)
