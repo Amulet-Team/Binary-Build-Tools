@@ -43,6 +43,11 @@ def _init() -> None:
 {"".join(f"    import {lib.import_name}\n" for lib in dependencies)}
 """ if dependencies else ""}\
 
+    try:
+        os.add_dll_directory(__path__[0])
+    except AttributeError:
+        pass
+
     from .{library_data.ext_name} import init
 
     init(sys.modules[__name__])
