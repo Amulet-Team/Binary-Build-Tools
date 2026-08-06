@@ -5,7 +5,7 @@ from .data import LibraryData, libraries, PythonVersion, find_dependencies
 
 def write(project_path: str, library_data: LibraryData) -> None:
     dependencies = find_dependencies(library_data.pypi_name, True, True, True, False, True, True, False, False)
-    shared_libs = [lib.lib_name for lib in dependencies if lib.lib_name]
+    shared_libs: list[tuple[str, int | None]] = [(lib.lib_name, lib.lib_major_version) for lib in dependencies if lib.lib_name]
     with open(os.path.join(project_path, "pyproject.toml"), "w", encoding="utf-8") as f:
         f.write(f"""[build-system]
 requires = [
@@ -111,16 +111,16 @@ manylinux-x86_64-image = "manylinux_2_34"
 
 [tool.cibuildwheel.linux]
 before-all = "yum install -y cmake{"".join(f" {lib}" for lib in library_data.unittests_linux_libs)}"
-{f"""repair-wheel-command = "auditwheel repair{"".join(f" --exclude lib{lib}.so" for lib in shared_libs)} -w {{dest_dir}} {{wheel}}"
+{f"""repair-wheel-command = "auditwheel repair{"".join(f" --exclude lib{name}.so" + ("" if version is None else f" --exclude lib{name}.so.{version}") for name, version in shared_libs)} -w {{dest_dir}} {{wheel}}"
 """ if shared_libs else ""}\
 
 {f"""\
 [tool.cibuildwheel.macos]
-repair-wheel-command = "delocate-wheel --require-archs {{delocate_archs}} --ignore-missing-dependencies{"".join(f" --exclude lib{lib}.dylib" for lib in shared_libs)} -w {{dest_dir}} -v {{wheel}}"
+repair-wheel-command = "delocate-wheel --require-archs {{delocate_archs}} --ignore-missing-dependencies{"".join(f" --exclude lib{name}.dylib" + ("" if version is None else f" --exclude lib{name}.{version}.dylib") for name, version in shared_libs)} -w {{dest_dir}} -v {{wheel}}"
 
 """ if shared_libs else ""}\
 [tool.cibuildwheel.windows]
-repair-wheel-command = "delvewheel repair --ignore-existing --exclude {f"\\\"msvcp140.dll{"".join(f";{lib}.dll" for lib in shared_libs)}\\\"" if shared_libs else "msvcp140.dll"} -w {{dest_dir}} -v {{wheel}}"
+repair-wheel-command = "delvewheel repair --ignore-existing --exclude {f"\\\"msvcp140.dll{"".join(f";{name}.dll" for name, version in shared_libs)}\\\"" if shared_libs else "msvcp140.dll"} -w {{dest_dir}} -v {{wheel}}"
 test-command = [
     "python -m venv venv_build",
     "venv_build\\\\Scripts\\\\pip install {{wheel}}[dev]",
