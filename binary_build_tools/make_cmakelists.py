@@ -143,6 +143,7 @@ endforeach()
 
 if(THREAD_SAFETY_ANALYSIS)
     add_library({library_data.lib_name}_thread_analysis OBJECT ${{SOURCES}} ${{HEADERS}})
+    target_compile_definitions({library_data.lib_name}_thread_analysis PRIVATE AMULET_THREAD_SAFETY_ANALYSIS)
     {get_library_properties(f"{library_data.lib_name}_thread_analysis", library_data, indent="\t")}\
     target_compile_options({library_data.lib_name}_thread_analysis PRIVATE -fsyntax-only -Wthread-safety -Werror=thread-safety)
     add_dependencies({library_data.lib_name} {library_data.lib_name}_thread_analysis)
@@ -168,6 +169,7 @@ endforeach()
 if(THREAD_SAFETY_ANALYSIS)
     add_library({library_data.ext_name}_thread_analysis OBJECT ${{EXTENSION_SOURCES}} ${{EXTENSION_HEADERS}})
     target_link_libraries({library_data.ext_name}_thread_analysis PRIVATE pybind11::module)
+    target_compile_definitions({library_data.ext_name}_thread_analysis PRIVATE AMULET_THREAD_SAFETY_ANALYSIS)
     {get_module_properties(f"{library_data.ext_name}_thread_analysis", library_data, indent="\t")}\
     target_compile_options({library_data.ext_name}_thread_analysis PRIVATE -fsyntax-only -Wthread-safety -Werror=thread-safety)
     add_dependencies({library_data.ext_name} {library_data.ext_name}_thread_analysis)
