@@ -80,6 +80,7 @@ class CMakeBuild(BuildExt):
                     f"-Damulet_resource_pack_DIR={fix_path(resource_pack_src_dir)}",
                     f"-DAMULET_RESOURCE_PACK_EXT_DIR={fix_path(ext_dir)}",
                     f"-DCMAKE_INSTALL_PREFIX=install",
+                    f"-DTHREAD_SAFETY_ANALYSIS={os.environ.get("THREAD_SAFETY_ANALYSIS", "OFF")}"
                     "-B",
                     tempdir,
                 ]

@@ -73,6 +73,7 @@ def main() -> None:
                 )}
             f"-D{library_data.cmake_package}_DIR={{fix_path({library_data.import_name}.__path__[0])}}",
             f"-DCMAKE_INSTALL_PREFIX=install",
+            f"-DTHREAD_SAFETY_ANALYSIS={{os.environ.get("THREAD_SAFETY_ANALYSIS", "OFF")}}"
             "-B",
             "build",
         ]

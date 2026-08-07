@@ -70,6 +70,7 @@ class CMakeBuild(BuildExt):
                     f"-Damulet_rocksdb_DIR={fix_path(amulet.rocksdb_src_dir)}",
                     f"-DAMULET_ROCKSDB_EXT_DIR={fix_path(ext_dir)}",
                     f"-DCMAKE_INSTALL_PREFIX=install",
+                    f"-DTHREAD_SAFETY_ANALYSIS={os.environ.get("THREAD_SAFETY_ANALYSIS", "OFF")}"
                     "-B",
                     tempdir,
                 ]

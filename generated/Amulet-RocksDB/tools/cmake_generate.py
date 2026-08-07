@@ -44,6 +44,7 @@ def main() -> None:
             f"-Damulet_rocksdb_DIR={fix_path(os.path.join(RootDir, 'src', 'amulet', 'rocksdb'))}",
             f"-DCMAKE_INSTALL_PREFIX=install",
             f"-DBUILD_AMULET_ROCKSDB_TESTS=ON",
+            f"-DTHREAD_SAFETY_ANALYSIS={os.environ.get("THREAD_SAFETY_ANALYSIS", "OFF")}"
             "-B",
             "build",
         ]

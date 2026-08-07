@@ -70,6 +70,7 @@ def main() -> None:
             f"-D{library_data.cmake_package}_DIR={{fix_path(os.path.join(RootDir, 'src', {", ".join(f"'{name}'" for name in library_data.import_name.split("."))}))}}",
             f"-DCMAKE_INSTALL_PREFIX=install",
             f"-DBUILD_{library_data.project_macro_name}_TESTS=ON",
+            f"-DTHREAD_SAFETY_ANALYSIS={{os.environ.get("THREAD_SAFETY_ANALYSIS", "OFF")}}"
             "-B",
             "build",
         ]

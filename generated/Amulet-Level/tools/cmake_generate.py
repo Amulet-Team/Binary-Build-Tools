@@ -62,6 +62,7 @@ def main() -> None:
             f"-Damulet_level_DIR={fix_path(os.path.join(RootDir, 'src', 'amulet', 'level'))}",
             f"-DCMAKE_INSTALL_PREFIX=install",
             f"-DBUILD_AMULET_LEVEL_TESTS=ON",
+            f"-DTHREAD_SAFETY_ANALYSIS={os.environ.get("THREAD_SAFETY_ANALYSIS", "OFF")}"
             "-B",
             "build",
         ]
