@@ -41,7 +41,6 @@ set_target_properties({library_name} PROPERTIES CXX_VISIBILITY_PRESET hidden)
     )
 }\
 {indent}target_include_directories({library_name} PUBLIC ${{SOURCE_PATH}})
-{indent}target_sources({library_name} PRIVATE ${{SOURCES}} ${{HEADERS}})
 """
 
 def get_module_properties(module_name: str, library_data: LibraryData, indent: str = "") -> str:
@@ -59,7 +58,6 @@ set_target_properties({module_name} PROPERTIES CXX_VISIBILITY_PRESET hidden)
 {indent}target_compile_definitions({module_name} PRIVATE PYBIND11_VERSION="${{pybind11_VERSION}}")
 {indent}target_compile_definitions({module_name} PRIVATE COMPILER_ID="${{CMAKE_CXX_COMPILER_ID}}")
 {indent}target_compile_definitions({module_name} PRIVATE COMPILER_VERSION="${{CMAKE_CXX_COMPILER_VERSION}}")
-{indent}target_sources({module_name} PRIVATE ${{EXTENSION_SOURCES}} ${{EXTENSION_HEADERS}})
 """
 
 
@@ -134,7 +132,7 @@ list(REMOVE_ITEM SOURCES ${{EXTENSION_SOURCES}})
 list(REMOVE_ITEM HEADERS ${{EXTENSION_HEADERS}})
 
 # Add implementation
-add_library({library_data.lib_name} SHARED)
+add_library({library_data.lib_name} SHARED ${{SOURCES}} ${{HEADERS}})
 {get_library_properties(library_data.lib_name, library_data)}\
 foreach(FILE ${{SOURCES}} ${{HEADERS}})
     file(RELATIVE_PATH REL_PATH ${{SOURCE_PATH}} ${{FILE}})
@@ -144,7 +142,7 @@ foreach(FILE ${{SOURCES}} ${{HEADERS}})
 endforeach()
 
 if(THREAD_SAFETY_ANALYSIS)
-    add_library({library_data.lib_name}_thread_analysis OBJECT)
+    add_library({library_data.lib_name}_thread_analysis OBJECT ${{SOURCES}} ${{HEADERS}})
     {get_library_properties(f"{library_data.lib_name}_thread_analysis", library_data, indent="\t")}\
     target_compile_options({library_data.lib_name}_thread_analysis PRIVATE -fsyntax-only -Wthread-safety -Werror=thread-safety)
     add_dependencies({library_data.lib_name} {library_data.lib_name}_thread_analysis)
@@ -153,7 +151,7 @@ endif()
 }\
 
 # Add python extension
-pybind11_add_module({library_data.ext_name})
+pybind11_add_module({library_data.ext_name} ${{EXTENSION_SOURCES}} ${{EXTENSION_HEADERS}})
 if(APPLE)
     set_target_properties({library_data.ext_name} PROPERTIES INSTALL_RPATH "@loader_path")
 elseif(UNIX)
@@ -168,7 +166,7 @@ foreach(FILE ${{EXTENSION_SOURCES}} ${{EXTENSION_HEADERS}})
 endforeach()
 
 if(THREAD_SAFETY_ANALYSIS)
-    add_library({library_data.ext_name}_thread_analysis OBJECT)
+    add_library({library_data.ext_name}_thread_analysis OBJECT ${{EXTENSION_SOURCES}} ${{EXTENSION_HEADERS}})
     target_link_libraries({library_data.ext_name}_thread_analysis PRIVATE pybind11::module)
     {get_module_properties(f"{library_data.ext_name}_thread_analysis", library_data, indent="\t")}\
     target_compile_options({library_data.ext_name}_thread_analysis PRIVATE -fsyntax-only -Wthread-safety -Werror=thread-safety)

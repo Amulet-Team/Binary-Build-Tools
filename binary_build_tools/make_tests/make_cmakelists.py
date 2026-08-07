@@ -18,7 +18,6 @@ set_target_properties({module_name} PROPERTIES CXX_VISIBILITY_PRESET hidden)
     if lib_name != "pybind11" and libraries[lib_name].cmake_lib_name is not None
 )
 }
-{indent}target_sources({module_name} PRIVATE ${{SOURCES}})
 """
 
 def write(tests_path: str, library_data: LibraryData) -> None:
@@ -68,7 +67,7 @@ endif()"""
 # Find sources
 file(GLOB_RECURSE SOURCES LIST_DIRECTORIES false "${{CMAKE_CURRENT_LIST_DIR}}/*.py.cpp")
 
-pybind11_add_module(_test_{library_data.cmake_package})
+pybind11_add_module(_test_{library_data.cmake_package} ${{SOURCES}})
 {get_module_properties(f"_test_{library_data.cmake_package}", library_data)}\
 foreach(FILE ${{SOURCES}})
     file(RELATIVE_PATH REL_PATH ${{CMAKE_CURRENT_LIST_DIR}} ${{FILE}})
@@ -78,7 +77,7 @@ foreach(FILE ${{SOURCES}})
 endforeach()
 
 if(THREAD_SAFETY_ANALYSIS)
-    add_library(_test_{library_data.cmake_package}_thread_analysis OBJECT)
+    add_library(_test_{library_data.cmake_package}_thread_analysis OBJECT ${{SOURCES}})
     target_link_libraries({library_data.cmake_package}_thread_analysis PRIVATE pybind11::module)
     {get_module_properties(f"{library_data.cmake_package}_thread_analysis", library_data, indent="\t")}\
     target_compile_options({library_data.cmake_package}_thread_analysis PRIVATE -fsyntax-only -Wthread-safety -Werror=thread-safety)
