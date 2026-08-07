@@ -29,7 +29,11 @@ def write(tests_path: str, library_data: LibraryData) -> None:
 
 project({library_data.cmake_package}_tests LANGUAGES CXX)
 
-option(ENABLE_CLANG_THREAD_SAFETY_ANALYSIS "Run clang -Wthread-safety over the sources before building" OFF)
+option(THREAD_SAFETY_ANALYSIS "Run clang thread safety analysis over the sources before building" OFF)
+
+if(THREAD_SAFETY_ANALYSIS AND NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    message(FATAL_ERROR "THREAD_SAFETY_ANALYSIS requires Clang")
+endif()
 
 # Set C++20
 set(CMAKE_CXX_STANDARD 20)
