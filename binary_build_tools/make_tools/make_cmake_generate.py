@@ -2,8 +2,6 @@ import os
 
 from binary_build_tools.data import (
     LibraryData,
-    libraries,
-    library_order,
     find_dependencies,
 )
 
