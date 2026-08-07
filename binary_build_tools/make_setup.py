@@ -96,7 +96,7 @@ class CMakeBuild(BuildExt):
                     f"-D{library_data.cmake_package}_DIR={{fix_path({library_data.short_var_name}_src_dir)}}",
                     f"-D{library_data.ext_macro_name}_EXT_DIR={{fix_path(ext_dir)}}",
                     f"-DCMAKE_INSTALL_PREFIX=install",
-                    f"-DTHREAD_SAFETY_ANALYSIS={{os.environ.get("THREAD_SAFETY_ANALYSIS", "OFF")}}"
+                    f"-DTHREAD_SAFETY_ANALYSIS={{os.environ.get("THREAD_SAFETY_ANALYSIS", "OFF")}}",
                     "-B",
                     tempdir,
                 ]

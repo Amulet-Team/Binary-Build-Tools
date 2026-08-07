@@ -78,7 +78,7 @@ class CMakeBuild(BuildExt):
                     f"-Damulet_game_DIR={fix_path(game_src_dir)}",
                     f"-DAMULET_GAME_EXT_DIR={fix_path(ext_dir)}",
                     f"-DCMAKE_INSTALL_PREFIX=install",
-                    f"-DTHREAD_SAFETY_ANALYSIS={os.environ.get("THREAD_SAFETY_ANALYSIS", "OFF")}"
+                    f"-DTHREAD_SAFETY_ANALYSIS={os.environ.get("THREAD_SAFETY_ANALYSIS", "OFF")}",
                     "-B",
                     tempdir,
                 ]

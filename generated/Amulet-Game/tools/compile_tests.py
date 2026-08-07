@@ -55,7 +55,7 @@ def main() -> None:
             f"-Damulet_core_DIR={fix_path(amulet.core.__path__[0])}",
             f"-Damulet_game_DIR={fix_path(amulet.game.__path__[0])}",
             f"-DCMAKE_INSTALL_PREFIX=install",
-            f"-DTHREAD_SAFETY_ANALYSIS={os.environ.get("THREAD_SAFETY_ANALYSIS", "OFF")}"
+            f"-DTHREAD_SAFETY_ANALYSIS={os.environ.get("THREAD_SAFETY_ANALYSIS", "OFF")}",
             "-B",
             "build",
         ]

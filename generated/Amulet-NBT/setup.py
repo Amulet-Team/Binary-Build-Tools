@@ -72,7 +72,7 @@ class CMakeBuild(BuildExt):
                     f"-Damulet_nbt_DIR={fix_path(nbt_src_dir)}",
                     f"-DAMULET_NBT_EXT_DIR={fix_path(ext_dir)}",
                     f"-DCMAKE_INSTALL_PREFIX=install",
-                    f"-DTHREAD_SAFETY_ANALYSIS={os.environ.get("THREAD_SAFETY_ANALYSIS", "OFF")}"
+                    f"-DTHREAD_SAFETY_ANALYSIS={os.environ.get("THREAD_SAFETY_ANALYSIS", "OFF")}",
                     "-B",
                     tempdir,
                 ]

@@ -70,7 +70,7 @@ class CMakeBuild(BuildExt):
                     f"-Damulet_zlib_DIR={fix_path(zlib_src_dir)}",
                     f"-DAMULET_ZLIB_EXT_DIR={fix_path(ext_dir)}",
                     f"-DCMAKE_INSTALL_PREFIX=install",
-                    f"-DTHREAD_SAFETY_ANALYSIS={os.environ.get("THREAD_SAFETY_ANALYSIS", "OFF")}"
+                    f"-DTHREAD_SAFETY_ANALYSIS={os.environ.get("THREAD_SAFETY_ANALYSIS", "OFF")}",
                     "-B",
                     tempdir,
                 ]
