@@ -78,9 +78,9 @@ endforeach()
 
 if(THREAD_SAFETY_ANALYSIS)
     add_library(_test_{library_data.cmake_package}_thread_analysis OBJECT ${{SOURCES}})
-    target_link_libraries({library_data.cmake_package}_thread_analysis PRIVATE pybind11::module)
-    {get_module_properties(f"{library_data.cmake_package}_thread_analysis", library_data, indent="\t")}\
-    target_compile_options({library_data.cmake_package}_thread_analysis PRIVATE -fsyntax-only -Wthread-safety -Werror=thread-safety)
+    target_link_libraries(_test_{library_data.cmake_package}_thread_analysis PRIVATE pybind11::module)
+    {get_module_properties(f"_test_{library_data.cmake_package}_thread_analysis", library_data, indent="\t")}\
+    target_compile_options(_test_{library_data.cmake_package}_thread_analysis PRIVATE -fsyntax-only -Wthread-safety -Werror=thread-safety)
     add_dependencies(_test_{library_data.cmake_package} _test_{library_data.cmake_package}_thread_analysis)
 endif()
 
