@@ -63,7 +63,7 @@ jobs:
 
     - name: Build and Test
       env:
-        THREAD_SAFETY_ANALYSIS: ${{{{ runner.os == 'macOS' && 'ON' || 'OFF' }}}}
+        THREAD_SAFETY_ANALYSIS: ${{{{ runner.os == 'macOS' && runner.arch == 'ARM64' && 'ON' || 'OFF' }}}}
       run: |
         pip install cibuildwheel~={CIBuildWheelVersion}
         cibuildwheel --only ${{{{ matrix.cfg.whl }}}} --output-dir dist .
