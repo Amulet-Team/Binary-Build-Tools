@@ -23,8 +23,6 @@ def write(workflows_path: str, library_data: LibraryData) -> None:
 on:
   push:
     branches:
-      - master
-      - main
       - '[0-9]+.[0-9]+'
       - '[0-9]+.[0-9]+.[0-9]+'
   pull_request:

@@ -16,8 +16,6 @@ name: Stylecheck
 on:
   push:
     branches:
-      - master
-      - main
       - '[0-9]+.[0-9]+'
       - '[0-9]+.[0-9]+.[0-9]+'
   pull_request:
