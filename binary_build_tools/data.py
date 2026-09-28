@@ -311,7 +311,7 @@ AmuletUtils = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletUtils",
-    specifier=SpecifierSet("~=1.1.5.0a"),
+    specifier=SpecifierSet("~=1.1.7.0a"),
     description="A C++ utility library with a python wrapper.",
     optional_dependencies={
         "numpy": ["numpy~=2.0"],
@@ -412,7 +412,7 @@ AmuletCore = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletCore",
-    specifier=SpecifierSet("~=2.0.10.0a0"),
+    specifier=SpecifierSet("~=2.0.11.0a0"),
     description="A Python library for reading/writing Minecraft's various save formats.",
     optional_dependencies={
         "docs": [
