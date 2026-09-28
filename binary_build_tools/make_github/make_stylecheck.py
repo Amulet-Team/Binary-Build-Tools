@@ -8,9 +8,7 @@ def write(workflows_path: str) -> None:
         os.path.join(workflows_path, "python-stylecheck.yml"), "w", encoding="utf-8"
     ) as f:
         f.write(
-            f"""# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
-
+            f"""\
 name: Stylecheck
 
 on:
