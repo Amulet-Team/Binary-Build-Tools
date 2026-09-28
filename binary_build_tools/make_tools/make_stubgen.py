@@ -7,7 +7,8 @@ def write(tools_path: str, library_data: LibraryData) -> None:
     with open(
         os.path.join(tools_path, "generate_pybind_stubs.py"), "w", encoding="utf-8"
     ) as f:
-        f.write(f'''import os
+        f.write(f'''\
+import os
 import glob
 import importlib.util
 import sys

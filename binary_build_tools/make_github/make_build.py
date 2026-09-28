@@ -38,7 +38,8 @@ def write(workflows_path: str, library_data: LibraryData) -> None:
     with open(
         os.path.join(workflows_path, "python-build.yml"), "w", encoding="utf-8"
     ) as f:
-        f.write(f"""name: Build
+        f.write(f"""\
+name: Build
 
 on:
   release:

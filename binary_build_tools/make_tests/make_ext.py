@@ -14,7 +14,8 @@ def write(test_package_path: str, library_data: LibraryData) -> None:
         "w",
         encoding="utf-8",
     ) as f:
-        f.write(f"""#include <pybind11/pybind11.h>
+        f.write(f"""\
+#include <pybind11/pybind11.h>
 
 #include <amulet/pybind11_extensions/compatibility.hpp>
 

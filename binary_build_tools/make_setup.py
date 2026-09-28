@@ -17,7 +17,8 @@ def write(project_path: str, library_data: LibraryData) -> None:
     )
 
     with open(os.path.join(project_path, "setup.py"), "w", encoding="utf-8") as f:
-        f.write(f"""import os
+        f.write(f"""\
+import os
 import subprocess
 import sys
 from pathlib import Path

@@ -11,7 +11,8 @@ def write(package_path: str, library_data: LibraryData) -> None:
         "w",
         encoding="utf-8",
     ) as f:
-        f.write(f"""if (NOT TARGET {library_data.lib_name})
+        f.write(f"""\
+if (NOT TARGET {library_data.lib_name})
     message(STATUS "Finding {library_data.lib_name}")
 {f"\n    {"\n    ".join(f"find_package({libraries[lib].cmake_package} CONFIG REQUIRED)" for lib in library_data.public_dependencies)}\n" if library_data.public_dependencies else ""}
     set({library_data.lib_name}_INCLUDE_DIR "${{CMAKE_CURRENT_LIST_DIR}}/{library_data.include_dir}")

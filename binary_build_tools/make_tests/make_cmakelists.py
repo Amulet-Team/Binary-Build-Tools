@@ -3,7 +3,9 @@ import os
 from binary_build_tools.data import LibraryData, libraries, library_order
 
 
-def get_module_properties(module_name: str, library_data: LibraryData, indent: str = "") -> str:
+def get_module_properties(
+    module_name: str, library_data: LibraryData, indent: str = ""
+) -> str:
     return f"""\
 set_target_properties({module_name} PROPERTIES CXX_VISIBILITY_PRESET hidden)
 {indent}set_target_properties({module_name} PROPERTIES FOLDER "Tests")
@@ -20,11 +22,13 @@ set_target_properties({module_name} PROPERTIES CXX_VISIBILITY_PRESET hidden)
 }
 """
 
+
 def write(tests_path: str, library_data: LibraryData) -> None:
     if library_data.lib_name is None:
         return
     with open(os.path.join(tests_path, "CMakeLists.txt"), "w", encoding="utf-8") as f:
-        f.write(f"""cmake_minimum_required(VERSION 4.1)
+        f.write(f"""\
+cmake_minimum_required(VERSION 4.1)
 
 project({library_data.cmake_package}_tests LANGUAGES CXX)
 

@@ -3,7 +3,9 @@ import os
 from .data import LibraryData, libraries, library_order, find_dependencies
 
 
-def get_library_properties(library_name: str, library_data: LibraryData, indent: str = "") -> str:
+def get_library_properties(
+    library_name: str, library_data: LibraryData, indent: str = ""
+) -> str:
     lib_dependencies = find_dependencies(
         library_data.pypi_name,
         True,
@@ -43,7 +45,10 @@ set_target_properties({library_name} PROPERTIES CXX_VISIBILITY_PRESET hidden)
 {indent}target_include_directories({library_name} PUBLIC ${{SOURCE_PATH}})
 """
 
-def get_module_properties(module_name: str, library_data: LibraryData, indent: str = "") -> str:
+
+def get_module_properties(
+    module_name: str, library_data: LibraryData, indent: str = ""
+) -> str:
     return f"""\
 set_target_properties({module_name} PROPERTIES CXX_VISIBILITY_PRESET hidden)
 {indent}set_target_properties({module_name} PROPERTIES FOLDER "Python")

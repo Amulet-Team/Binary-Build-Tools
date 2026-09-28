@@ -1,14 +1,18 @@
 import os
 
-from binary_build_tools.data import UbuntuX64Runner, PythonVersion, CheckoutVersion, SetupPythonVersion
+from binary_build_tools.data import (
+    UbuntuX64Runner,
+    PythonVersion,
+    CheckoutVersion,
+    SetupPythonVersion,
+)
 
 
 def write(workflows_path: str) -> None:
     with open(
         os.path.join(workflows_path, "python-stylecheck.yml"), "w", encoding="utf-8"
     ) as f:
-        f.write(
-            f"""\
+        f.write(f"""\
 name: Stylecheck
 
 on:
@@ -38,5 +42,4 @@ jobs:
     - name: run stylecheck
       run: |
         python -m black --check --diff .
-"""
-        )
+""")

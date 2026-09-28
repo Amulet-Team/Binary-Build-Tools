@@ -9,7 +9,8 @@ def write(package_path: str, library_data: LibraryData) -> None:
     with open(
         os.path.join(pyinstaller_path, "__init__.py"), "w", encoding="utf-8"
     ) as f:
-        f.write("""def get_hook_dirs() -> list[str]:
+        f.write("""\
+def get_hook_dirs() -> list[str]:
     return __path__
 """)
     with open(
@@ -17,10 +18,9 @@ def write(package_path: str, library_data: LibraryData) -> None:
         "w",
         encoding="utf-8",
     ) as f:
-        f.write(
-            f"""from PyInstaller.utils.hooks import collect_data_files, collect_submodules
+        f.write(f"""\
+from PyInstaller.utils.hooks import collect_data_files, collect_submodules
 
 hiddenimports = collect_submodules("{library_data.import_name}")
 datas = collect_data_files("{library_data.import_name}")
-"""
-        )
+""")

@@ -18,7 +18,8 @@ def write(workflows_path: str, library_data: LibraryData) -> None:
     with open(
         os.path.join(workflows_path, "python-unittests.yml"), "w", encoding="utf-8"
     ) as f:
-        f.write(f"""name: Unittests
+        f.write(f"""\
+name: Unittests
 
 on:
   push:

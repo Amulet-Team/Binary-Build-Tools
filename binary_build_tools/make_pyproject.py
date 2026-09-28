@@ -4,10 +4,15 @@ from .data import LibraryData, libraries, PythonVersion, find_dependencies
 
 
 def write(project_path: str, library_data: LibraryData) -> None:
-    dependencies = find_dependencies(library_data.pypi_name, True, True, True, False, True, True, False, False)
-    shared_libs: list[tuple[str, int | None]] = [(lib.lib_name, lib.lib_major_version) for lib in dependencies if lib.lib_name]
+    dependencies = find_dependencies(
+        library_data.pypi_name, True, True, True, False, True, True, False, False
+    )
+    shared_libs: list[tuple[str, int | None]] = [
+        (lib.lib_name, lib.lib_major_version) for lib in dependencies if lib.lib_name
+    ]
     with open(os.path.join(project_path, "pyproject.toml"), "w", encoding="utf-8") as f:
-        f.write(f"""[build-system]
+        f.write(f"""\
+[build-system]
 requires = [
     "setuptools>=42",
     "versioneer",

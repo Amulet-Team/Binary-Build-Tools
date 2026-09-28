@@ -5,7 +5,8 @@ from .data import LibraryData, LibraryType, find_dependencies
 
 def write(project_path: str, library_data: LibraryData) -> None:
     with open(os.path.join(project_path, ".gitignore"), "w", encoding="utf-8") as f:
-        f.write(f"""# Byte-compiled / optimized / DLL files
+        f.write(f"""\
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
