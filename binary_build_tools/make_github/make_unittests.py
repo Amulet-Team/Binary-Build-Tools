@@ -27,6 +27,10 @@ on:
       - '[0-9]+.[0-9]+.[0-9]+'
   pull_request:
 
+concurrency:
+  group: ${{{{ github.workflow }}}}-${{{{ github.ref }}}}
+  cancel-in-progress: true
+
 jobs:
   unittests:
     strategy:
