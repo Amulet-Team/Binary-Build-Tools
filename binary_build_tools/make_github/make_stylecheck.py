@@ -29,7 +29,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v{SetupPythonVersion}
       with:
-        python-version: {PythonVersion}
+        python-version: '{PythonVersion}'
 
     - name: Install dependencies
       run: |
