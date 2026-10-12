@@ -236,6 +236,42 @@ AmuletIO = LibraryData(
     runtime_dependencies=(),
     specifier=SpecifierSet("~=2.0.0.0a0"),
 )
+AmuletUtils = LibraryData(
+    pypi_name="amulet-utils",
+    org_name="Amulet-Team",
+    repo_name="Amulet-Utils",
+    short_var_name="utils",
+    import_name="amulet.utils",
+    lib_name="amulet_utils",
+    ext_name="_amulet_utils",
+    library_type=LibraryType.Shared,
+    private_dependencies=(),
+    public_dependencies=(
+        PyBind11.pypi_name,
+        PyBind11Extensions.pypi_name,
+    ),
+    ext_dependencies=(
+        PyBind11.pypi_name,
+        PyBind11Extensions.pypi_name,
+    ),
+    runtime_dependencies=(Platformdirs.pypi_name,),
+    test_dependencies=(
+        PyBind11.pypi_name,
+        PyBind11Extensions.pypi_name,
+        AmuletTestUtils.pypi_name,
+    ),
+    export_symbol="ExportAmuletUtils",
+    specifier=SpecifierSet("~=1.1.7.0a0"),
+    description="A C++ utility library with a python wrapper.",
+    optional_dependencies={
+        "numpy": ["numpy~=2.0"],
+        "pillow": ["pillow~=11.0"],
+        "pyside6": ["PySide6-Essentials~=6.9"],
+    },
+    unittest_dep_groups=("numpy", "pillow", "pyside6"),
+    package_data=["**/*.png"],
+    unittests_linux_libs=["libxkbcommon"],
+)
 AmuletLevelDB = LibraryData(
     pypi_name="amulet-leveldb",
     org_name="Amulet-Team",
@@ -285,42 +321,6 @@ AmuletRocksDB = LibraryData(
     ),
     specifier=SpecifierSet("~=3.0.7.0a0"),
     description="A pybind11 wrapper for Facebook's RocksDB.",
-)
-AmuletUtils = LibraryData(
-    pypi_name="amulet-utils",
-    org_name="Amulet-Team",
-    repo_name="Amulet-Utils",
-    short_var_name="utils",
-    import_name="amulet.utils",
-    lib_name="amulet_utils",
-    ext_name="_amulet_utils",
-    library_type=LibraryType.Shared,
-    private_dependencies=(),
-    public_dependencies=(
-        PyBind11.pypi_name,
-        PyBind11Extensions.pypi_name,
-    ),
-    ext_dependencies=(
-        PyBind11.pypi_name,
-        PyBind11Extensions.pypi_name,
-    ),
-    runtime_dependencies=(Platformdirs.pypi_name,),
-    test_dependencies=(
-        PyBind11.pypi_name,
-        PyBind11Extensions.pypi_name,
-        AmuletTestUtils.pypi_name,
-    ),
-    export_symbol="ExportAmuletUtils",
-    specifier=SpecifierSet("~=1.1.7.0a"),
-    description="A C++ utility library with a python wrapper.",
-    optional_dependencies={
-        "numpy": ["numpy~=2.0"],
-        "pillow": ["pillow~=11.0"],
-        "pyside6": ["PySide6-Essentials~=6.9"],
-    },
-    unittest_dep_groups=("numpy", "pillow", "pyside6"),
-    package_data=["**/*.png"],
-    unittests_linux_libs=["libxkbcommon"],
 )
 AmuletZlib = LibraryData(
     pypi_name="amulet-zlib",
