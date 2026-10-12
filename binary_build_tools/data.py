@@ -319,7 +319,7 @@ AmuletRocksDB = LibraryData(
         PyBind11.pypi_name,
         PyBind11Extensions.pypi_name,
     ),
-    specifier=SpecifierSet("~=3.0.7.0a0"),
+    specifier=SpecifierSet("~=2.0.0.0a0"),
     description="A pybind11 wrapper for Facebook's RocksDB.",
 )
 AmuletZlib = LibraryData(
