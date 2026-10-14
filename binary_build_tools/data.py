@@ -68,7 +68,8 @@ class LibraryData:
         gitignore: Iterable[str] = (),
         manifest: Iterable[str] = (),
         package_data: Iterable[str] = (),
-        include_dir: str = "../..",
+        source_include_dirs: tuple[str, ...] = ("${SOURCE_PATH}",),
+        config_include_dir: str = "../..",
         optional_dependencies: Mapping[str, Iterable[str]] = MappingProxyType({}),
         unittest_dep_groups: Iterable[str] = (),
         unittests_pre_build: str = "",
@@ -106,7 +107,8 @@ class LibraryData:
         self.gitignore = gitignore
         self.manifest = manifest
         self.package_data = package_data
-        self.include_dir = include_dir
+        self.source_include_dirs = source_include_dirs
+        self.config_include_dir = config_include_dir
         self.optional_dependencies = optional_dependencies
         self.unittest_dep_groups = unittest_dep_groups
         self.unittests_pre_build = unittests_pre_build
@@ -300,7 +302,8 @@ AmuletLevelDB = LibraryData(
     specifier=SpecifierSet("~=3.0.8.0a0"),
     description="A pybind11 wrapper for Mojang's custom LevelDB.",
     gitignore=["/src/amulet/leveldb/include/leveldb"],
-    include_dir="include",
+    source_include_dirs=("${leveldb_SOURCE_DIR}/include", "${amulet_leveldb_DIR}/include"),
+    config_include_dir="include",
 )
 AmuletRocksDB = LibraryData(
     pypi_name="amulet-rocksdb",

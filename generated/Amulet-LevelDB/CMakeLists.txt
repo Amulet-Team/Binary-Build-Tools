@@ -44,6 +44,34 @@ if (NOT TARGET amulet_utils)
     find_package(amulet_utils CONFIG REQUIRED)
 endif()
 
+# Add implementation
+include(FetchContent)
+set(LEVELDB_BUILD_UTILS OFF CACHE BOOL "" FORCE)
+set(LEVELDB_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(LEVELDB_BUILD_BENCHMARKS OFF CACHE BOOL "" FORCE)
+set(LEVELDB_INSTALL OFF CACHE BOOL "" FORCE)
+set(LEVELDB_DISABLE_EXCEPTIONS OFF CACHE BOOL "" FORCE)
+set(LEVELDB_DISABLE_RTTI OFF CACHE BOOL "" FORCE)
+set(BUILD_SHARED_LIBS ON CACHE BOOL "" FORCE)
+FetchContent_Declare(
+  leveldb
+  GIT_REPOSITORY https://github.com/Amulet-Team/leveldb.git
+  GIT_TAG        1352243bb27d287b27be94f7591218dddb3ef900
+)
+FetchContent_MakeAvailable(leveldb)
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+set_target_properties(crc32c PROPERTIES FOLDER "ThirdParty")
+if (TARGET crc32c_arm64)
+    set_target_properties(crc32c_arm64 PROPERTIES FOLDER "ThirdParty")
+endif()
+if (TARGET crc32c_sse42)
+    set_target_properties(crc32c_sse42 PROPERTIES FOLDER "ThirdParty")
+endif()
+set_target_properties(snappy PROPERTIES FOLDER "ThirdParty")
+set_target_properties(libzstd_static PROPERTIES FOLDER "ThirdParty")
+set_target_properties(zlibstatic PROPERTIES FOLDER "ThirdParty")
+
+
 # Find C++ files
 file(REAL_PATH src SOURCE_PATH)
 file(GLOB_RECURSE EXTENSION_SOURCES LIST_DIRECTORIES false ${SOURCE_PATH}/amulet/leveldb/*.py.cpp)
@@ -53,12 +81,13 @@ file(GLOB_RECURSE HEADERS LIST_DIRECTORIES false ${SOURCE_PATH}/amulet/leveldb/*
 list(REMOVE_ITEM SOURCES ${EXTENSION_SOURCES})
 list(REMOVE_ITEM HEADERS ${EXTENSION_HEADERS})
 
-# Add implementation
-add_library(leveldb SHARED ${SOURCES} ${HEADERS})
+# Extend the leveldb binary
+target_sources(leveldb PRIVATE ${SOURCES} ${HEADERS})
 set_target_properties(leveldb PROPERTIES CXX_VISIBILITY_PRESET hidden)
 set_target_properties(leveldb PROPERTIES FOLDER "CPP")
-target_link_libraries(leveldb PRIVATE amulet_utils)
-target_include_directories(leveldb PUBLIC ${SOURCE_PATH})
+target_link_libraries(leveldb amulet_utils)
+target_include_directories(leveldb PUBLIC "${leveldb_SOURCE_DIR}/include")
+target_include_directories(leveldb PUBLIC "${amulet_leveldb_DIR}/include")
 foreach(FILE ${SOURCES} ${HEADERS})
     file(RELATIVE_PATH REL_PATH ${SOURCE_PATH} ${FILE})
     get_filename_component(GROUP ${REL_PATH} DIRECTORY)
@@ -71,8 +100,9 @@ if(THREAD_SAFETY_ANALYSIS)
     target_compile_definitions(leveldb_thread_analysis PRIVATE AMULET_THREAD_SAFETY_ANALYSIS)
     set_target_properties(leveldb_thread_analysis PROPERTIES CXX_VISIBILITY_PRESET hidden)
 	set_target_properties(leveldb_thread_analysis PROPERTIES FOLDER "CPP")
-	target_link_libraries(leveldb_thread_analysis PRIVATE amulet_utils)
-	target_include_directories(leveldb_thread_analysis PUBLIC ${SOURCE_PATH})
+	target_link_libraries(leveldb_thread_analysis amulet_utils)
+	target_include_directories(leveldb_thread_analysis PUBLIC "${leveldb_SOURCE_DIR}/include")
+	target_include_directories(leveldb_thread_analysis PUBLIC "${amulet_leveldb_DIR}/include")
     target_compile_options(leveldb_thread_analysis PRIVATE -fsyntax-only -Wthread-safety -Werror=thread-safety)
     add_dependencies(leveldb leveldb_thread_analysis)
 endif()
@@ -122,6 +152,10 @@ endif()
 # Install
 install(TARGETS leveldb DESTINATION ${amulet_leveldb_DIR})
 install(TARGETS _leveldb DESTINATION ${AMULET_LEVELDB_EXT_DIR})
+INSTALL (
+    DIRECTORY ${leveldb_SOURCE_DIR}/include/
+    DESTINATION ${amulet_leveldb_DIR}/include
+)
 
 if (BUILD_AMULET_LEVELDB_TESTS)
     add_subdirectory(tests)

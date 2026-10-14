@@ -2,6 +2,36 @@ import os
 
 from .data import LibraryData, libraries, library_order, find_dependencies
 
+LevelDB = """\
+# Add implementation
+include(FetchContent)
+set(LEVELDB_BUILD_UTILS OFF CACHE BOOL "" FORCE)
+set(LEVELDB_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(LEVELDB_BUILD_BENCHMARKS OFF CACHE BOOL "" FORCE)
+set(LEVELDB_INSTALL OFF CACHE BOOL "" FORCE)
+set(LEVELDB_DISABLE_EXCEPTIONS OFF CACHE BOOL "" FORCE)
+set(LEVELDB_DISABLE_RTTI OFF CACHE BOOL "" FORCE)
+set(BUILD_SHARED_LIBS ON CACHE BOOL "" FORCE)
+FetchContent_Declare(
+  leveldb
+  GIT_REPOSITORY https://github.com/Amulet-Team/leveldb.git
+  GIT_TAG        1352243bb27d287b27be94f7591218dddb3ef900
+)
+FetchContent_MakeAvailable(leveldb)
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+set_target_properties(crc32c PROPERTIES FOLDER "ThirdParty")
+if (TARGET crc32c_arm64)
+    set_target_properties(crc32c_arm64 PROPERTIES FOLDER "ThirdParty")
+endif()
+if (TARGET crc32c_sse42)
+    set_target_properties(crc32c_sse42 PROPERTIES FOLDER "ThirdParty")
+endif()
+set_target_properties(snappy PROPERTIES FOLDER "ThirdParty")
+set_target_properties(libzstd_static PROPERTIES FOLDER "ThirdParty")
+set_target_properties(zlibstatic PROPERTIES FOLDER "ThirdParty")
+
+
+"""
 
 def get_library_properties(
     library_name: str, library_data: LibraryData, indent: str = ""
@@ -37,12 +67,12 @@ set_target_properties({library_name} PROPERTIES CXX_VISIBILITY_PRESET hidden)
 {f"{indent}target_compile_definitions({library_name} PRIVATE {library_data.export_symbol})\n" if library_data.lib_name and library_data.export_symbol else ""}\
 {
     "".join(
-        f"{indent}target_link_libraries({library_name} {"PUBLIC" if lib in lib_public_dependencies else "PRIVATE"} {lib.cmake_lib_name})\n"
+        f"{indent}target_link_libraries({library_name} {"" if library_data.pypi_name == "amulet-leveldb" else "PUBLIC " if lib in lib_public_dependencies else "PRIVATE "}{lib.cmake_lib_name})\n"
         for lib in lib_dependencies
         if lib.cmake_lib_name is not None
     )
 }\
-{indent}target_include_directories({library_name} PUBLIC ${{SOURCE_PATH}})
+{"\n".join([f"{indent}target_include_directories({library_name} PUBLIC \"{path}\")" for path in library_data.source_include_dirs])}
 """
 
 
@@ -127,6 +157,7 @@ endif()"""
     for lib in all_dependencies)
 }
 
+{LevelDB if library_data.pypi_name == "amulet-leveldb" else ""}\
 # Find C++ files
 file(REAL_PATH src SOURCE_PATH)
 file(GLOB_RECURSE EXTENSION_SOURCES LIST_DIRECTORIES false ${{SOURCE_PATH}}/{library_data.import_name.replace(".", "/")}/*.py.cpp)
@@ -138,8 +169,13 @@ file(GLOB_RECURSE HEADERS LIST_DIRECTORIES false ${{SOURCE_PATH}}/{library_data.
 list(REMOVE_ITEM SOURCES ${{EXTENSION_SOURCES}})
 list(REMOVE_ITEM HEADERS ${{EXTENSION_HEADERS}})
 
+{"""\
+# Extend the leveldb binary
+target_sources(leveldb PRIVATE ${SOURCES} ${HEADERS})
+""" if library_data.pypi_name == "amulet-leveldb" else f"""\
 # Add implementation
 add_library({library_data.lib_name} SHARED ${{SOURCES}} ${{HEADERS}})
+"""}\
 {get_library_properties(library_data.lib_name, library_data)}\
 foreach(FILE ${{SOURCES}} ${{HEADERS}})
     file(RELATIVE_PATH REL_PATH ${{SOURCE_PATH}} ${{FILE}})
@@ -193,6 +229,12 @@ endif()
 # Install
 {"" if library_data.lib_name is None else f"install(TARGETS {library_data.lib_name} DESTINATION ${{{library_data.cmake_package}_DIR}})\n"}\
 install(TARGETS {library_data.ext_name} DESTINATION ${{{library_data.ext_macro_name}_EXT_DIR}})
+{"""\
+INSTALL (
+    DIRECTORY ${leveldb_SOURCE_DIR}/include/
+    DESTINATION ${amulet_leveldb_DIR}/include
+)
+""" if library_data.pypi_name == "amulet-leveldb" else ""}\
 {"" if library_data.lib_name is None else f"""\
 
 if (BUILD_{library_data.project_macro_name}_TESTS)
