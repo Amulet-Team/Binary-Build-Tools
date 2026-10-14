@@ -23,9 +23,20 @@ _faulthandler.enable()
 
 def _init() -> None:
     import sys
+{"""\
+    import logging
+
+    logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
+""" if library_data.pypi_name == "amulet-utils" else ""}\
 
     # Import dependencies
     import {library_data.import_name}
+{"""\
+    import amulet.utils.logging
+
+    # Enable debug logging when running tests.
+    amulet.utils.logging.set_min_log_level(logging.DEBUG)
+""" if library_data.pypi_name == "amulet-utils" else ""}\
 
     # This needs to be an absolute path otherwise it may get called twice
     # on different module objects and crash when the interpreter shuts down.

@@ -11,9 +11,16 @@ _faulthandler.enable()
 
 def _init() -> None:
     import sys
+    import logging
+
+    logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
 
     # Import dependencies
     import amulet.utils
+    import amulet.utils.logging
+
+    # Enable debug logging when running tests.
+    amulet.utils.logging.set_min_log_level(logging.DEBUG)
 
     # This needs to be an absolute path otherwise it may get called twice
     # on different module objects and crash when the interpreter shuts down.

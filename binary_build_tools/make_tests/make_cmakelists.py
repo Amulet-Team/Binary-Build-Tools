@@ -87,6 +87,14 @@ if(THREAD_SAFETY_ANALYSIS)
     {get_module_properties(f"_test_{library_data.cmake_package}_thread_analysis", library_data, indent="\t")}\
     target_compile_options(_test_{library_data.cmake_package}_thread_analysis PRIVATE -fsyntax-only -Wthread-safety -Werror=thread-safety)
     add_dependencies(_test_{library_data.cmake_package} _test_{library_data.cmake_package}_thread_analysis)
+{"""\
+
+    add_library(mutex_thread_analysis OBJECT "${CMAKE_CURRENT_LIST_DIR}/test_amulet_utils/test_threading/test_mutex.cpp")
+    target_compile_definitions(mutex_thread_analysis PRIVATE AMULET_THREAD_SAFETY_ANALYSIS)
+	target_link_libraries(mutex_thread_analysis PRIVATE amulet_utils)
+    target_compile_options(mutex_thread_analysis PRIVATE -fsyntax-only -Wthread-safety -Werror=thread-safety -Xclang -verify -ferror-limit=0)
+    add_dependencies(_test_amulet_utils mutex_thread_analysis)
+""" if library_data.pypi_name == "amulet-utils" else ""}\
 endif()
 
 # Install
