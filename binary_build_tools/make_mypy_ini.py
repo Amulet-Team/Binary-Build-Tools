@@ -12,6 +12,8 @@ check_untyped_defs = True
 warn_return_any = True
 python_version = {PythonVersion}
 explicit_package_bases = True
+warn_unused_ignores=True
+
 mypy_path = $MYPY_CONFIG_FILE_DIR/src,$MYPY_CONFIG_FILE_DIR/tests
 files =
     src,
