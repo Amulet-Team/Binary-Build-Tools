@@ -30,3 +30,12 @@ def _init() -> None:
 
 _init()
 del _init
+
+
+SNBTType: TypeAlias = str
+IntType: TypeAlias = ByteTag | ShortTag | IntTag | LongTag
+FloatType: TypeAlias = FloatTag | DoubleTag
+NumberType: TypeAlias = IntType | FloatType
+ArrayType: TypeAlias = ByteArrayTag | IntArrayTag | LongArrayTag
+
+AnyNBT: TypeAlias = NumberType | StringTag | ListTag | CompoundTag | ArrayType

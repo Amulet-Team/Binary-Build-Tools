@@ -393,6 +393,7 @@ AmuletNBT = LibraryData(
         ]
     },
     authors=("James Clare", "Ben Gothard"),
+    thread_safety=False
 )
 AmuletCore = LibraryData(
     pypi_name="amulet-core",
