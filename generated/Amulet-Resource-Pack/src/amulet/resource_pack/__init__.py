@@ -33,3 +33,22 @@ def _init() -> None:
 
 _init()
 del _init
+
+from amulet.resource_pack.abc import (
+    BaseResourcePack,
+    BaseResourcePackManager,
+)
+
+from .unknown_resource_pack import UnknownResourcePack
+
+from amulet.resource_pack.java import (
+    JavaResourcePack,
+    JavaResourcePackManager,
+)
+
+# from amulet.resource_pack.bedrock import (
+#     BedrockResourcePack,
+#     BedrockResourcePackManager,
+# )
+
+from ._load import load_resource_pack, load_resource_pack_manager

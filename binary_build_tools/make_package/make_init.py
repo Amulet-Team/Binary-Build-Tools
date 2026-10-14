@@ -78,5 +78,26 @@ FloatType: TypeAlias = FloatTag | DoubleTag
 NumberType: TypeAlias = IntType | FloatType
 ArrayType: TypeAlias = ByteArrayTag | IntArrayTag | LongArrayTag
 
-AnyNBT: TypeAlias = NumberType | StringTag | ListTag | CompoundTag | ArrayType""" if library_data.pypi_name == "amulet-nbt" else ""}\
+AnyNBT: TypeAlias = NumberType | StringTag | ListTag | CompoundTag | ArrayType"""
+if library_data.pypi_name == "amulet-nbt" else """\
+
+from amulet.resource_pack.abc import (
+    BaseResourcePack,
+    BaseResourcePackManager,
+)
+
+from .unknown_resource_pack import UnknownResourcePack
+
+from amulet.resource_pack.java import (
+    JavaResourcePack,
+    JavaResourcePackManager,
+)
+
+# from amulet.resource_pack.bedrock import (
+#     BedrockResourcePack,
+#     BedrockResourcePackManager,
+# )
+
+from ._load import load_resource_pack, load_resource_pack_manager
+""" if library_data.pypi_name == "amulet-resource-pack" else ""}\
 """)
