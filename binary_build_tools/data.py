@@ -283,7 +283,9 @@ AmuletLevelDB = LibraryData(
     cmake_package="amulet_leveldb",
     ext_name="_leveldb",
     library_type=LibraryType.Shared,
-    private_dependencies=(),
+    private_dependencies=(
+        AmuletUtils.pypi_name,
+    ),
     public_dependencies=(),
     ext_dependencies=(
         PyBind11.pypi_name,
