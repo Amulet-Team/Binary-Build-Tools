@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 4.1)
 
 project(amulet_zlib_tests LANGUAGES CXX)
 
-
 # Set C++20
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -55,7 +54,6 @@ foreach(FILE ${SOURCES})
     string(REPLACE "/" "\\" GROUP "${GROUP}")
     source_group(${GROUP} FILES ${FILE})
 endforeach()
-
 
 # Install
 install(TARGETS _test_amulet_zlib DESTINATION "${CMAKE_CURRENT_LIST_DIR}/test_amulet_zlib")

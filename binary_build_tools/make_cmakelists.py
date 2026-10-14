@@ -162,8 +162,7 @@ endif()"""
 file(REAL_PATH src SOURCE_PATH)
 file(GLOB_RECURSE EXTENSION_SOURCES LIST_DIRECTORIES false ${{SOURCE_PATH}}/{library_data.import_name.replace(".", "/")}/*.py.cpp)
 file(GLOB_RECURSE EXTENSION_HEADERS LIST_DIRECTORIES false ${{SOURCE_PATH}}/{library_data.import_name.replace(".", "/")}/*.py.hpp)
-{
-"" if library_data.lib_name is None else f"""\
+{f"""\
 file(GLOB_RECURSE SOURCES LIST_DIRECTORIES false ${{SOURCE_PATH}}/{library_data.import_name.replace(".", "/")}/*.cpp)
 file(GLOB_RECURSE HEADERS LIST_DIRECTORIES false ${{SOURCE_PATH}}/{library_data.import_name.replace(".", "/")}/*.hpp)
 list(REMOVE_ITEM SOURCES ${{EXTENSION_SOURCES}})
@@ -193,9 +192,10 @@ if(THREAD_SAFETY_ANALYSIS)
     add_dependencies({library_data.lib_name} {library_data.lib_name}_thread_analysis)
 endif()
 """ if library_data.thread_safety else ""}\
-"""
-}\
 
+""" if library_data.lib_name else """\
+
+"""}\
 # Add python extension
 pybind11_add_module({library_data.ext_name} ${{EXTENSION_SOURCES}} ${{EXTENSION_HEADERS}})
 if(APPLE)
@@ -220,8 +220,9 @@ if(THREAD_SAFETY_ANALYSIS)
     target_compile_options({library_data.ext_name}_thread_analysis PRIVATE -fsyntax-only -Wthread-safety -Werror=thread-safety)
     add_dependencies({library_data.ext_name} {library_data.ext_name}_thread_analysis)
 endif()
-""" if library_data.thread_safety else ""}\
 
+""" if library_data.thread_safety else ""}\
+\
 if(NOT DEFINED {library_data.ext_macro_name}_EXT_DIR)
     set({library_data.ext_macro_name}_EXT_DIR ${{{library_data.cmake_package}_DIR}})
 endif()

@@ -81,7 +81,6 @@ foreach(FILE ${EXTENSION_SOURCES} ${EXTENSION_HEADERS})
     source_group(${GROUP} FILES ${FILE})
 endforeach()
 
-
 if(NOT DEFINED AMULET_ZLIB_EXT_DIR)
     set(AMULET_ZLIB_EXT_DIR ${amulet_zlib_DIR})
 endif()

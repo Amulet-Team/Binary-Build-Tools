@@ -38,8 +38,9 @@ option(THREAD_SAFETY_ANALYSIS "Run clang thread safety analysis over the sources
 if(THREAD_SAFETY_ANALYSIS AND NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     message(FATAL_ERROR "THREAD_SAFETY_ANALYSIS requires Clang")
 endif()
-""" if library_data.thread_safety else ""}\
 
+""" if library_data.thread_safety else ""}\
+\
 # Set C++20
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -99,8 +100,9 @@ if(THREAD_SAFETY_ANALYSIS)
     add_dependencies(_test_amulet_utils mutex_thread_analysis)
 """ if library_data.pypi_name == "amulet-utils" else ""}\
 endif()
-""" if library_data.thread_safety else ""}\
 
+""" if library_data.thread_safety else ""}\
+\
 # Install
 install(TARGETS _test_{library_data.cmake_package} DESTINATION "${{CMAKE_CURRENT_LIST_DIR}}/test_{library_data.cmake_package}")
 """)
