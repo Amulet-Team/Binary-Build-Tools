@@ -261,7 +261,7 @@ AmuletUtils = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletUtils",
-    specifier=SpecifierSet("~=1.1.7.0a0"),
+    specifier=SpecifierSet("~=1.1.8.0a0"),
     description="A C++ utility library with a python wrapper.",
     optional_dependencies={
         "numpy": ["numpy~=2.0"],
@@ -295,7 +295,7 @@ AmuletLevelDB = LibraryData(
         PyBind11.pypi_name,
         PyBind11Extensions.pypi_name,
     ),
-    specifier=SpecifierSet("~=3.0.7.0a0"),
+    specifier=SpecifierSet("~=3.0.8.0a0"),
     description="A pybind11 wrapper for Mojang's custom LevelDB.",
     gitignore=["/src/amulet/leveldb/include/leveldb"],
     include_dir="include",
@@ -520,7 +520,7 @@ AmuletAnvil = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletAnvil",
-    specifier=SpecifierSet("~=1.0.6.0a0"),
+    specifier=SpecifierSet("~=1.0.7.0a0"),
     description="A C++ library with Python wrapper for the Minecraft Anvil format.",
     unittests_pre_test=[
         "pip install git+https://github.com/Amulet-Team/Amulet-Minecraft-Worlds.git",
@@ -559,7 +559,7 @@ AmuletLevel = LibraryData(
         AmuletTestUtils.pypi_name,
     ),
     export_symbol="ExportAmuletLevel",
-    specifier=SpecifierSet("~=1.0.7.0a0"),
+    specifier=SpecifierSet("~=1.0.8.0a0"),
     description="A Python and C++ library for interacting with Minecraft worlds and structures.",
     unittests_pre_test=[
         "pip install git+https://github.com/Amulet-Team/Amulet-Minecraft-Worlds.git"
