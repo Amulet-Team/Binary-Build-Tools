@@ -18,6 +18,7 @@ QtVersion = "6.11.1"
 
 
 class LibraryType(Enum):
+    Static = "Static"
     Shared = "Shared"
     Interface = "Interface"
     Python = "Python"
@@ -680,6 +681,9 @@ interface_libraries: list[LibraryData] = [
     AmuletTestUtils,
 ]
 
+static_libraries: list[LibraryData] = [
+]
+
 shared_libraries: list[LibraryData] = [
     AmuletLevelDB,
     AmuletRocksDB,
@@ -705,8 +709,8 @@ python_libraries: list[LibraryData] = [
 ]
 
 libraries: dict[str, LibraryData] = {
-    for lib in interface_libraries + shared_libraries + python_libraries
     lib.name: lib
+    for lib in interface_libraries + static_libraries + shared_libraries + python_libraries
 }
 
 library_order: dict[str, int] = {

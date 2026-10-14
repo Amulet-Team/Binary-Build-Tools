@@ -1,6 +1,6 @@
 import os
 
-from .data import LibraryData, libraries, PythonVersion, find_dependencies
+from .data import LibraryData, libraries, PythonVersion, find_dependencies, LibraryType
 
 
 def write(project_path: str, library_data: LibraryData) -> None:
@@ -8,7 +8,7 @@ def write(project_path: str, library_data: LibraryData) -> None:
         library_data.name, True, True, True, False, True, True, False, False
     )
     shared_libs: list[tuple[str, int | None]] = [
-        (lib.lib_name, lib.lib_major_version) for lib in dependencies if lib.lib_name
+        (lib.lib_name, lib.lib_major_version) for lib in dependencies if lib.lib_name and lib.library_type == LibraryType.Shared
     ]
     with open(os.path.join(project_path, "pyproject.toml"), "w", encoding="utf-8") as f:
         f.write(f"""\
