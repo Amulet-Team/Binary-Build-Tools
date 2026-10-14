@@ -29,7 +29,7 @@ import os
 import shutil
 import sysconfig
 
-{"\n".join(f"import {lib.import_name}" for lib in dependencies)}
+{"\n".join(f"import {lib.import_name}" for lib in dependencies if lib.prebuilt)}
 
 
 def fix_path(path: str) -> str:
@@ -66,7 +66,7 @@ def main() -> None:
                 "".join(
                     '\n            f"-Dpybind11_DIR={fix_path(pybind11.get_cmake_dir())}",'
                     if lib.pypi_name == "pybind11" else
-                    f'\n            f"-D{lib.cmake_package}_DIR={{fix_path({lib.import_name}.__path__[0])}}",' for lib in dependencies
+                    f'\n            f"-D{lib.cmake_package}_DIR={{fix_path({lib.import_name}.__path__[0])}}",' for lib in dependencies if lib.prebuilt
                 )}
             f"-D{library_data.cmake_package}_DIR={{fix_path(os.path.join(RootDir, 'src', {", ".join(f"'{name}'" for name in library_data.import_name.split("."))}))}}",
             f"-DCMAKE_INSTALL_PREFIX=install",

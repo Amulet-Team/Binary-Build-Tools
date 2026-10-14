@@ -81,6 +81,7 @@ class LibraryData:
         gui_scripts: Mapping[str, str] = MappingProxyType({}),
         create_build_workflow: bool = True,
         thread_safety: bool = True,
+        prebuilt: bool = True,
     ):
         self.name = name
         self.pypi_name = pypi_name.replace("_", "-") if pypi_name else pypi_name
@@ -121,6 +122,7 @@ class LibraryData:
         self.gui_scripts = gui_scripts
         self.create_build_workflow = create_build_workflow
         self.thread_safety = thread_safety
+        self.prebuilt = prebuilt
 
     def __repr__(self) -> str:
         return f"LibraryData({self.name})"

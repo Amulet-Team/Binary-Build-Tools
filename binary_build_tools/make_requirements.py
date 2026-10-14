@@ -36,7 +36,7 @@ AMULET_COMPILER_TARGET_REQUIREMENT = "==2.0"
 {
 "\n".join(
     f'{lib.project_macro_name}_REQUIREMENT = "{lib.specifier}"'
-    for lib in dependencies + py_dependencies
+    for lib in dependencies + py_dependencies if lib.prebuilt
 )
 }{
 "".join(
@@ -46,7 +46,7 @@ if os.environ.get("{lib.project_macro_name}_REQUIREMENT", None):
     {lib.project_macro_name}_REQUIREMENT = (
         f"{{{lib.project_macro_name}_REQUIREMENT}},{{os.environ['{lib.project_macro_name}_REQUIREMENT']}}"
     )"""
-    for lib in dependencies if lib.pypi_name != "pybind11"
+    for lib in dependencies if lib.pypi_name != "pybind11" and lib.prebuilt
 )
 }
 
@@ -73,7 +73,7 @@ except ImportError:
 else:
     {lib.project_macro_name}_REQUIREMENT = get_specifier_set({lib.import_name}.__version__)
 """
-for lib in dependencies if lib.pypi_name != "pybind11"
+for lib in dependencies if lib.pypi_name != "pybind11" and lib.prebuilt
 )
 }
 
@@ -83,7 +83,7 @@ def get_build_dependencies() -> list:
 "".join(
     f"""
         f"{lib.pypi_name}{{{lib.project_macro_name}_REQUIREMENT}}","""
-    for lib in dependencies
+    for lib in dependencies if lib.prebuilt
 )    
 }
     ] * (not os.environ.get("AMULET_SKIP_COMPILE", None))
@@ -96,7 +96,7 @@ def get_runtime_dependencies(sdist: bool = False) -> list[str]:
 "".join(
     f"""
         f"{lib.pypi_name}{{{lib.project_macro_name}_REQUIREMENT}}","""
-    for lib in dependencies + py_dependencies
+    for lib in dependencies + py_dependencies if lib.prebuilt
 )    
 }
     ]

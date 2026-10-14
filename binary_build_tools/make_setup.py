@@ -49,7 +49,7 @@ else:
 
 class CMakeBuild(BuildExt):
     def build_extension(self, ext: Extension) -> None:
-        {"\n        ".join(f"import {lib.import_name}" for lib in dependencies)}
+        {"\n        ".join(f"import {lib.import_name}" for lib in dependencies if lib.prebuilt)}
     
         ext_dir = (Path.cwd() / self.get_ext_fullpath("")).parent.resolve() / {" / ".join(f"\"{name}\"" for name in library_data.import_name.split("."))}
         {library_data.short_var_name}_src_dir = Path.cwd() / "src" / {" / ".join(f"\"{name}\"" for name in library_data.import_name.split("."))} if self.editable_mode else ext_dir
@@ -92,7 +92,7 @@ class CMakeBuild(BuildExt):
                     f"-Dpybind11_DIR={fix_path(pybind11.get_cmake_dir())}",\n"""
                         if lib.pypi_name == "pybind11" else
                         f"""\
-                    f"-D{lib.cmake_package}_DIR={{fix_path({lib.import_name}.__path__[0])}}",\n""" for lib in dependencies
+                    f"-D{lib.cmake_package}_DIR={{fix_path({lib.import_name}.__path__[0])}}",\n""" for lib in dependencies if lib.prebuilt
                     )}\
                     f"-D{library_data.cmake_package}_DIR={{fix_path({library_data.short_var_name}_src_dir)}}",
                     f"-D{library_data.ext_macro_name}_EXT_DIR={{fix_path(ext_dir)}}",

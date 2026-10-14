@@ -175,7 +175,7 @@ f"".join(
 if (NOT TARGET {lib.cmake_lib_name})
     find_package({lib.cmake_package} CONFIG REQUIRED)
 endif()"""
-    for lib in all_dependencies)
+    for lib in all_dependencies if lib.prebuilt)
 }
 
 {
