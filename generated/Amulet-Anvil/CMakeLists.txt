@@ -53,6 +53,20 @@ if (NOT TARGET amulet_nbt)
     find_package(amulet_nbt CONFIG REQUIRED)
 endif()
 
+
+include(FetchContent)
+
+# Add lz4
+FetchContent_Declare(
+  lz4
+  GIT_REPOSITORY https://github.com/lz4/lz4.git
+  GIT_TAG        ebb370ca83af193212df4dcbadcc5d87bc0de2f0
+)
+FetchContent_MakeAvailable(lz4)
+set(LZ4_BUILD_CLI OFF)
+add_subdirectory(${lz4_SOURCE_DIR}/build/cmake ${CMAKE_BINARY_DIR}/lz4)
+set_target_properties(lz4_static PROPERTIES FOLDER "ThirdParty")
+
 # Find C++ files
 file(REAL_PATH src SOURCE_PATH)
 file(GLOB_RECURSE EXTENSION_SOURCES LIST_DIRECTORIES false ${SOURCE_PATH}/amulet/anvil/*.py.cpp)
@@ -68,6 +82,7 @@ set_target_properties(amulet_anvil PROPERTIES CXX_VISIBILITY_PRESET hidden)
 set_target_properties(amulet_anvil PROPERTIES FOLDER "CPP")
 target_compile_definitions(amulet_anvil PRIVATE ExportAmuletAnvil)
 target_link_libraries(amulet_anvil PUBLIC amulet_io)
+target_link_libraries(amulet_anvil PRIVATE lz4_static)
 target_link_libraries(amulet_anvil PUBLIC amulet_utils)
 target_link_libraries(amulet_anvil PRIVATE amulet_zlib)
 target_link_libraries(amulet_anvil PUBLIC amulet_nbt)
@@ -86,6 +101,7 @@ if(THREAD_SAFETY_ANALYSIS)
 	set_target_properties(amulet_anvil_thread_analysis PROPERTIES FOLDER "CPP")
 	target_compile_definitions(amulet_anvil_thread_analysis PRIVATE ExportAmuletAnvil)
 	target_link_libraries(amulet_anvil_thread_analysis PUBLIC amulet_io)
+	target_link_libraries(amulet_anvil_thread_analysis PRIVATE lz4_static)
 	target_link_libraries(amulet_anvil_thread_analysis PUBLIC amulet_utils)
 	target_link_libraries(amulet_anvil_thread_analysis PRIVATE amulet_zlib)
 	target_link_libraries(amulet_anvil_thread_analysis PUBLIC amulet_nbt)

@@ -260,6 +260,18 @@ AmuletIO = LibraryData(
     runtime_dependencies=(),
     specifier=SpecifierSet("~=2.0.0.0a0"),
 )
+LZ4 = LibraryData(
+    name="lz4",
+    pypi_name=None,
+    org_name="lz4",
+    repo_name="lz4",
+    short_var_name="lz4",
+    import_name="lz4",
+    lib_name="lz4_static",
+    library_type=LibraryType.Static,
+    specifier=SpecifierSet("~=1.0"),
+    prebuilt=False,
+)
 AmuletUtils = LibraryData(
     name="amulet-utils",
     pypi_name="amulet-utils",
@@ -682,6 +694,7 @@ interface_libraries: list[LibraryData] = [
 ]
 
 static_libraries: list[LibraryData] = [
+    LZ4,
 ]
 
 shared_libraries: list[LibraryData] = [

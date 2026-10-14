@@ -54,6 +54,22 @@ set_target_properties(zlibstatic PROPERTIES FOLDER "ThirdParty")
 
 """
 
+LZ4 = """
+include(FetchContent)
+
+# Add lz4
+FetchContent_Declare(
+  lz4
+  GIT_REPOSITORY https://github.com/lz4/lz4.git
+  GIT_TAG        ebb370ca83af193212df4dcbadcc5d87bc0de2f0
+)
+FetchContent_MakeAvailable(lz4)
+set(LZ4_BUILD_CLI OFF)
+add_subdirectory(${lz4_SOURCE_DIR}/build/cmake ${CMAKE_BINARY_DIR}/lz4)
+set_target_properties(lz4_static PROPERTIES FOLDER "ThirdParty")
+
+"""
+
 def get_library_properties(
     library_name: str, library_data: LibraryData, indent: str = ""
 ) -> str:
@@ -180,7 +196,8 @@ endif()"""
 
 {
 LevelDB if library_data.pypi_name == "amulet-leveldb" else 
-ZLib if library_data.pypi_name == "amulet-zlib" else ""}\
+ZLib if library_data.pypi_name == "amulet-zlib" else
+LZ4 if library_data.pypi_name == "amulet-anvil" else ""}\
 # Find C++ files
 file(REAL_PATH src SOURCE_PATH)
 file(GLOB_RECURSE EXTENSION_SOURCES LIST_DIRECTORIES false ${{SOURCE_PATH}}/{library_data.import_name.replace(".", "/")}/*.py.cpp)
