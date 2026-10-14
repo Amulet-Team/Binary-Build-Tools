@@ -245,11 +245,11 @@ AmuletUtils = LibraryData(
     lib_name="amulet_utils",
     ext_name="_amulet_utils",
     library_type=LibraryType.Shared,
-    private_dependencies=(),
-    public_dependencies=(
+    private_dependencies=(
         PyBind11.pypi_name,
         PyBind11Extensions.pypi_name,
     ),
+    public_dependencies=(),
     ext_dependencies=(
         PyBind11.pypi_name,
         PyBind11Extensions.pypi_name,
@@ -432,7 +432,9 @@ AmuletResourcePack = LibraryData(
     lib_name="amulet_resource_pack",
     ext_name="_amulet_resource_pack",
     library_type=LibraryType.Shared,
-    private_dependencies=(),
+    private_dependencies=(
+        PyBind11.pypi_name,
+    ),
     public_dependencies=(
         AmuletUtils.pypi_name,
         AmuletCore.pypi_name,
