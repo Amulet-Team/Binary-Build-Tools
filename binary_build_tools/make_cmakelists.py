@@ -182,8 +182,8 @@ foreach(FILE ${{SOURCES}} ${{HEADERS}})
     string(REPLACE "/" "\\\\" GROUP ${{GROUP}})
     source_group(${{GROUP}} FILES ${{FILE}})
 endforeach()
-
 {f"""\
+
 if(THREAD_SAFETY_ANALYSIS)
     add_library({library_data.lib_name}_thread_analysis OBJECT ${{SOURCES}} ${{HEADERS}})
     target_compile_definitions({library_data.lib_name}_thread_analysis PRIVATE AMULET_THREAD_SAFETY_ANALYSIS)
@@ -192,10 +192,8 @@ if(THREAD_SAFETY_ANALYSIS)
     add_dependencies({library_data.lib_name} {library_data.lib_name}_thread_analysis)
 endif()
 """ if library_data.thread_safety else ""}\
+""" if library_data.lib_name else ""}\
 
-""" if library_data.lib_name else """\
-
-"""}\
 # Add python extension
 pybind11_add_module({library_data.ext_name} ${{EXTENSION_SOURCES}} ${{EXTENSION_HEADERS}})
 if(APPLE)

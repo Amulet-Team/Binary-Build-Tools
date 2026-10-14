@@ -58,7 +58,6 @@ foreach(FILE ${SOURCES} ${HEADERS})
     source_group(${GROUP} FILES ${FILE})
 endforeach()
 
-
 # Add python extension
 pybind11_add_module(_amulet_zlib ${EXTENSION_SOURCES} ${EXTENSION_HEADERS})
 if(APPLE)
