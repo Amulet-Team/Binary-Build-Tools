@@ -12,7 +12,7 @@ def write(tools_path: str, library_data: LibraryData) -> None:
     if library_data.lib_name is None:
         return
     dependencies = find_dependencies(
-        library_data.pypi_name,
+        library_data.name,
         False,
         True,
         False,

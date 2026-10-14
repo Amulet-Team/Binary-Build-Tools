@@ -5,7 +5,7 @@ from .data import LibraryData, libraries, library_order, find_dependencies
 
 def write(project_path: str, library_data: LibraryData) -> None:
     dependencies = find_dependencies(
-        library_data.pypi_name,
+        library_data.name,
         True,
         True,
         True,
@@ -17,8 +17,8 @@ def write(project_path: str, library_data: LibraryData) -> None:
     )
 
     py_dependencies: tuple[LibraryData, ...] = tuple(
-        libraries[pypi_name]
-        for pypi_name in sorted(
+        libraries[lib_name]
+        for lib_name in sorted(
             library_data.runtime_dependencies, key=library_order.__getitem__
         )
     )

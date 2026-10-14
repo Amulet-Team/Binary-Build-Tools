@@ -20,7 +20,7 @@ def write(workflows_path: str, library_data: LibraryData) -> None:
     if not library_data.create_build_workflow:
         return
     dependencies = find_dependencies(
-        library_data.pypi_name,
+        library_data.name,
         True,
         True,
         True,

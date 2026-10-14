@@ -58,7 +58,7 @@ def get_library_properties(
     library_name: str, library_data: LibraryData, indent: str = ""
 ) -> str:
     lib_dependencies = find_dependencies(
-        library_data.pypi_name,
+        library_data.name,
         True,
         True,
         False,
@@ -71,7 +71,7 @@ def get_library_properties(
 
     lib_public_dependencies = set(
         find_dependencies(
-            library_data.pypi_name,
+            library_data.name,
             False,
             True,
             False,
@@ -106,7 +106,7 @@ set_target_properties({module_name} PROPERTIES CXX_VISIBILITY_PRESET hidden)
 {
     "".join(
         f"{indent}target_link_libraries({module_name} PRIVATE {libraries[lib].cmake_lib_name})\n"
-        for lib in sorted(library_data.ext_dependencies + (library_data.pypi_name,), key=library_order.__getitem__)
+        for lib in sorted(library_data.ext_dependencies + (library_data.name,), key=library_order.__getitem__)
         if lib != "pybind11" and libraries[lib].cmake_lib_name is not None
     )
 }\
@@ -119,7 +119,7 @@ set_target_properties({module_name} PROPERTIES CXX_VISIBILITY_PRESET hidden)
 
 def write(project_path: str, library_data: LibraryData) -> None:
     all_dependencies = find_dependencies(
-        library_data.pypi_name,
+        library_data.name,
         True,
         True,
         True,
@@ -178,7 +178,9 @@ endif()"""
     for lib in all_dependencies)
 }
 
-{LevelDB if library_data.pypi_name == "amulet-leveldb" else ZLib if library_data.pypi_name == "amulet-zlib" else ""}\
+{
+LevelDB if library_data.pypi_name == "amulet-leveldb" else 
+ZLib if library_data.pypi_name == "amulet-zlib" else ""}\
 # Find C++ files
 file(REAL_PATH src SOURCE_PATH)
 file(GLOB_RECURSE EXTENSION_SOURCES LIST_DIRECTORIES false ${{SOURCE_PATH}}/{library_data.import_name.replace(".", "/")}/*.py.cpp)

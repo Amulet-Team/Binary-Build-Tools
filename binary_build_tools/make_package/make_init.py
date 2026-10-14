@@ -7,7 +7,7 @@ def write(package_path: str, library_data: LibraryData) -> None:
     dependencies = tuple(
         lib
         for lib in find_dependencies(
-            library_data.pypi_name,
+            library_data.name,
             True,
             True,
             True,

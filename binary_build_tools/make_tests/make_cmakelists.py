@@ -16,7 +16,7 @@ set_target_properties({module_name} PROPERTIES CXX_VISIBILITY_PRESET hidden)
 "".join(
     f"""
 {indent}target_link_libraries({module_name} PRIVATE {libraries[lib_name].cmake_lib_name})"""
-    for lib_name in sorted(library_data.test_dependencies + (library_data.pypi_name,), key=library_order.__getitem__)
+    for lib_name in sorted(library_data.test_dependencies + (library_data.name,), key=library_order.__getitem__)
     if lib_name != "pybind11" and libraries[lib_name].cmake_lib_name is not None
 )
 }
@@ -66,7 +66,7 @@ find_package(Python3 COMPONENTS Interpreter Development.Module REQUIRED)
 if (NOT TARGET {libraries[lib_name].cmake_lib_name})
     find_package({libraries[lib_name].cmake_package} CONFIG REQUIRED)
 endif()"""
-    for lib_name in sorted(library_data.test_dependencies + (library_data.pypi_name,), key=library_order.__getitem__)
+    for lib_name in sorted(library_data.test_dependencies + (library_data.name,), key=library_order.__getitem__)
     if libraries[lib_name].cmake_lib_name is not None
 )
 }

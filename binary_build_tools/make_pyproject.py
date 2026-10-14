@@ -5,7 +5,7 @@ from .data import LibraryData, libraries, PythonVersion, find_dependencies
 
 def write(project_path: str, library_data: LibraryData) -> None:
     dependencies = find_dependencies(
-        library_data.pypi_name, True, True, True, False, True, True, False, False
+        library_data.name, True, True, True, False, True, True, False, False
     )
     shared_libs: list[tuple[str, int | None]] = [
         (lib.lib_name, lib.lib_major_version) for lib in dependencies if lib.lib_name

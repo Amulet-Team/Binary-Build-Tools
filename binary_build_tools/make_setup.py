@@ -5,7 +5,7 @@ from .data import LibraryData, find_dependencies, PySide6
 
 def write(project_path: str, library_data: LibraryData) -> None:
     dependencies = find_dependencies(
-        library_data.pypi_name,
+        library_data.name,
         True,
         True,
         True,

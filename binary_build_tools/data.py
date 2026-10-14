@@ -27,9 +27,10 @@ class LibraryData:
     def __init__(
         self,
         *,
+        name: str,
         org_name: str,  # The github organisation/user name (Amulet-Team)
         repo_name: str,  # The name of the github repository (Amulet-NBT)
-        pypi_name: str,  # The PyPi hyphenated library name (amulet-nbt)
+        pypi_name: str | None = None,  # The PyPi hyphenated library name (amulet-nbt)
         import_name: str,  # The import name to the package (amulet.nbt)
         short_var_name: str,  # A string for use in Python variables (amulet_nbt)
         ext_macro_name: str = "",  # Name used in extension macros. (AMULET_NBT) Defaults to import_name.replace(".", "_").upper()
@@ -81,7 +82,8 @@ class LibraryData:
         create_build_workflow: bool = True,
         thread_safety: bool = True,
     ):
-        self.pypi_name = pypi_name.replace("_", "-")
+        self.name = name
+        self.pypi_name = pypi_name.replace("_", "-") if pypi_name else pypi_name
         self.org_name = org_name
         self.repo_name = repo_name
         self.import_name = import_name
@@ -120,8 +122,12 @@ class LibraryData:
         self.create_build_workflow = create_build_workflow
         self.thread_safety = thread_safety
 
+    def __repr__(self) -> str:
+        return f"LibraryData({self.name})"
+
 
 Packaging = LibraryData(
+    name="packaging",
     pypi_name="packaging",
     org_name="pypa",
     repo_name="packaging",
@@ -131,6 +137,7 @@ Packaging = LibraryData(
     specifier=SpecifierSet("~=25.0"),
 )
 Numpy = LibraryData(
+    name="numpy",
     pypi_name="numpy",
     org_name="numpy",
     repo_name="numpy",
@@ -140,6 +147,7 @@ Numpy = LibraryData(
     specifier=SpecifierSet("~=2.0"),
 )
 Pillow = LibraryData(
+    name="pillow",
     pypi_name="pillow",
     org_name="python-pillow",
     repo_name="Pillow",
@@ -149,6 +157,7 @@ Pillow = LibraryData(
     specifier=SpecifierSet("~=11.3"),
 )
 PyOpenGL = LibraryData(
+    name="PyOpenGL",
     pypi_name="PyOpenGL",
     org_name="mcfletch",
     repo_name="pyopengl",
@@ -158,6 +167,7 @@ PyOpenGL = LibraryData(
     specifier=SpecifierSet("~=3.1"),
 )
 RuntimeFinal = LibraryData(
+    name="amulet-runtime-final",
     pypi_name="amulet-runtime-final",
     org_name="Amulet-Team",
     repo_name="runtime-final",
@@ -167,6 +177,7 @@ RuntimeFinal = LibraryData(
     specifier=SpecifierSet("~=1.1"),
 )
 PySide6 = LibraryData(
+    name="PySide6-Essentials",
     pypi_name="PySide6-Essentials",
     org_name="THISDOESNOTEXIST",
     repo_name="THISDOESNOTEXIST",
@@ -176,6 +187,7 @@ PySide6 = LibraryData(
     specifier=SpecifierSet(f"=={QtVersion}"),
 )
 Platformdirs = LibraryData(
+    name="platformdirs",
     pypi_name="platformdirs",
     org_name="tox-dev",
     repo_name="platformdirs",
@@ -186,6 +198,7 @@ Platformdirs = LibraryData(
 )
 
 PyBind11 = LibraryData(
+    name="pybind11",
     pypi_name="pybind11",
     org_name="pybind",
     repo_name="pybind11",
@@ -197,6 +210,7 @@ PyBind11 = LibraryData(
     specifier=SpecifierSet("==3.0.4"),
 )
 PyBind11Extensions = LibraryData(
+    name="amulet-pybind11-extensions",
     pypi_name="amulet-pybind11-extensions",
     org_name="Amulet-Team",
     repo_name="Amulet-pybind11-extensions",
@@ -207,6 +221,7 @@ PyBind11Extensions = LibraryData(
     specifier=SpecifierSet("~=1.2.0.0a2"),
 )
 AmuletCompilerVersion = LibraryData(
+    name="amulet-compiler-version",
     pypi_name="amulet-compiler-version",
     org_name="Amulet-Team",
     repo_name="Amulet-Compiler-Version",
@@ -217,6 +232,7 @@ AmuletCompilerVersion = LibraryData(
     specifier=SpecifierSet("~=4.0"),
 )
 AmuletTestUtils = LibraryData(
+    name="amulet-test-utils",
     pypi_name="amulet-test-utils",
     org_name="Amulet-Team",
     repo_name="Amulet-Test-Utils",
@@ -227,6 +243,7 @@ AmuletTestUtils = LibraryData(
     specifier=SpecifierSet("~=1.3"),
 )
 AmuletIO = LibraryData(
+    name="amulet-io",
     pypi_name="amulet-io",
     org_name="Amulet-Team",
     repo_name="Amulet-IO",
@@ -236,11 +253,12 @@ AmuletIO = LibraryData(
     library_type=LibraryType.Interface,
     private_dependencies=(),
     public_dependencies=(),
-    ext_dependencies=(PyBind11.pypi_name,),
+    ext_dependencies=(PyBind11.name,),
     runtime_dependencies=(),
     specifier=SpecifierSet("~=2.0.0.0a0"),
 )
 AmuletUtils = LibraryData(
+    name="amulet-utils",
     pypi_name="amulet-utils",
     org_name="Amulet-Team",
     repo_name="Amulet-Utils",
@@ -250,19 +268,19 @@ AmuletUtils = LibraryData(
     ext_name="_amulet_utils",
     library_type=LibraryType.Shared,
     private_dependencies=(
-        PyBind11.pypi_name,
-        PyBind11Extensions.pypi_name,
+        PyBind11.name,
+        PyBind11Extensions.name,
     ),
     public_dependencies=(),
     ext_dependencies=(
-        PyBind11.pypi_name,
-        PyBind11Extensions.pypi_name,
+        PyBind11.name,
+        PyBind11Extensions.name,
     ),
-    runtime_dependencies=(Platformdirs.pypi_name,),
+    runtime_dependencies=(Platformdirs.name,),
     test_dependencies=(
-        PyBind11.pypi_name,
-        PyBind11Extensions.pypi_name,
-        AmuletTestUtils.pypi_name,
+        PyBind11.name,
+        PyBind11Extensions.name,
+        AmuletTestUtils.name,
     ),
     export_symbol="ExportAmuletUtils",
     specifier=SpecifierSet("~=1.1.8.0a0"),
@@ -277,6 +295,7 @@ AmuletUtils = LibraryData(
     unittests_linux_libs=["libxkbcommon"],
 )
 AmuletLevelDB = LibraryData(
+    name="amulet-leveldb",
     pypi_name="amulet-leveldb",
     org_name="Amulet-Team",
     repo_name="Amulet-LevelDB",
@@ -288,16 +307,16 @@ AmuletLevelDB = LibraryData(
     ext_name="_leveldb",
     library_type=LibraryType.Shared,
     private_dependencies=(
-        AmuletUtils.pypi_name,
+        AmuletUtils.name,
     ),
     public_dependencies=(),
     ext_dependencies=(
-        PyBind11.pypi_name,
-        PyBind11Extensions.pypi_name,
+        PyBind11.name,
+        PyBind11Extensions.name,
     ),
     test_dependencies=(
-        PyBind11.pypi_name,
-        PyBind11Extensions.pypi_name,
+        PyBind11.name,
+        PyBind11Extensions.name,
     ),
     specifier=SpecifierSet("~=3.0.8.0a0"),
     description="A pybind11 wrapper for Mojang's custom LevelDB.",
@@ -306,6 +325,7 @@ AmuletLevelDB = LibraryData(
     config_include_dir="include",
 )
 AmuletRocksDB = LibraryData(
+    name="amulet-rocksdb",
     pypi_name="amulet-rocksdb",
     org_name="Amulet-Team",
     repo_name="Amulet-RocksDB",
@@ -319,17 +339,18 @@ AmuletRocksDB = LibraryData(
     private_dependencies=(),
     public_dependencies=(),
     ext_dependencies=(
-        PyBind11.pypi_name,
-        PyBind11Extensions.pypi_name,
+        PyBind11.name,
+        PyBind11Extensions.name,
     ),
     test_dependencies=(
-        PyBind11.pypi_name,
-        PyBind11Extensions.pypi_name,
+        PyBind11.name,
+        PyBind11Extensions.name,
     ),
     specifier=SpecifierSet("~=2.0.0.0a0"),
     description="A pybind11 wrapper for Facebook's RocksDB.",
 )
 AmuletZlib = LibraryData(
+    name="amulet-zlib",
     pypi_name="amulet-zlib",
     org_name="Amulet-Team",
     repo_name="Amulet-zlib",
@@ -341,13 +362,13 @@ AmuletZlib = LibraryData(
     private_dependencies=(),
     public_dependencies=(),
     ext_dependencies=(
-        PyBind11.pypi_name,
-        PyBind11Extensions.pypi_name,
+        PyBind11.name,
+        PyBind11Extensions.name,
     ),
     test_dependencies=(
-        PyBind11.pypi_name,
-        PyBind11Extensions.pypi_name,
-        AmuletTestUtils.pypi_name,
+        PyBind11.name,
+        PyBind11Extensions.name,
+        AmuletTestUtils.name,
     ),
     export_symbol="ExportAmuletZlib",
     specifier=SpecifierSet("~=1.0.11.0a0"),
@@ -362,6 +383,7 @@ AmuletZlib = LibraryData(
     thread_safety=False
 )
 AmuletNBT = LibraryData(
+    name="amulet-nbt",
     pypi_name="amulet-nbt",
     org_name="Amulet-Team",
     repo_name="Amulet-NBT",
@@ -371,16 +393,16 @@ AmuletNBT = LibraryData(
     ext_name="_amulet_nbt",
     library_type=LibraryType.Shared,
     private_dependencies=(),
-    public_dependencies=(AmuletIO.pypi_name,),
-    runtime_dependencies=(Numpy.pypi_name,),
+    public_dependencies=(AmuletIO.name,),
+    runtime_dependencies=(Numpy.name,),
     ext_dependencies=(
-        PyBind11.pypi_name,
-        PyBind11Extensions.pypi_name,
-        AmuletZlib.pypi_name,
+        PyBind11.name,
+        PyBind11Extensions.name,
+        AmuletZlib.name,
     ),
     test_dependencies=(
-        PyBind11.pypi_name,
-        PyBind11Extensions.pypi_name,
+        PyBind11.name,
+        PyBind11Extensions.name,
     ),
     export_symbol="ExportAmuletNBT",
     specifier=SpecifierSet("~=5.0.5.0a0"),
@@ -396,6 +418,7 @@ AmuletNBT = LibraryData(
     thread_safety=False
 )
 AmuletCore = LibraryData(
+    name="amulet-core",
     pypi_name="amulet-core",
     org_name="Amulet-Team",
     repo_name="Amulet-Core",
@@ -406,19 +429,19 @@ AmuletCore = LibraryData(
     library_type=LibraryType.Shared,
     private_dependencies=(),
     public_dependencies=(
-        AmuletIO.pypi_name,
-        AmuletNBT.pypi_name,
-        AmuletUtils.pypi_name,
+        AmuletIO.name,
+        AmuletNBT.name,
+        AmuletUtils.name,
     ),
-    runtime_dependencies=(Numpy.pypi_name,),
+    runtime_dependencies=(Numpy.name,),
     ext_dependencies=(
-        PyBind11.pypi_name,
-        PyBind11Extensions.pypi_name,
+        PyBind11.name,
+        PyBind11Extensions.name,
     ),
     test_dependencies=(
-        PyBind11.pypi_name,
-        PyBind11Extensions.pypi_name,
-        AmuletTestUtils.pypi_name,
+        PyBind11.name,
+        PyBind11Extensions.name,
+        AmuletTestUtils.name,
     ),
     export_symbol="ExportAmuletCore",
     specifier=SpecifierSet("~=2.0.11.0a0"),
@@ -433,6 +456,7 @@ AmuletCore = LibraryData(
     authors=("James Clare", "Ben Gothard"),
 )
 AmuletResourcePack = LibraryData(
+    name="amulet-resource-pack",
     pypi_name="amulet-resource-pack",
     org_name="Amulet-Team",
     repo_name="Amulet-Resource-Pack",
@@ -442,24 +466,24 @@ AmuletResourcePack = LibraryData(
     ext_name="_amulet_resource_pack",
     library_type=LibraryType.Shared,
     private_dependencies=(
-        PyBind11.pypi_name,
+        PyBind11.name,
     ),
     public_dependencies=(
-        AmuletUtils.pypi_name,
-        AmuletCore.pypi_name,
+        AmuletUtils.name,
+        AmuletCore.name,
     ),
     runtime_dependencies=(
-        Numpy.pypi_name,
-        Pillow.pypi_name,
+        Numpy.name,
+        Pillow.name,
     ),
     ext_dependencies=(
-        PyBind11.pypi_name,
-        PyBind11Extensions.pypi_name,
+        PyBind11.name,
+        PyBind11Extensions.name,
     ),
     test_dependencies=(
-        PyBind11.pypi_name,
-        PyBind11Extensions.pypi_name,
-        AmuletTestUtils.pypi_name,
+        PyBind11.name,
+        PyBind11Extensions.name,
+        AmuletTestUtils.name,
     ),
     export_symbol="ExportAmuletResourcePack",
     specifier=SpecifierSet("~=1.0.6.0a0"),
@@ -468,6 +492,7 @@ AmuletResourcePack = LibraryData(
     manifest=["recursive-include src/amulet *.json *.mcmeta *.png"],
 )
 AmuletGame = LibraryData(
+    name="amulet-game",
     pypi_name="amulet-game",
     org_name="Amulet-Team",
     repo_name="Amulet-Game",
@@ -478,20 +503,20 @@ AmuletGame = LibraryData(
     library_type=LibraryType.Shared,
     private_dependencies=(),
     public_dependencies=(
-        PyBind11.pypi_name,
-        AmuletIO.pypi_name,
-        AmuletNBT.pypi_name,
-        AmuletCore.pypi_name,
+        PyBind11.name,
+        AmuletIO.name,
+        AmuletNBT.name,
+        AmuletCore.name,
     ),
     runtime_dependencies=(),
     ext_dependencies=(
-        PyBind11.pypi_name,
-        PyBind11Extensions.pypi_name,
+        PyBind11.name,
+        PyBind11Extensions.name,
     ),
     test_dependencies=(
-        PyBind11.pypi_name,
-        PyBind11Extensions.pypi_name,
-        AmuletTestUtils.pypi_name,
+        PyBind11.name,
+        PyBind11Extensions.name,
+        AmuletTestUtils.name,
     ),
     export_symbol="ExportAmuletGame",
     has_submodules=True,
@@ -502,6 +527,7 @@ AmuletGame = LibraryData(
     package_data=["**/*.pkl.gz"],
 )
 AmuletAnvil = LibraryData(
+    name="amulet-anvil",
     pypi_name="amulet-anvil",
     org_name="Amulet-Team",
     repo_name="Amulet-Anvil",
@@ -510,21 +536,24 @@ AmuletAnvil = LibraryData(
     lib_name="amulet_anvil",
     ext_name="_amulet_anvil",
     library_type=LibraryType.Shared,
-    private_dependencies=(AmuletZlib.pypi_name,),
+    private_dependencies=(
+        LZ4.name,
+        AmuletZlib.name,
+    ),
     public_dependencies=(
-        AmuletIO.pypi_name,
-        AmuletNBT.pypi_name,
-        AmuletUtils.pypi_name,
+        AmuletIO.name,
+        AmuletNBT.name,
+        AmuletUtils.name,
     ),
     runtime_dependencies=(),
     ext_dependencies=(
-        PyBind11.pypi_name,
-        PyBind11Extensions.pypi_name,
+        PyBind11.name,
+        PyBind11Extensions.name,
     ),
     test_dependencies=(
-        PyBind11.pypi_name,
-        PyBind11Extensions.pypi_name,
-        AmuletTestUtils.pypi_name,
+        PyBind11.name,
+        PyBind11Extensions.name,
+        AmuletTestUtils.name,
     ),
     export_symbol="ExportAmuletAnvil",
     specifier=SpecifierSet("~=1.0.7.0a0"),
@@ -534,6 +563,7 @@ AmuletAnvil = LibraryData(
     ],
 )
 AmuletLevel = LibraryData(
+    name="amulet-level",
     pypi_name="amulet-level",
     org_name="Amulet-Team",
     repo_name="Amulet-Level",
@@ -542,28 +572,28 @@ AmuletLevel = LibraryData(
     lib_name="amulet_level",
     ext_name="_amulet_level",
     library_type=LibraryType.Shared,
-    private_dependencies=(AmuletZlib.pypi_name,),
+    private_dependencies=(AmuletZlib.name,),
     public_dependencies=(
-        AmuletIO.pypi_name,
-        AmuletLevelDB.pypi_name,
-        AmuletUtils.pypi_name,
-        AmuletNBT.pypi_name,
-        AmuletCore.pypi_name,
-        AmuletGame.pypi_name,
-        AmuletAnvil.pypi_name,
+        AmuletIO.name,
+        AmuletLevelDB.name,
+        AmuletUtils.name,
+        AmuletNBT.name,
+        AmuletCore.name,
+        AmuletGame.name,
+        AmuletAnvil.name,
     ),
     runtime_dependencies=(
-        Numpy.pypi_name,
-        Pillow.pypi_name,
+        Numpy.name,
+        Pillow.name,
     ),
     ext_dependencies=(
-        PyBind11.pypi_name,
-        PyBind11Extensions.pypi_name,
+        PyBind11.name,
+        PyBind11Extensions.name,
     ),
     test_dependencies=(
-        PyBind11.pypi_name,
-        PyBind11Extensions.pypi_name,
-        AmuletTestUtils.pypi_name,
+        PyBind11.name,
+        PyBind11Extensions.name,
+        AmuletTestUtils.name,
     ),
     export_symbol="ExportAmuletLevel",
     specifier=SpecifierSet("~=1.0.8.0a0"),
@@ -573,6 +603,7 @@ AmuletLevel = LibraryData(
     ],
 )
 AmuletEditor = LibraryData(
+    name="amulet-editor",
     org_name="Amulet-Team",
     repo_name="Amulet-Editor",
     pypi_name="amulet-editor",
@@ -584,21 +615,21 @@ AmuletEditor = LibraryData(
     ext_name="_amulet_app",
     library_type=LibraryType.Shared,
     private_dependencies=(
-        AmuletLevel.pypi_name,
-        AmuletResourcePack.pypi_name,
+        AmuletLevel.name,
+        AmuletResourcePack.name,
     ),
     public_dependencies=(),
     runtime_dependencies=(
-        Numpy.pypi_name,
-        Pillow.pypi_name,
-        PyOpenGL.pypi_name,
-        RuntimeFinal.pypi_name,
-        PySide6.pypi_name,
-        Packaging.pypi_name,
+        Numpy.name,
+        Pillow.name,
+        PyOpenGL.name,
+        RuntimeFinal.name,
+        PySide6.name,
+        Packaging.name,
     ),
     ext_dependencies=(
-        PyBind11.pypi_name,
-        PyBind11Extensions.pypi_name,
+        PyBind11.name,
+        PyBind11Extensions.name,
     ),
     test_dependencies=(),
     specifier=SpecifierSet("~=1.0.4.0a0"),
@@ -672,18 +703,18 @@ python_libraries: list[LibraryData] = [
 ]
 
 libraries: dict[str, LibraryData] = {
-    lib.pypi_name: lib
     for lib in interface_libraries + shared_libraries + python_libraries
+    lib.name: lib
 }
 
 library_order: dict[str, int] = {
-    lib.pypi_name: i for i, lib in enumerate(libraries.values())
+    lib.name: i for i, lib in enumerate(libraries.values())
 }
 
 
 @lru_cache(maxsize=None)
 def find_dependencies(
-    pypi_name: str,
+    name: str,
     include_private: bool,
     include_public: bool,
     include_ext: bool,
@@ -693,7 +724,7 @@ def find_dependencies(
     include_ext_recursive: bool,
     include_test_recursive: bool,
 ) -> tuple[LibraryData, ...]:
-    lib = libraries[pypi_name]
+    lib = libraries[name]
     lib_names: set[str] = set()
     lib_names_todo: set[str] = set()
     if include_private:
@@ -721,8 +752,8 @@ def find_dependencies(
             lib_names_todo.update(lib2.test_dependencies)
 
     return tuple(
-        libraries[pypi_name]
-        for pypi_name in sorted(
+        libraries[lib_name]
+        for lib_name in sorted(
             lib_names,
             key=library_order.__getitem__,
         )
