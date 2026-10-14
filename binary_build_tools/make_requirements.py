@@ -10,7 +10,7 @@ def write(project_path: str, library_data: LibraryData) -> None:
         True,
         True,
         False,
-        True,
+        False,
         True,
         True,
         False,
