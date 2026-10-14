@@ -36,6 +36,25 @@ if (NOT TARGET amulet_pybind11_extensions)
     find_package(amulet_pybind11_extensions CONFIG REQUIRED)
 endif()
 
+
+include(FetchContent)
+
+# Add zlib
+set(ZLIB_BUILD_EXAMPLES OFF)
+FetchContent_Declare(
+  zlib
+  GIT_REPOSITORY https://github.com/madler/zlib.git
+  GIT_TAG        51b7f2abdade71cd9bb0e7a373ef2610ec6f9daf
+)
+FetchContent_MakeAvailable(zlib)
+set(ZLIB_ROOT ${zlib_SOURCE_DIR})
+set(ZLIB_USE_STATIC_LIBS ON)
+set(ZLIB_LIBRARY ${INSTALL_LIB_DIR})
+find_package(ZLIB REQUIRED)
+target_compile_definitions(zlibstatic PUBLIC ZLIB_CONST)
+set_target_properties(zlib PROPERTIES FOLDER "ThirdParty")
+set_target_properties(zlibstatic PROPERTIES FOLDER "ThirdParty")
+
 # Find C++ files
 file(REAL_PATH src SOURCE_PATH)
 file(GLOB_RECURSE EXTENSION_SOURCES LIST_DIRECTORIES false ${SOURCE_PATH}/amulet/zlib/*.py.cpp)
@@ -47,6 +66,7 @@ list(REMOVE_ITEM HEADERS ${EXTENSION_HEADERS})
 
 # Add implementation
 add_library(amulet_zlib SHARED ${SOURCES} ${HEADERS})
+target_link_libraries( amulet_zlib PRIVATE zlibstatic )
 set_target_properties(amulet_zlib PROPERTIES CXX_VISIBILITY_PRESET hidden)
 set_target_properties(amulet_zlib PROPERTIES FOLDER "CPP")
 target_compile_definitions(amulet_zlib PRIVATE ExportAmuletZlib)

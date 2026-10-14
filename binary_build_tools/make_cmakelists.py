@@ -33,6 +33,27 @@ set_target_properties(zlibstatic PROPERTIES FOLDER "ThirdParty")
 
 """
 
+ZLib = """
+include(FetchContent)
+
+# Add zlib
+set(ZLIB_BUILD_EXAMPLES OFF)
+FetchContent_Declare(
+  zlib
+  GIT_REPOSITORY https://github.com/madler/zlib.git
+  GIT_TAG        51b7f2abdade71cd9bb0e7a373ef2610ec6f9daf
+)
+FetchContent_MakeAvailable(zlib)
+set(ZLIB_ROOT ${zlib_SOURCE_DIR})
+set(ZLIB_USE_STATIC_LIBS ON)
+set(ZLIB_LIBRARY ${INSTALL_LIB_DIR})
+find_package(ZLIB REQUIRED)
+target_compile_definitions(zlibstatic PUBLIC ZLIB_CONST)
+set_target_properties(zlib PROPERTIES FOLDER "ThirdParty")
+set_target_properties(zlibstatic PROPERTIES FOLDER "ThirdParty")
+
+"""
+
 def get_library_properties(
     library_name: str, library_data: LibraryData, indent: str = ""
 ) -> str:
@@ -157,7 +178,7 @@ endif()"""
     for lib in all_dependencies)
 }
 
-{LevelDB if library_data.pypi_name == "amulet-leveldb" else ""}\
+{LevelDB if library_data.pypi_name == "amulet-leveldb" else ZLib if library_data.pypi_name == "amulet-zlib" else ""}\
 # Find C++ files
 file(REAL_PATH src SOURCE_PATH)
 file(GLOB_RECURSE EXTENSION_SOURCES LIST_DIRECTORIES false ${{SOURCE_PATH}}/{library_data.import_name.replace(".", "/")}/*.py.cpp)
@@ -175,6 +196,7 @@ target_sources(leveldb PRIVATE ${SOURCES} ${HEADERS})
 # Add implementation
 add_library({library_data.lib_name} SHARED ${{SOURCES}} ${{HEADERS}})
 """}\
+{"target_link_libraries( amulet_zlib PRIVATE zlibstatic )\n" if library_data.pypi_name == "amulet-zlib" else ""}\
 {get_library_properties(library_data.lib_name, library_data)}\
 foreach(FILE ${{SOURCES}} ${{HEADERS}})
     file(RELATIVE_PATH REL_PATH ${{SOURCE_PATH}} ${{FILE}})
