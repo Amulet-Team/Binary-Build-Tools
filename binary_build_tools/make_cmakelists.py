@@ -87,11 +87,13 @@ project({library_data.cmake_package} LANGUAGES CXX)
 
 set({library_data.cmake_package}_DIR ${{CMAKE_CURRENT_LIST_DIR}}/src/{library_data.import_name.replace(".", "/")} CACHE PATH "")
 {"" if library_data.lib_name is None else f"""set(BUILD_{library_data.project_macro_name}_TESTS OFF CACHE BOOL "Should tests be built?")\n"""}\
+{"""\
 option(THREAD_SAFETY_ANALYSIS "Run clang thread safety analysis over the sources before building" OFF)
 
 if(THREAD_SAFETY_ANALYSIS AND NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     message(FATAL_ERROR "THREAD_SAFETY_ANALYSIS requires Clang")
 endif()
+""" if library_data.thread_safety else ""}\
 
 # Set C++20
 set(CMAKE_CXX_STANDARD 20)
@@ -146,6 +148,7 @@ foreach(FILE ${{SOURCES}} ${{HEADERS}})
     source_group(${{GROUP}} FILES ${{FILE}})
 endforeach()
 
+{f"""\
 if(THREAD_SAFETY_ANALYSIS)
     add_library({library_data.lib_name}_thread_analysis OBJECT ${{SOURCES}} ${{HEADERS}})
     target_compile_definitions({library_data.lib_name}_thread_analysis PRIVATE AMULET_THREAD_SAFETY_ANALYSIS)
@@ -153,6 +156,7 @@ if(THREAD_SAFETY_ANALYSIS)
     target_compile_options({library_data.lib_name}_thread_analysis PRIVATE -fsyntax-only -Wthread-safety -Werror=thread-safety)
     add_dependencies({library_data.lib_name} {library_data.lib_name}_thread_analysis)
 endif()
+""" if library_data.thread_safety else ""}\
 """
 }\
 
@@ -171,6 +175,7 @@ foreach(FILE ${{EXTENSION_SOURCES}} ${{EXTENSION_HEADERS}})
     source_group(${{GROUP}} FILES ${{FILE}})
 endforeach()
 
+{f"""\
 if(THREAD_SAFETY_ANALYSIS)
     add_library({library_data.ext_name}_thread_analysis OBJECT ${{EXTENSION_SOURCES}} ${{EXTENSION_HEADERS}})
     target_link_libraries({library_data.ext_name}_thread_analysis PRIVATE pybind11::module)
@@ -179,6 +184,7 @@ if(THREAD_SAFETY_ANALYSIS)
     target_compile_options({library_data.ext_name}_thread_analysis PRIVATE -fsyntax-only -Wthread-safety -Werror=thread-safety)
     add_dependencies({library_data.ext_name} {library_data.ext_name}_thread_analysis)
 endif()
+""" if library_data.thread_safety else ""}\
 
 if(NOT DEFINED {library_data.ext_macro_name}_EXT_DIR)
     set({library_data.ext_macro_name}_EXT_DIR ${{{library_data.cmake_package}_DIR}})

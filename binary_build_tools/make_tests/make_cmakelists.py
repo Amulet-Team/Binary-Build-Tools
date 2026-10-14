@@ -32,11 +32,13 @@ cmake_minimum_required(VERSION 4.1)
 
 project({library_data.cmake_package}_tests LANGUAGES CXX)
 
+{"""\
 option(THREAD_SAFETY_ANALYSIS "Run clang thread safety analysis over the sources before building" OFF)
 
 if(THREAD_SAFETY_ANALYSIS AND NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     message(FATAL_ERROR "THREAD_SAFETY_ANALYSIS requires Clang")
 endif()
+""" if library_data.thread_safety else ""}\
 
 # Set C++20
 set(CMAKE_CXX_STANDARD 20)
@@ -80,6 +82,7 @@ foreach(FILE ${{SOURCES}})
     source_group(${{GROUP}} FILES ${{FILE}})
 endforeach()
 
+{f"""\
 if(THREAD_SAFETY_ANALYSIS)
     add_library(_test_{library_data.cmake_package}_thread_analysis OBJECT ${{SOURCES}})
     target_link_libraries(_test_{library_data.cmake_package}_thread_analysis PRIVATE pybind11::module)
@@ -96,6 +99,7 @@ if(THREAD_SAFETY_ANALYSIS)
     add_dependencies(_test_amulet_utils mutex_thread_analysis)
 """ if library_data.pypi_name == "amulet-utils" else ""}\
 endif()
+""" if library_data.thread_safety else ""}\
 
 # Install
 install(TARGETS _test_{library_data.cmake_package} DESTINATION "${{CMAKE_CURRENT_LIST_DIR}}/test_{library_data.cmake_package}")

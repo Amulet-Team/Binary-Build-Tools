@@ -65,8 +65,10 @@ jobs:
         architecture: ${{{{ matrix.cfg.architecture }}}}
 
     - name: Build and Test
+{"""\
       env:
-        THREAD_SAFETY_ANALYSIS: ${{{{ runner.os == 'macOS' && runner.arch == 'ARM64' && 'ON' || 'OFF' }}}}
+        THREAD_SAFETY_ANALYSIS: ${{ runner.os == 'macOS' && runner.arch == 'ARM64' && 'ON' || 'OFF' }}
+""" if library_data.thread_safety else ""}\
       run: |
         pip install cibuildwheel~={CIBuildWheelVersion}
         cibuildwheel --only ${{{{ matrix.cfg.whl }}}} --output-dir dist .

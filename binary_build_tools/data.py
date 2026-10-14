@@ -78,6 +78,7 @@ class LibraryData:
         console_scripts: Mapping[str, str] = MappingProxyType({}),
         gui_scripts: Mapping[str, str] = MappingProxyType({}),
         create_build_workflow: bool = True,
+        thread_safety: bool = True,
     ):
         self.pypi_name = pypi_name.replace("_", "-")
         self.org_name = org_name
@@ -115,6 +116,7 @@ class LibraryData:
         self.console_scripts = console_scripts
         self.gui_scripts = gui_scripts
         self.create_build_workflow = create_build_workflow
+        self.thread_safety = thread_safety
 
 
 Packaging = LibraryData(
@@ -354,6 +356,7 @@ AmuletZlib = LibraryData(
             "sphinx_rtd_theme>=0.3.1",
         ]
     },
+    thread_safety=False
 )
 AmuletNBT = LibraryData(
     pypi_name="amulet-nbt",
