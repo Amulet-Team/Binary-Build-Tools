@@ -110,6 +110,9 @@ set_target_properties({library_name} PROPERTIES CXX_VISIBILITY_PRESET hidden)
     )
 }\
 {"\n".join([f"{indent}target_include_directories({library_name} PUBLIC \"{path}\")" for path in library_data.source_include_dirs])}
+{indent}if(MSVC)
+{indent}    target_compile_options({library_name} PRIVATE /Zc:preprocessor)
+{indent}endif()
 """
 
 
@@ -130,6 +133,9 @@ set_target_properties({module_name} PROPERTIES CXX_VISIBILITY_PRESET hidden)
 {indent}target_compile_definitions({module_name} PRIVATE PYBIND11_VERSION="${{pybind11_VERSION}}")
 {indent}target_compile_definitions({module_name} PRIVATE COMPILER_ID="${{CMAKE_CXX_COMPILER_ID}}")
 {indent}target_compile_definitions({module_name} PRIVATE COMPILER_VERSION="${{CMAKE_CXX_COMPILER_VERSION}}")
+{indent}if(MSVC)
+{indent}    target_compile_options({module_name} PRIVATE /Zc:preprocessor)
+{indent}endif()
 """
 
 
