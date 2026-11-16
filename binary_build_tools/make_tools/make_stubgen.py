@@ -45,7 +45,7 @@ def compiler_config_sub_func(match: re.Match) -> str:
 
 
 EqPattern = re.compile(
-    r"(?P<indent>[ \\t]+)def __eq__\\(self, arg0: (?P<other>[a-zA-Z1-9.]+)\\) -> (?P<return>[a-zA-Z1-9.]+):"
+    r"(?P<indent>[ \\t]+)def (?P<func>__lt__|__le__|__eq__|__ge__|__gt__)\\(self, arg0: (?P<other>[a-zA-Z1-9.]+)\\) -> (?P<return>[a-zA-Z1-9.]+):"
     r"(?P<ellipsis_docstring>\\s*((\\.\\.\\.)|(\\"\\"\\"(.|\\n)*?\\"\\"\\")))"
 )
 
@@ -58,7 +58,7 @@ def eq_sub_func(match: re.Match[str]) -> str:
     if match.string[: match.start()].endswith("@typing.overload\\n"):
         # is overload
         if re.match(
-            f"\\\\n{{match.group('indent')}}@typing.overload\\\\n{{match.group('indent')}}def __eq__\\\\(self, ",
+            f"\\\\n{{match.group('indent')}}@typing.overload\\\\n{{match.group('indent')}}def {{match.group('func')}}\\\\(self, ",
             match.string[match.end() :],
         ):
             # is not last overload
@@ -66,18 +66,18 @@ def eq_sub_func(match: re.Match[str]) -> str:
         else:
             return "\\n".join(
                 [
-                    f"{{match.group('indent')}}def __eq__(self, other: {{match.group('other')}}) -> {{match.group('return')}}:{{match.group('ellipsis_docstring')}}",
+                    f"{{match.group('indent')}}def {{match.group('func')}}(self, other: {{match.group('other')}}) -> {{match.group('return')}}:{{match.group('ellipsis_docstring')}}",
                     f"{{match.group('indent')}}@typing.overload",
-                    f"{{match.group('indent')}}def __eq__(self, other: typing.Any) -> bool | types.NotImplementedType: ...",
+                    f"{{match.group('indent')}}def {{match.group('func')}}(self, other: typing.Any) -> bool | types.NotImplementedType: ...",
                 ]
             )
     else:
         return "\\n".join(
             [
                 f"{{match.group('indent')}}@typing.overload",
-                f"{{match.group('indent')}}def __eq__(self, other: {{match.group('other')}}) -> {{match.group('return')}}:{{match.group('ellipsis_docstring')}}",
+                f"{{match.group('indent')}}def {{match.group('func')}}(self, other: {{match.group('other')}}) -> {{match.group('return')}}:{{match.group('ellipsis_docstring')}}",
                 f"{{match.group('indent')}}@typing.overload",
-                f"{{match.group('indent')}}def __eq__(self, other: typing.Any) -> bool | types.NotImplementedType: ...",
+                f"{{match.group('indent')}}def {{match.group('func')}}(self, other: typing.Any) -> bool | types.NotImplementedType: ...",
             ]
         )
 
