@@ -36,13 +36,13 @@ def compiler_config_sub_func(match: re.Match) -> str:
     return "compiler_config: dict"
 
 
-EqPattern = re.compile(
-    r"(?P<indent>[ \t]+)def (?P<func>__lt__|__le__|__eq__|__ge__|__gt__)\(self, arg0: (?P<other>[a-zA-Z1-9.]+)\) -> (?P<return>[a-zA-Z1-9.]+):"
+OperatorPattern = re.compile(
+    r"(?P<indent>[ \t]+)def (?P<func>__lt__|__le__|__eq__|__ge__|__gt__)\(self, (arg0|other): (?P<other>[a-zA-Z1-9.]+)\) -> (?P<return>[a-zA-Z1-9.]+):"
     r"(?P<ellipsis_docstring>\s*((\.\.\.)|(\"\"\"(.|\n)*?\"\"\")))"
 )
 
 
-def eq_sub_func(match: re.Match[str]) -> str:
+def operator_sub_func(match: re.Match[str]) -> str:
     """
     if one - add @overload and overloaded signature
 
@@ -193,7 +193,7 @@ def main() -> None:
             "__hash__: typing.ClassVar[None] = None",
             "__hash__: typing.ClassVar[None] = None  # type: ignore",
         )
-        pyi = EqPattern.sub(eq_sub_func, pyi)
+        pyi = OperatorPattern.sub(operator_sub_func, pyi)
         pyi = pyi.replace("**kwargs)", "**kwargs: typing.Any)")
         pyi_split = [l.rstrip("\r") for l in pyi.split("\n")]
         for hidden_import in ["typing", "types"]:
